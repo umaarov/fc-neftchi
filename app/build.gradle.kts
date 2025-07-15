@@ -69,7 +69,4 @@ dependencies {
     implementation ("com.squareup.okhttp3:logging-interceptor:4.11.0")
     implementation ("com.squareup.moshi:moshi-kotlin:1.15.0")
     implementation ("io.coil-kt:coil:2.6.0")
-
-    implementation("androidx.navigation:navigation-safe-args-gradle-plugin:2.9.1")
-
 }
