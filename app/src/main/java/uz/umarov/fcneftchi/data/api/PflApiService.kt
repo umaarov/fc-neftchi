@@ -12,6 +12,7 @@ import uz.umarov.fcneftchi.data.model.PlayerApiResponse
 import uz.umarov.fcneftchi.data.model.PlayerDetailResponse
 import uz.umarov.fcneftchi.data.model.PlayerStatisticResponse
 import uz.umarov.fcneftchi.data.model.StatisticsResponse
+import uz.umarov.fcneftchi.data.model.TopPlayersResponse
 
 interface PflApiService {
 
@@ -48,4 +49,7 @@ interface PflApiService {
 
     @GET("v1/web/game/table")
     suspend fun getLeagueTable(): LeagueTableResponse
+
+    @GET("v1/web/game/table/top-players")
+    suspend fun getTopPlayers(): TopPlayersResponse
 }

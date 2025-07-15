@@ -75,15 +75,18 @@ data class Squad(
 data class NewsApiResponse(
     @Json(name = "data") val data: NewsData
 )
+
 data class NewsData(
     @Json(name = "list") val list: List<NewsListItem>
 )
+
 data class NewsListItem(
     @Json(name = "id") val id: Int,
     @Json(name = "image") val image: String?,
     @Json(name = "publicDate") val publicDate: String,
     @Json(name = "contents") val contents: NewsContents
 )
+
 data class NewsContents(
     @Json(name = "title") val title: String,
     @Json(name = "description") val description: String?,
@@ -93,6 +96,7 @@ data class NewsContents(
 data class NewsDetailResponse(
     @Json(name = "data") val data: NewsDetailData
 )
+
 data class NewsDetailData(
     @Json(name = "id") val id: Int,
     @Json(name = "image") val image: String?,
@@ -101,6 +105,7 @@ data class NewsDetailData(
     @Json(name = "description") val description: String?,
     @Json(name = "text") val text: List<NewsTextItem>
 )
+
 data class NewsTextItem(
     @Json(name = "type") val type: String,
     @Json(name = "value") val value: String?
@@ -214,4 +219,23 @@ data class LeagueTableItem(
     @Json(name = "c_games_def") val losses: Int,
     @Json(name = "c_goal_tf") val goalDifference: Int,
     @Json(name = "c_point") val points: Int
+)
+
+data class TopPlayersResponse(
+    @Json(name = "data") val data: TopPlayersData
+)
+
+data class TopPlayersData(
+    @Json(name = "scorers") val scorers: List<TopPlayer>
+)
+
+data class TopPlayer(
+    @Json(name = "player_id") val playerId: Int,
+    @Json(name = "player_first_name") val firstName: String?,
+    @Json(name = "player_last_name") val lastName: String,
+    @Json(name = "player_photo") val photo: String?,
+    @Json(name = "club_title") val clubTitle: String,
+    @Json(name = "club_logo") val clubLogo: String?,
+    @Json(name = "goals") val goals: Int,
+    @Json(name = "assists") val assists: Int
 )

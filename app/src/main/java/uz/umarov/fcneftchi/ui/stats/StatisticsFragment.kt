@@ -13,6 +13,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import uz.umarov.fcneftchi.databinding.FragmentStatisticsBinding
 import uz.umarov.fcneftchi.ui.stats.adapter.PlayerStatsAdapter
+import uz.umarov.fcneftchi.ui.stats.adapter.TopPlayerAdapter
 
 @AndroidEntryPoint
 class StatisticsFragment : Fragment() {
@@ -22,18 +23,17 @@ class StatisticsFragment : Fragment() {
 
     private val viewModel: StatisticsViewModel by viewModels()
     private lateinit var playerStatsAdapter: PlayerStatsAdapter
+    private lateinit var topScorersAdapter: TopPlayerAdapter
+    private lateinit var topAssistersAdapter: TopPlayerAdapter
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentStatisticsBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupRecyclerView()
+        setupRecyclerViews()
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.uiState.collect { state ->
@@ -52,14 +52,28 @@ class StatisticsFragment : Fragment() {
 
                     playerStatsAdapter.submitList(data.playerStats)
                 }
+
+                topScorersAdapter.submitList(state.topScorers)
+                topAssistersAdapter.submitList(state.topAssisters)
             }
         }
     }
 
-    private fun setupRecyclerView() {
+    private fun setupRecyclerViews() {
         playerStatsAdapter = PlayerStatsAdapter()
+        topScorersAdapter = TopPlayerAdapter(TopPlayerAdapter.StatType.GOALS)
+        topAssistersAdapter = TopPlayerAdapter(TopPlayerAdapter.StatType.ASSISTS)
+
         binding.playerStatsRecyclerView.apply {
             adapter = playerStatsAdapter
+            layoutManager = LinearLayoutManager(context)
+        }
+        binding.topScorersRecyclerView.apply {
+            adapter = topScorersAdapter
+            layoutManager = LinearLayoutManager(context)
+        }
+        binding.topAssistersRecyclerView.apply {
+            adapter = topAssistersAdapter
             layoutManager = LinearLayoutManager(context)
         }
     }

@@ -16,6 +16,7 @@ import uz.umarov.fcneftchi.data.model.PlayerProfile
 import uz.umarov.fcneftchi.data.model.Squad
 import uz.umarov.fcneftchi.data.model.StatisticsData
 import uz.umarov.fcneftchi.data.model.Team
+import uz.umarov.fcneftchi.data.model.TopPlayer
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -254,6 +255,15 @@ class RealNeftchiRepository @Inject constructor(
             )
         }
         emit(standings)
+    }
+
+    override fun getTopPlayers(): Flow<List<TopPlayer>> = flow {
+        try {
+            val response = apiService.getTopPlayers()
+            emit(response.data.scorers)
+        } catch (e: Exception) {
+            emit(emptyList())
+        }
     }
 
 }
