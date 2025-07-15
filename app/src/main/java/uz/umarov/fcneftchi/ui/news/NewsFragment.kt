@@ -8,6 +8,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -45,7 +46,10 @@ class NewsFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        newsAdapter = NewsAdapter()
+        newsAdapter = NewsAdapter { article ->
+            val action = NewsFragmentDirections.actionNewsFragmentToNewsArticleFragment(article.id)
+            findNavController().navigate(action)
+        }
         binding.newsRecyclerView.apply {
             adapter = newsAdapter
             layoutManager = LinearLayoutManager(context)

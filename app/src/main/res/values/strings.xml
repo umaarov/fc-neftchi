@@ -16,4 +16,6 @@
     <string name="more_stadium_info">Stadium Info</string>
     <string name="more_tickets">Tickets</string>
     <string name="more_settings">Settings</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

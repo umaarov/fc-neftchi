@@ -9,7 +9,10 @@ import coil.load
 import uz.umarov.fcneftchi.data.model.NewsArticle
 import uz.umarov.fcneftchi.databinding.ItemNewsFullBinding
 
-class NewsAdapter : ListAdapter<NewsArticle, NewsAdapter.NewsViewHolder>(NewsDiffCallback) {
+class NewsAdapter(
+    private val onItemClick: (NewsArticle) -> Unit
+) : ListAdapter<NewsArticle, NewsAdapter.NewsViewHolder>(NewsDiffCallback) {
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsViewHolder {
         val binding = ItemNewsFullBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -28,8 +31,13 @@ class NewsAdapter : ListAdapter<NewsArticle, NewsAdapter.NewsViewHolder>(NewsDif
             binding.newsTitle.text = article.title
             binding.newsDate.text = article.date
             binding.newsContentSnippet.text = article.content
+
+            binding.root.setOnClickListener {
+                onItemClick(article)
+            }
         }
     }
+
 
     object NewsDiffCallback : DiffUtil.ItemCallback<NewsArticle>() {
         override fun areItemsTheSame(oldItem: NewsArticle, newItem: NewsArticle): Boolean = oldItem.id == newItem.id
