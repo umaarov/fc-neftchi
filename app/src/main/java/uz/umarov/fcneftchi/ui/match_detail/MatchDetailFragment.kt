@@ -1,5 +1,7 @@
 package uz.umarov.fcneftchi.ui.match_detail
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,11 +10,14 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import uz.umarov.fcneftchi.R
+import uz.umarov.fcneftchi.data.model.GameDetail
 import uz.umarov.fcneftchi.databinding.FragmentMatchDetailBinding
 import uz.umarov.fcneftchi.ui.match_detail.adapter.LineupAdapter
 import uz.umarov.fcneftchi.ui.match_detail.adapter.MatchEventsAdapter
@@ -27,11 +32,7 @@ class MatchDetailFragment : Fragment() {
 
     private val viewModel: MatchDetailViewModel by viewModels()
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentMatchDetailBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -45,6 +46,9 @@ class MatchDetailFragment : Fragment() {
                 binding.contentGroup.isVisible = !state.isLoading
 
                 state.gameDetail?.let { game ->
+                    binding.toolbar.title = "${game.homeTeam.club.title} vs ${game.awayTeam.club.title}"
+                    binding.toolbar.setNavigationOnClickListener { findNavController().navigateUp() }
+
                     binding.header.homeTeamLogo.load(game.homeTeam.club.logo)
                     binding.header.awayTeamLogo.load(game.awayTeam.club.logo)
                     binding.header.homeTeamName.text = game.homeTeam.club.title
@@ -58,7 +62,7 @@ class MatchDetailFragment : Fragment() {
         }
     }
 
-    private fun setupTabs(game: uz.umarov.fcneftchi.data.model.GameDetail) {
+    private fun setupTabs(game: GameDetail) {
         showEvents(game)
 
         binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
@@ -69,19 +73,17 @@ class MatchDetailFragment : Fragment() {
                     2 -> showLineups(game)
                 }
             }
-
             override fun onTabUnselected(tab: TabLayout.Tab?) {}
             override fun onTabReselected(tab: TabLayout.Tab?) {}
         })
     }
 
-    private fun showEvents(game: uz.umarov.fcneftchi.data.model.GameDetail) {
+    private fun showEvents(game: GameDetail) {
         binding.eventsView.root.isVisible = true
         binding.statsView.root.isVisible = false
         binding.lineupsView.root.isVisible = false
 
-        val playersMap =
-            game.players.associate { it.player.id to "${it.player.firstName ?: ""} ${it.player.lastName}".trim() }
+        val playersMap = game.players.associate { it.player.id to "${it.player.firstName ?: ""} ${it.player.lastName}".trim() }
         val eventsAdapter = MatchEventsAdapter(game.homeTeam.club.id, playersMap)
         binding.eventsView.eventsRecyclerView.apply {
             adapter = eventsAdapter
@@ -90,24 +92,22 @@ class MatchDetailFragment : Fragment() {
         eventsAdapter.submitList(game.events.sortedBy { it.time })
     }
 
-    private fun showStats(game: uz.umarov.fcneftchi.data.model.GameDetail) {
+    private fun showStats(game: GameDetail) {
         binding.eventsView.root.isVisible = false
         binding.statsView.root.isVisible = true
         binding.lineupsView.root.isVisible = false
 
         game.statistics?.let { stats ->
             binding.statsView.statShots.text = "${stats.shotsHome} - ${stats.shotsAway}"
-            binding.statsView.statShotsOnTarget.text =
-                "${stats.shotsOnTargetHome} - ${stats.shotsOnTargetAway}"
+            binding.statsView.statShotsOnTarget.text = "${stats.shotsOnTargetHome} - ${stats.shotsOnTargetAway}"
             binding.statsView.statCorners.text = "${stats.cornersHome} - ${stats.cornersAway}"
             binding.statsView.statOffsides.text = "${stats.offsideHome} - ${stats.offsideAway}"
             binding.statsView.statFouls.text = "${stats.foulsHome} - ${stats.foulsAway}"
-            binding.statsView.statYellowCards.text =
-                "${stats.yellowCardsHome} - ${stats.yellowCardsAway}"
+            binding.statsView.statYellowCards.text = "${stats.yellowCardsHome} - ${stats.yellowCardsAway}"
         }
     }
 
-    private fun showLineups(game: uz.umarov.fcneftchi.data.model.GameDetail) {
+    private fun showLineups(game: GameDetail) {
         binding.eventsView.root.isVisible = false
         binding.statsView.root.isVisible = false
         binding.lineupsView.root.isVisible = true
@@ -134,13 +134,9 @@ class MatchDetailFragment : Fragment() {
             val parser = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
             parser.timeZone = TimeZone.getTimeZone("UTC")
             val date = parser.parse(dateString)
-            val formatter = SimpleDateFormat("dd MMMM yyyy, HH:mm", Locale.getDefault()).apply {
-                timeZone = TimeZone.getDefault()
-            }
+            val formatter = SimpleDateFormat("dd MMMM yyyy, HH:mm", Locale.getDefault()).apply { timeZone = TimeZone.getDefault() }
             date?.let { formatter.format(it) } ?: "N/A"
-        } catch (e: Exception) {
-            "N/A"
-        }
+        } catch (e: Exception) { "N/A" }
     }
 
     override fun onDestroyView() {

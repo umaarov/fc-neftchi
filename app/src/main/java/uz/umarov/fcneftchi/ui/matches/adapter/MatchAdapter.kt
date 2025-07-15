@@ -27,6 +27,7 @@ class MatchAdapter : ListAdapter<Match, MatchAdapter.MatchViewHolder>(MatchDiffC
         holder.bind(getItem(position))
     }
 
+
     inner class MatchViewHolder(private val binding: ItemMatchBinding) :
         RecyclerView.ViewHolder(binding.root) {
         init {
@@ -34,8 +35,7 @@ class MatchAdapter : ListAdapter<Match, MatchAdapter.MatchViewHolder>(MatchDiffC
                 val position = adapterPosition
                 if (position != RecyclerView.NO_POSITION) {
                     val match = getItem(position)
-                    val action =
-                        MatchesFragmentDirections.actionMatchesFragmentToMatchDetailFragment(match.id.toInt())
+                    val action = MatchesFragmentDirections.actionMatchesFragmentToMatchDetailFragment(match.id.toInt())
                     it.findNavController().navigate(action)
                 }
             }
