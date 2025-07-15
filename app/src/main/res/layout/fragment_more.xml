@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.more.MoreFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            style="?attr/textAppearanceHeadline5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="More Options"
+            android:layout_marginBottom="16dp"/>
+
+        <TextView
+            style="?attr/textAppearanceListItem"
+            android:drawableStart="@drawable/ic_table"
+            android:drawablePadding="16dp"
+            android:gravity="center_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:text="League Table"/>
+
+        <TextView
+            style="?attr/textAppearanceListItem"
+            android:drawableStart="@drawable/ic_history"
+            android:drawablePadding="16dp"
+            android:gravity="center_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:text="Club History"/>
+
+        <TextView
+            style="?attr/textAppearanceListItem"
+            android:drawableStart="@drawable/ic_stadium"
+            android:drawablePadding="16dp"
+            android:gravity="center_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:text="Stadium Info"/>
+
+        <TextView
+            style="?attr/textAppearanceListItem"
+            android:drawableStart="@drawable/ic_tickets"
+            android:drawablePadding="16dp"
+            android:gravity="center_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:text="Tickets"/>
+
+        <TextView
+            style="?attr/textAppearanceListItem"
+            android:drawableStart="@drawable/ic_settings"
+            android:drawablePadding="16dp"
+            android:gravity="center_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:text="Settings"/>
+
+    </LinearLayout>
+</ScrollView>
