@@ -8,11 +8,11 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import uz.umarov.fcneftchi.databinding.FragmentTeamBinding
-import uz.umarov.fcneftchi.ui.team.adapter.PlayerAdapter
+import uz.umarov.fcneftchi.ui.team.adapter.SquadAdapter
 
 @AndroidEntryPoint
 class TeamFragment : Fragment() {
@@ -21,7 +21,7 @@ class TeamFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel: TeamViewModel by viewModels()
-    private lateinit var playerAdapter: PlayerAdapter
+    private lateinit var squadAdapter: SquadAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,16 +38,16 @@ class TeamFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.uiState.collect { state ->
                 binding.progressBar.isVisible = state.isLoading
-                playerAdapter.submitList(state.players)
+                squadAdapter.submitList(state.squads)
             }
         }
     }
 
     private fun setupRecyclerView() {
-        playerAdapter = PlayerAdapter()
+        squadAdapter = SquadAdapter()
         binding.teamRecyclerView.apply {
-            adapter = playerAdapter
-            layoutManager = GridLayoutManager(context, 3)
+            adapter = squadAdapter
+            layoutManager = LinearLayoutManager(context)
         }
     }
 

@@ -9,8 +9,11 @@ interface NeftchiRepository {
     fun getAllFixtures(): Flow<List<Match>>
     fun getAllResults(): Flow<List<Match>>
     fun getNews(): Flow<List<NewsArticle>>
-    fun getTeam(): Flow<List<Player>>
+//    fun getTeam(): Flow<List<Player>>
     fun getLeagueTable(): Flow<List<LeagueStanding>>
     fun getNewsArticleById(id: String): Flow<NewsArticle?>
     fun getVideos(): Flow<List<Video>>
+
+    fun getTeam(): Flow<List<Player>>
+    fun getSquads(): Flow<List<Squad>>
 }

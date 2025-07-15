@@ -8,6 +8,7 @@ import uz.umarov.fcneftchi.data.model.Match
 import uz.umarov.fcneftchi.data.model.MatchStatus
 import uz.umarov.fcneftchi.data.model.NewsArticle
 import uz.umarov.fcneftchi.data.model.Player
+import uz.umarov.fcneftchi.data.model.Squad
 import uz.umarov.fcneftchi.data.model.Team
 import uz.umarov.fcneftchi.data.model.Video
 
@@ -174,6 +175,10 @@ class MockNeftchiRepository : NeftchiRepository {
                 )
             )
         )
+    }
+
+    override fun getSquads(): Flow<List<Squad>> {
+        TODO("Not yet implemented")
     }
 
     override fun getLeagueTable(): Flow<List<LeagueStanding>> = flow {

@@ -19,3 +19,23 @@ data class ApiPlayer(
     @Json(name = "number") val number: Int?,
     @Json(name = "country_title") val countryTitle: String
 )
+
+data class ClubDetailResponse(
+    @Json(name = "data") val data: ClubDetails
+)
+
+data class ClubDetails(
+    @Json(name = "id") val id: Int,
+    @Json(name = "title") val title: String,
+    @Json(name = "clubTeams") val clubTeams: List<ClubTeam>
+)
+
+data class ClubTeam(
+    @Json(name = "id") val id: Int,
+    @Json(name = "title") val title: String
+)
+
+data class Squad(
+    val teamName: String,
+    val players: List<Player>
+)
