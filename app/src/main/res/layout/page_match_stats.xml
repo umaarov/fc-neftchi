@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Match Statistics"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:textAppearance="?attr/textAppearanceHeadline6"
+        android:layout_marginBottom="16dp"/>
+
+    <LinearLayout style="@style/StatRow">
+        <TextView style="@style/StatLabel" android:text="Shots"/>
+        <TextView style="@style/StatValue" android:id="@+id/stat_shots" tools:text="12 - 8"/>
+    </LinearLayout>
+    <LinearLayout style="@style/StatRow">
+        <TextView style="@style/StatLabel" android:text="Shots on Target"/>
+        <TextView style="@style/StatValue" android:id="@+id/stat_shots_on_target" tools:text="5 - 2"/>
+    </LinearLayout>
+    <LinearLayout style="@style/StatRow">
+        <TextView style="@style/StatLabel" android:text="Corners"/>
+        <TextView style="@style/StatValue" android:id="@+id/stat_corners" tools:text="6 - 3"/>
+    </LinearLayout>
+    <LinearLayout style="@style/StatRow">
+        <TextView style="@style/StatLabel" android:text="Offsides"/>
+        <TextView style="@style/StatValue" android:id="@+id/stat_offsides" tools:text="1 - 4"/>
+    </LinearLayout>
+    <LinearLayout style="@style/StatRow">
+        <TextView style="@style/StatLabel" android:text="Fouls"/>
+        <TextView style="@style/StatValue" android:id="@+id/stat_fouls" tools:text="10 - 15"/>
+    </LinearLayout>
+    <LinearLayout style="@style/StatRow">
+        <TextView style="@style/StatLabel" android:text="Yellow Cards"/>
+        <TextView style="@style/StatValue" android:id="@+id/stat_yellow_cards" tools:text="2 - 3"/>
+    </LinearLayout>
+</LinearLayout>

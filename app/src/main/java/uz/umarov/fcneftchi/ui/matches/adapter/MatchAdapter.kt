@@ -3,6 +3,7 @@ package uz.umarov.fcneftchi.ui.matches.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.isVisible
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -10,6 +11,7 @@ import coil.load
 import uz.umarov.fcneftchi.data.model.Match
 import uz.umarov.fcneftchi.data.model.MatchStatus
 import uz.umarov.fcneftchi.databinding.ItemMatchBinding
+import uz.umarov.fcneftchi.ui.matches.MatchesFragmentDirections
 import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.TimeZone
@@ -27,6 +29,18 @@ class MatchAdapter : ListAdapter<Match, MatchAdapter.MatchViewHolder>(MatchDiffC
 
     inner class MatchViewHolder(private val binding: ItemMatchBinding) :
         RecyclerView.ViewHolder(binding.root) {
+        init {
+            itemView.setOnClickListener {
+                val position = adapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    val match = getItem(position)
+                    val action =
+                        MatchesFragmentDirections.actionMatchesFragmentToMatchDetailFragment(match.id.toInt())
+                    it.findNavController().navigate(action)
+                }
+            }
+        }
+
         fun bind(match: Match) {
             binding.homeTeamLogo.load(match.homeTeam.logoUrl)
             binding.awayTeamLogo.load(match.awayTeam.logoUrl)
