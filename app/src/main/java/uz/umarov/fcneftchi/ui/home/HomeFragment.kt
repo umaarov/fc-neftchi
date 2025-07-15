@@ -19,6 +19,7 @@ import uz.umarov.fcneftchi.databinding.ItemLastMatchBinding
 import uz.umarov.fcneftchi.databinding.ItemNextMatchBinding
 import uz.umarov.fcneftchi.ui.home.adapter.NewsHomeAdapter
 import uz.umarov.fcneftchi.ui.home.adapter.StandingsAdapter
+import uz.umarov.fcneftchi.util.applySystemBarPadding
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {

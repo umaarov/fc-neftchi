@@ -13,6 +13,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import uz.umarov.fcneftchi.databinding.FragmentTeamBinding
 import uz.umarov.fcneftchi.ui.team.adapter.PlayerAdapter
+import uz.umarov.fcneftchi.util.applySystemBarPadding
 
 @AndroidEntryPoint
 class TeamFragment : Fragment() {

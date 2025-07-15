@@ -14,6 +14,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import uz.umarov.fcneftchi.databinding.FragmentNewsBinding
 import uz.umarov.fcneftchi.ui.news.adapter.NewsAdapter
+import uz.umarov.fcneftchi.util.applySystemBarPadding
 
 @AndroidEntryPoint
 class NewsFragment : Fragment() {

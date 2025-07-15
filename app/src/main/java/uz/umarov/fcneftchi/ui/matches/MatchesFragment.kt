@@ -14,6 +14,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import uz.umarov.fcneftchi.databinding.FragmentMatchesBinding
 import uz.umarov.fcneftchi.ui.matches.adapter.MatchAdapter
+import uz.umarov.fcneftchi.util.applySystemBarPadding
 
 @AndroidEntryPoint
 class MatchesFragment : Fragment() {
