@@ -10,4 +10,8 @@ interface NeftchiRepository {
     fun getNews(): Flow<List<NewsArticle>>
     fun getNewsArticleByUrl(url: String): Flow<NewsArticle?>
     fun getPlayerProfile(playerId: Int): Flow<PlayerProfile?>
+    fun getNextMatch(): Flow<Match>
+    fun getLastMatch(): Flow<Match>
+    fun getAllFixtures(): Flow<List<Match>>
+    fun getAllResults(): Flow<List<Match>>
 }

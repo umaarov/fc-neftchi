@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -19,7 +18,9 @@ import uz.umarov.fcneftchi.databinding.ItemLastMatchBinding
 import uz.umarov.fcneftchi.databinding.ItemNextMatchBinding
 import uz.umarov.fcneftchi.ui.home.adapter.NewsHomeAdapter
 import uz.umarov.fcneftchi.ui.home.adapter.StandingsAdapter
-import uz.umarov.fcneftchi.util.applySystemBarPadding
+import java.text.SimpleDateFormat
+import java.util.Locale
+import java.util.TimeZone
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
@@ -86,7 +87,7 @@ class HomeFragment : Fragment() {
         binding.awayTeamLogo.load(match.awayTeam.logoUrl)
         binding.homeTeamName.text = match.homeTeam.name
         binding.awayTeamName.text = match.awayTeam.name
-        binding.matchDate.text = "20 JUL, 19:00"
+        binding.matchDate.text = formatHomeMatchDate(match.matchDate)
         binding.matchCompetition.text = match.competition
     }
 
@@ -101,6 +102,19 @@ class HomeFragment : Fragment() {
         binding.homeTeamScore.text = match.homeScore.toString()
         binding.awayTeamScore.text = match.awayScore.toString()
         binding.matchCompetition.text = "${match.competition} - ${match.status}"
+    }
+
+    private fun formatHomeMatchDate(dateString: String?): String {
+        if (dateString == null) return "N/A"
+        return try {
+            val parser = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
+            parser.timeZone = TimeZone.getTimeZone("UTC")
+            val date = parser.parse(dateString)
+            val formatter = SimpleDateFormat("dd MMM, HH:mm", Locale.ENGLISH).apply { timeZone = TimeZone.getDefault() }
+            date?.let { formatter.format(it).toUpperCase(Locale.ROOT) } ?: "N/A"
+        } catch (e: Exception) {
+            "N/A"
+        }
     }
 
 

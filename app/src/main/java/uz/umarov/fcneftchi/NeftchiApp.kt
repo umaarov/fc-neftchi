@@ -1,7 +1,20 @@
 package uz.umarov.fcneftchi
 
 import android.app.Application
+import coil.ImageLoader
+import coil.ImageLoaderFactory
 import dagger.hilt.android.HiltAndroidApp
+import javax.inject.Inject
+import javax.inject.Provider
 
 @HiltAndroidApp
-class NeftchiApp : Application()
+class NeftchiApp : Application(), ImageLoaderFactory {
+
+    @Inject
+    lateinit var imageLoaderProvider: Provider<ImageLoader.Builder>
+
+    override fun newImageLoader(): ImageLoader {
+        return imageLoaderProvider.get()
+            .build()
+    }
+}

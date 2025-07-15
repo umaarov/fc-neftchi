@@ -165,3 +165,33 @@ data class PlayerProfile(
     val stats: PlayerSeasonStats,
     val career: List<PlayerCareerItem>
 )
+
+data class GameApiResponse(
+    @Json(name = "data") val data: GameData
+)
+
+data class GameData(
+    @Json(name = "list") val list: List<ApiGame>
+)
+
+data class ApiGame(
+    @Json(name = "id") val id: Int,
+    @Json(name = "startDate") val startDate: String,
+    @Json(name = "endDate") val endDate: String?,
+    @Json(name = "homeTeam") val homeTeam: ApiGameTeam,
+    @Json(name = "awayTeam") val awayTeam: ApiGameTeam,
+    @Json(name = "homeGoal") val homeGoal: Int,
+    @Json(name = "awayGoal") val awayGoal: Int
+)
+
+data class ApiGameTeam(
+    @Json(name = "id") val id: Int,
+    @Json(name = "title") val title: String,
+    @Json(name = "club") val club: ApiGameClub
+)
+
+data class ApiGameClub(
+    @Json(name = "id") val id: Int,
+    @Json(name = "title") val title: String,
+    @Json(name = "logo") val logo: String
+)

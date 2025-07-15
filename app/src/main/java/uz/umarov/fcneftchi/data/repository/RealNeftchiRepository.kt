@@ -5,13 +5,18 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import uz.umarov.fcneftchi.data.api.PflApiService
+import uz.umarov.fcneftchi.data.model.ApiGame
 import uz.umarov.fcneftchi.data.model.ApiPlayer
+import uz.umarov.fcneftchi.data.model.Match
+import uz.umarov.fcneftchi.data.model.MatchStatus
 import uz.umarov.fcneftchi.data.model.NewsArticle
 import uz.umarov.fcneftchi.data.model.Player
 import uz.umarov.fcneftchi.data.model.PlayerProfile
 import uz.umarov.fcneftchi.data.model.Squad
 import uz.umarov.fcneftchi.data.model.StatisticsData
+import uz.umarov.fcneftchi.data.model.Team
 import java.text.SimpleDateFormat
+import java.util.Date
 import java.util.Locale
 import java.util.TimeZone
 import javax.inject.Inject
@@ -144,6 +149,89 @@ class RealNeftchiRepository @Inject constructor(
             } catch (e: Exception) {
                 emit(null)
             }
+        }
+    }
+
+    override fun getAllFixtures(): Flow<List<Match>> = flow {
+        val response = apiService.getGames(neftchiClubId)
+        val now = Date()
+        val fixtures = response.data.list
+            .filter { parseDate(it.startDate)?.after(now) == true }
+            .sortedBy { it.startDate }
+            .map { mapApiGameToMatch(it) }
+        emit(fixtures)
+    }
+
+    override fun getAllResults(): Flow<List<Match>> = flow {
+        val response = apiService.getGames(neftchiClubId)
+        val now = Date()
+        val results = response.data.list
+            .filter { parseDate(it.startDate)?.before(now) != false }
+            .sortedByDescending { it.startDate }
+            .map { mapApiGameToMatch(it) }
+        emit(results)
+    }
+
+    private fun mapApiGameToMatch(apiGame: ApiGame): Match {
+        val homeTeam = Team(
+            id = apiGame.homeTeam.club.id,
+            name = apiGame.homeTeam.club.title,
+            logoUrl = apiGame.homeTeam.club.logo
+        )
+        val awayTeam = Team(
+            id = apiGame.awayTeam.club.id,
+            name = apiGame.awayTeam.club.title,
+            logoUrl = apiGame.awayTeam.club.logo
+        )
+        val status = if (parseDate(apiGame.startDate)?.after(Date()) == true) {
+            MatchStatus.SCHEDULED
+        } else {
+            MatchStatus.FINISHED
+        }
+
+        return Match(
+            id = apiGame.id.toString(),
+            homeTeam = homeTeam,
+            awayTeam = awayTeam,
+            homeScore = apiGame.homeGoal,
+            awayScore = apiGame.awayGoal,
+            matchDate = apiGame.startDate,
+            status = status,
+            competition = "Superliga"
+        )
+    }
+
+    override fun getNextMatch(): Flow<Match> = flow {
+        val response = apiService.getGames(neftchiClubId)
+        val now = Date()
+        val nextFixture = response.data.list
+            .filter { parseDate(it.startDate)?.after(now) == true }
+            .minByOrNull { it.startDate }
+
+        if (nextFixture != null) {
+            emit(mapApiGameToMatch(nextFixture))
+        }
+    }
+
+    override fun getLastMatch(): Flow<Match> = flow {
+        val response = apiService.getGames(neftchiClubId)
+        val now = Date()
+        val lastResult = response.data.list
+            .filter { parseDate(it.startDate)?.before(now) != false }
+            .maxByOrNull { it.startDate }
+
+        if (lastResult != null) {
+            emit(mapApiGameToMatch(lastResult))
+        }
+    }
+
+    private fun parseDate(dateString: String): Date? {
+        return try {
+            val parser = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
+            parser.timeZone = TimeZone.getTimeZone("UTC")
+            parser.parse(dateString)
+        } catch (e: Exception) {
+            null
         }
     }
 }

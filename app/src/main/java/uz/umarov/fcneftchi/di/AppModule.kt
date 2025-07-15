@@ -1,5 +1,8 @@
 package uz.umarov.fcneftchi.di
 
+import android.app.Application
+import coil.ImageLoader
+import coil.decode.SvgDecoder
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
@@ -63,5 +66,14 @@ object AppModule {
     @Singleton
     fun provideNeftchiRepository(apiService: PflApiService): NeftchiRepository {
         return RealNeftchiRepository(apiService)
+    }
+
+    @Provides
+    @Singleton
+    fun provideImageLoaderBuilder(app: Application): ImageLoader.Builder {
+        return ImageLoader.Builder(app)
+            .components {
+                add(SvgDecoder.Factory())
+            }
     }
 }
