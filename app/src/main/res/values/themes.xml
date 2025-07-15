@@ -1,9 +1,12 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Base.Theme.FCNeftchi" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.FCNeftchi" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        <item name="colorPrimary">@color/neftchi_green</item>
+        <item name="colorPrimaryVariant">@color/neftchi_green_dark</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorSecondary">@color/neftchi_green_light</item>
+        <item name="colorSecondaryVariant">@color/neftchi_green</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
     </style>
-
-    <style name="Theme.FCNeftchi" parent="Base.Theme.FCNeftchi" />
 </resources>
