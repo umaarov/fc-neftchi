@@ -8,7 +8,7 @@ interface NeftchiRepository {
     fun getLastMatch(): Flow<Match>
     fun getAllFixtures(): Flow<List<Match>>
     fun getAllResults(): Flow<List<Match>>
-    fun getNews(): Flow<List<NewsArticle>>
+//    fun getNews(): Flow<List<NewsArticle>>
 //    fun getTeam(): Flow<List<Player>>
     fun getLeagueTable(): Flow<List<LeagueStanding>>
     fun getNewsArticleById(id: String): Flow<NewsArticle?>
@@ -17,4 +17,5 @@ interface NeftchiRepository {
     fun getTeam(): Flow<List<Player>>
     fun getSquads(): Flow<List<Squad>>
     fun getClubStatistics(): Flow<StatisticsData?>
+    fun getNews(): Flow<List<NewsArticle>>
 }

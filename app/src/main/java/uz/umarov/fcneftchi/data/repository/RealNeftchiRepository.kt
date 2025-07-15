@@ -13,6 +13,9 @@ import uz.umarov.fcneftchi.data.model.Player
 import uz.umarov.fcneftchi.data.model.Squad
 import uz.umarov.fcneftchi.data.model.StatisticsData
 import uz.umarov.fcneftchi.data.model.Video
+import java.text.SimpleDateFormat
+import java.util.Locale
+import java.util.TimeZone
 import javax.inject.Inject
 
 class RealNeftchiRepository @Inject constructor(
@@ -20,6 +23,33 @@ class RealNeftchiRepository @Inject constructor(
 ) : NeftchiRepository {
 
     private val neftchiClubId = 7
+
+    override fun getNews(): Flow<List<NewsArticle>> = flow {
+        val response = apiService.getNews(neftchiClubId)
+        val articles = response.data.list.map { newsItem ->
+            NewsArticle(
+                id = newsItem.id.toString(),
+                title = newsItem.contents.title,
+                imageUrl = newsItem.image
+                    ?: "https://placehold.co/600x400/CCCCCC/FFFFFF?text=No+Image",
+                date = formatApiDate(newsItem.publicDate),
+                content = newsItem.contents.description ?: ""
+            )
+        }
+        emit(articles)
+    }
+
+    private fun formatApiDate(dateString: String): String {
+        return try {
+            val parser = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
+            parser.timeZone = TimeZone.getTimeZone("UTC")
+            val date = parser.parse(dateString)
+            val formatter = SimpleDateFormat("dd MMMM yyyy", Locale.getDefault())
+            date?.let { formatter.format(it) } ?: dateString
+        } catch (e: Exception) {
+            dateString
+        }
+    }
 
     override fun getClubStatistics(): Flow<StatisticsData?> = flow {
         try {
@@ -33,7 +63,6 @@ class RealNeftchiRepository @Inject constructor(
     override fun getSquads(): Flow<List<Squad>> = flow {
         coroutineScope {
             val clubDetails = apiService.getClubDetails(neftchiClubId)
-
             val squadData = clubDetails.data.clubTeams.map { team ->
                 async {
                     val playersResponse = apiService.getClubPlayers(neftchiClubId, team.id)
@@ -43,7 +72,6 @@ class RealNeftchiRepository @Inject constructor(
                     Squad(teamName = team.title, players = uiPlayers)
                 }
             }.map { it.await() }
-
             emit(squadData)
         }
     }
@@ -69,11 +97,11 @@ class RealNeftchiRepository @Inject constructor(
 
     private fun mapPosition(positionId: Int): String {
         return when (positionId) {
-            1 -> "Goalkeeper"
-            2 -> "Defender"
-            3 -> "Midfielder"
-            4 -> "Forward"
-            else -> "Unknown"
+            1 -> "Darvozabon"
+            2 -> "Himoyachi"
+            3 -> "Yarim himoyachi"
+            4 -> "Hujumchi"
+            else -> "Noma'lum"
         }
     }
 
@@ -81,7 +109,6 @@ class RealNeftchiRepository @Inject constructor(
     override fun getLastMatch(): Flow<Match> = flow { }
     override fun getAllFixtures(): Flow<List<Match>> = flow { emit(emptyList()) }
     override fun getAllResults(): Flow<List<Match>> = flow { emit(emptyList()) }
-    override fun getNews(): Flow<List<NewsArticle>> = flow { emit(emptyList()) }
     override fun getLeagueTable(): Flow<List<LeagueStanding>> = flow { emit(emptyList()) }
     override fun getNewsArticleById(id: String): Flow<NewsArticle?> = flow { emit(null) }
     override fun getVideos(): Flow<List<Video>> = flow { emit(emptyList()) }

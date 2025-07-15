@@ -71,3 +71,23 @@ data class Squad(
     val teamName: String,
     val players: List<Player>
 )
+
+data class NewsApiResponse(
+    @Json(name = "data") val data: NewsData
+)
+
+data class NewsData(
+    @Json(name = "list") val list: List<NewsListItem>
+)
+
+data class NewsListItem(
+    @Json(name = "id") val id: Int,
+    @Json(name = "image") val image: String?,
+    @Json(name = "publicDate") val publicDate: String,
+    @Json(name = "contents") val contents: NewsContents
+)
+
+data class NewsContents(
+    @Json(name = "title") val title: String,
+    @Json(name = "description") val description: String?
+)
