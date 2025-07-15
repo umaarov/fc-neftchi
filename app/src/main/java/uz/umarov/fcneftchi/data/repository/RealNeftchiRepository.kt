@@ -6,13 +6,11 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import uz.umarov.fcneftchi.data.api.PflApiService
 import uz.umarov.fcneftchi.data.model.ApiPlayer
-import uz.umarov.fcneftchi.data.model.LeagueStanding
-import uz.umarov.fcneftchi.data.model.Match
 import uz.umarov.fcneftchi.data.model.NewsArticle
 import uz.umarov.fcneftchi.data.model.Player
+import uz.umarov.fcneftchi.data.model.PlayerProfile
 import uz.umarov.fcneftchi.data.model.Squad
 import uz.umarov.fcneftchi.data.model.StatisticsData
-import uz.umarov.fcneftchi.data.model.Video
 import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.TimeZone
@@ -30,7 +28,8 @@ class RealNeftchiRepository @Inject constructor(
             NewsArticle(
                 id = newsItem.id.toString(),
                 title = newsItem.contents.title,
-                imageUrl = newsItem.image ?: "https://placehold.co/600x400/CCCCCC/FFFFFF?text=No+Image",
+                imageUrl = newsItem.image
+                    ?: "https://placehold.co/600x400/CCCCCC/FFFFFF?text=No+Image",
                 date = formatApiDate(newsItem.publicDate),
                 content = newsItem.contents.description ?: "",
                 url = newsItem.contents.url
@@ -49,7 +48,8 @@ class RealNeftchiRepository @Inject constructor(
             val article = NewsArticle(
                 id = detailData.id.toString(),
                 title = detailData.title,
-                imageUrl = detailData.image ?: "https://placehold.co/600x400/CCCCCC/FFFFFF?text=No+Image",
+                imageUrl = detailData.image
+                    ?: "https://placehold.co/600x400/CCCCCC/FFFFFF?text=No+Image",
                 date = formatApiDate(detailData.publicDate),
                 content = fullContentHtml,
                 url = url
@@ -123,6 +123,27 @@ class RealNeftchiRepository @Inject constructor(
             3 -> "Yarim himoyachi"
             4 -> "Hujumchi"
             else -> "Noma'lum"
+        }
+    }
+
+    override fun getPlayerProfile(playerId: Int): Flow<PlayerProfile?> = flow {
+        coroutineScope {
+            try {
+                val detailsDeferred = async { apiService.getPlayerDetails(playerId) }
+                val statsDeferred = async { apiService.getPlayerStatistics(playerId) }
+
+                val detailsResponse = detailsDeferred.await()
+                val statsResponse = statsDeferred.await()
+
+                val playerProfile = PlayerProfile(
+                    details = detailsResponse.data,
+                    stats = statsResponse.data.statistic,
+                    career = statsResponse.data.carrier
+                )
+                emit(playerProfile)
+            } catch (e: Exception) {
+                emit(null)
+            }
         }
     }
 }

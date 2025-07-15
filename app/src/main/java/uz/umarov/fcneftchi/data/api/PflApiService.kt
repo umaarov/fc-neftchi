@@ -7,6 +7,8 @@ import uz.umarov.fcneftchi.data.model.ClubDetailResponse
 import uz.umarov.fcneftchi.data.model.NewsApiResponse
 import uz.umarov.fcneftchi.data.model.NewsDetailResponse
 import uz.umarov.fcneftchi.data.model.PlayerApiResponse
+import uz.umarov.fcneftchi.data.model.PlayerDetailResponse
+import uz.umarov.fcneftchi.data.model.PlayerStatisticResponse
 import uz.umarov.fcneftchi.data.model.StatisticsResponse
 
 interface PflApiService {
@@ -32,4 +34,10 @@ interface PflApiService {
 
     @GET("v1/web/news/{url}")
     suspend fun getNewsDetail(@Path("url") url: String): NewsDetailResponse
+
+    @GET("v1/web/player/{id}")
+    suspend fun getPlayerDetails(@Path("id") playerId: Int): PlayerDetailResponse
+
+    @GET("v1/web/player/{id}/statistic")
+    suspend fun getPlayerStatistics(@Path("id") playerId: Int): PlayerStatisticResponse
 }

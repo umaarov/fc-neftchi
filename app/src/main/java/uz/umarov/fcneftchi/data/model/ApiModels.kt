@@ -114,3 +114,54 @@ data class NewsArticle(
     val content: String,
     val url: String
 )
+
+data class PlayerDetailResponse(
+    @Json(name = "data") val data: PlayerDetail
+)
+
+data class PlayerDetail(
+    @Json(name = "id") val id: Int,
+    @Json(name = "firstName") val firstName: String?,
+    @Json(name = "lastName") val lastName: String,
+    @Json(name = "birthday") val birthday: String?,
+    @Json(name = "photo") val photo: String?,
+    @Json(name = "position") val position: Int,
+    @Json(name = "number") val number: Int?,
+    @Json(name = "country") val country: PlayerCountry
+)
+
+data class PlayerCountry(
+    @Json(name = "title") val title: String
+)
+
+data class PlayerStatisticResponse(
+    @Json(name = "data") val data: PlayerStatisticData
+)
+
+data class PlayerStatisticData(
+    @Json(name = "statistic") val statistic: PlayerSeasonStats,
+    @Json(name = "carrier") val carrier: List<PlayerCareerItem>
+)
+
+data class PlayerSeasonStats(
+    @Json(name = "goal") val goals: Int,
+    @Json(name = "assists") val assists: Int,
+    @Json(name = "yellow_card") val yellowCards: Int,
+    @Json(name = "red_card") val redCards: Int,
+    @Json(name = "games_in") val games: Int,
+    @Json(name = "minute_in_game") val minutes: Int
+)
+
+data class PlayerCareerItem(
+    @Json(name = "title") val clubName: String,
+    @Json(name = "logo") val clubLogo: String?,
+    @Json(name = "year") val year: Int,
+    @Json(name = "games") val games: Int,
+    @Json(name = "goals") val goals: Int
+)
+
+data class PlayerProfile(
+    val details: PlayerDetail,
+    val stats: PlayerSeasonStats,
+    val career: List<PlayerCareerItem>
+)

@@ -43,7 +43,11 @@
         android:id="@+id/teamFragment"
         android:name="uz.umarov.fcneftchi.ui.team.TeamFragment"
         android:label="@string/title_team"
-        tools:layout="@layout/fragment_team" />
+        tools:layout="@layout/fragment_team" >
+        <action
+            android:id="@+id/action_teamFragment_to_playerProfileFragment"
+            app:destination="@id/playerProfileFragment" />
+    </fragment>
     <fragment
         android:id="@+id/moreFragment"
         android:name="uz.umarov.fcneftchi.ui.more.MoreFragment"
@@ -68,4 +72,14 @@
         android:name="uz.umarov.fcneftchi.ui.stats.StatisticsFragment"
         android:label="@string/title_statistics"
         tools:layout="@layout/fragment_statistics" />
+
+    <fragment
+        android:id="@+id/playerProfileFragment"
+        android:name="uz.umarov.fcneftchi.ui.player.PlayerProfileFragment"
+        android:label="Player Profile"
+        tools:layout="@layout/fragment_player_profile" >
+        <argument
+            android:name="playerId"
+            app:argType="integer" />
+    </fragment>
 </navigation>

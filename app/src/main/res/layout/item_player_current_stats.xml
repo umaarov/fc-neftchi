@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="2dp"
+    android:layout_marginStart="8dp"
+    android:layout_marginEnd="8dp">
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:columnCount="3"
+        android:rowCount="2"
+        android:padding="16dp">
+        <TextView android:text="Games" style="@style/StatLabel" />
+        <TextView android:id="@+id/stat_games" style="@style/StatValue" />
+        <TextView android:text="Minutes" style="@style/StatLabel" />
+        <TextView android:id="@+id/stat_minutes" style="@style/StatValue" />
+        <TextView android:text="Goals" style="@style/StatLabel" />
+        <TextView android:id="@+id/stat_goals" style="@style/StatValue" />
+        <TextView android:text="Assists" style="@style/StatLabel" />
+        <TextView android:id="@+id/stat_assists" style="@style/StatValue" />
+        <TextView android:text="Yellow Cards" style="@style/StatLabel" />
+        <TextView android:id="@+id/stat_yellow" style="@style/StatValue" />
+        <TextView android:text="Red Cards" style="@style/StatLabel" />
+        <TextView android:id="@+id/stat_red" style="@style/StatValue" />
+    </GridLayout>
+</com.google.android.material.card.MaterialCardView>
