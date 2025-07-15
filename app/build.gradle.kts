@@ -1,8 +1,8 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    id("com.google.devtools.ksp")
     id("com.google.dagger.hilt.android")
-    id("kotlin-kapt")
     id("androidx.navigation.safeargs.kotlin")
 }
 
@@ -39,9 +39,6 @@ android {
     buildFeatures {
         viewBinding = true
     }
-    kapt {
-        correctErrorTypes = true
-    }
 }
 
 dependencies {
@@ -54,19 +51,21 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-    implementation ("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
-    implementation ("androidx.navigation:navigation-fragment-ktx:2.9.1")
-    implementation ("androidx.navigation:navigation-ui-ktx:2.9.1")
-    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.9.1")
-    implementation ("androidx.lifecycle:lifecycle-livedata-ktx:2.9.1")
-    implementation ("androidx.lifecycle:lifecycle-runtime-ktx:2.9.1")
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
+    implementation("androidx.navigation:navigation-fragment-ktx:2.9.1")
+    implementation("androidx.navigation:navigation-ui-ktx:2.9.1")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.9.1")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.9.1")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.9.1")
 
-    implementation ("com.google.dagger:hilt-android:2.51.1")
-    kapt("com.google.dagger:hilt-compiler:2.51.1")
+    implementation("com.google.dagger:hilt-android:2.56.2")
+    ksp("com.google.dagger:hilt-android-compiler:2.56.2")
 
-    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation ("com.squareup.retrofit2:converter-moshi:2.9.0")
-    implementation ("com.squareup.okhttp3:logging-interceptor:4.11.0")
-    implementation ("com.squareup.moshi:moshi-kotlin:1.15.0")
-    implementation ("io.coil-kt:coil:2.6.0")
+    implementation("androidx.hilt:hilt-navigation-fragment:1.1.0")
+
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-moshi:2.9.0")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.11.0")
+    implementation("com.squareup.moshi:moshi-kotlin:1.15.0")
+    implementation("io.coil-kt:coil:2.6.0")
 }
