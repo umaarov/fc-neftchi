@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.flow
 import uz.umarov.fcneftchi.data.api.PflApiService
 import uz.umarov.fcneftchi.data.model.ApiGame
 import uz.umarov.fcneftchi.data.model.ApiPlayer
+import uz.umarov.fcneftchi.data.model.GameCalendarMatch
 import uz.umarov.fcneftchi.data.model.GameDetail
 import uz.umarov.fcneftchi.data.model.LeagueStanding
 import uz.umarov.fcneftchi.data.model.Match
@@ -29,6 +30,13 @@ class RealNeftchiRepository @Inject constructor(
 ) : NeftchiRepository {
 
     private val neftchiClubId = 7
+    private val superligaTournamentId = 1
+    private val currentSeasonId = 10
+
+    private suspend fun getAllGamesFromCalendar(): List<GameCalendarMatch> {
+        val response = apiService.getGameCalendar(superligaTournamentId, currentSeasonId, neftchiClubId)
+        return response.data.table.flatMap { it.matches }
+    }
 
     override fun getNews(): Flow<List<NewsArticle>> = flow {
         val response = apiService.getNews(neftchiClubId)
@@ -106,10 +114,14 @@ class RealNeftchiRepository @Inject constructor(
     }
 
     override fun getTeam(): Flow<List<Player>> = flow {
-        val mainTeamId = 33
-        val apiPlayers = apiService.getClubPlayers(neftchiClubId, mainTeamId).data.players
-        val uiPlayers = apiPlayers.map { mapApiPlayerToUiPlayer(it) }
-        emit(uiPlayers)
+        coroutineScope {
+            val clubDetails = apiService.getClubDetails(neftchiClubId)
+            val playersResponse = apiService.getClubPlayers(neftchiClubId, clubDetails.data.clubTeams.first().id)
+            val uiPlayers = playersResponse.data.players.map { apiPlayer ->
+                mapApiPlayerToUiPlayer(apiPlayer)
+            }
+            emit(uiPlayers)
+        }
     }
 
     private fun mapApiPlayerToUiPlayer(apiPlayer: ApiPlayer): Player {
@@ -156,26 +168,27 @@ class RealNeftchiRepository @Inject constructor(
     }
 
     override fun getAllFixtures(): Flow<List<Match>> = flow {
-        val response = apiService.getGames(neftchiClubId)
+        val allGames = getAllGamesFromCalendar()
         val now = Date()
-        val fixtures = response.data.list
-            .filter { parseDate(it.startDate)?.after(now) == true }
+        val fixtures = allGames
+            .filter { parseDate(it.startDate)?.after(now) ?: true }
             .sortedBy { it.startDate }
             .map { mapApiGameToMatch(it) }
         emit(fixtures)
     }
 
     override fun getAllResults(): Flow<List<Match>> = flow {
-        val response = apiService.getGames(neftchiClubId)
+        val allGames = getAllGamesFromCalendar()
         val now = Date()
-        val results = response.data.list
-            .filter { parseDate(it.startDate)?.before(now) != false }
+        val results = allGames
+            .filter { parseDate(it.startDate)?.before(now) ?: false }
             .sortedByDescending { it.startDate }
             .map { mapApiGameToMatch(it) }
         emit(results)
     }
 
-    private fun mapApiGameToMatch(apiGame: ApiGame): Match {
+
+    private fun mapApiGameToMatch(apiGame: GameCalendarMatch): Match {
         val homeTeam = Team(
             id = apiGame.homeTeam.club.id,
             name = apiGame.homeTeam.club.title,
@@ -205,10 +218,10 @@ class RealNeftchiRepository @Inject constructor(
     }
 
     override fun getNextMatch(): Flow<Match> = flow {
-        val response = apiService.getGames(neftchiClubId)
+        val allGames = getAllGamesFromCalendar()
         val now = Date()
-        val nextFixture = response.data.list
-            .filter { parseDate(it.startDate)?.after(now) == true }
+        val nextFixture = allGames
+            .filter { parseDate(it.startDate)?.after(now) ?: true }
             .minByOrNull { it.startDate }
 
         if (nextFixture != null) {
@@ -217,10 +230,10 @@ class RealNeftchiRepository @Inject constructor(
     }
 
     override fun getLastMatch(): Flow<Match> = flow {
-        val response = apiService.getGames(neftchiClubId)
+        val allGames = getAllGamesFromCalendar()
         val now = Date()
-        val lastResult = response.data.list
-            .filter { parseDate(it.startDate)?.before(now) != false }
+        val lastResult = allGames
+            .filter { parseDate(it.startDate)?.before(now) ?: false }
             .maxByOrNull { it.startDate }
 
         if (lastResult != null) {
@@ -275,5 +288,4 @@ class RealNeftchiRepository @Inject constructor(
             emit(null)
         }
     }
-
 }

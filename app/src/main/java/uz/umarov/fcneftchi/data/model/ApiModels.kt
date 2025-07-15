@@ -297,3 +297,27 @@ data class GameStatistics(
     @Json(name = "corner_kicks_home") val cornersHome: Int,
     @Json(name = "corner_kicks_away") val cornersAway: Int
 )
+
+data class GameCalendarResponse(
+    @Json(name = "data") val data: GameCalendarData
+)
+
+data class GameCalendarData(
+    @Json(name = "table") val table: List<GameCalendarTour>
+)
+
+data class GameCalendarTour(
+    @Json(name = "id") val id: Int,
+    @Json(name = "title") val title: String,
+    @Json(name = "matches") val matches: List<GameCalendarMatch>
+)
+
+data class GameCalendarMatch(
+    @Json(name = "id") val id: Int,
+    @Json(name = "startDate") val startDate: String,
+    @Json(name = "endDate") val endDate: String?,
+    @Json(name = "homeTeam") val homeTeam: ApiGameTeam,
+    @Json(name = "awayTeam") val awayTeam: ApiGameTeam,
+    @Json(name = "homeGoal") val homeGoal: Int,
+    @Json(name = "awayGoal") val awayGoal: Int
+)
