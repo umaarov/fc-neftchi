@@ -47,3 +47,11 @@ data class LeagueStanding(
     val losses: Int,
     val points: Int
 )
+
+data class Video(
+    val id: String,
+    val title: String,
+    val thumbnailUrl: String,
+    val videoUrl: String,
+    val duration: String
+)

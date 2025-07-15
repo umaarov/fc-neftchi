@@ -9,6 +9,7 @@ import uz.umarov.fcneftchi.data.model.MatchStatus
 import uz.umarov.fcneftchi.data.model.NewsArticle
 import uz.umarov.fcneftchi.data.model.Player
 import uz.umarov.fcneftchi.data.model.Team
+import uz.umarov.fcneftchi.data.model.Video
 
 class MockNeftchiRepository : NeftchiRepository {
 
@@ -185,5 +186,32 @@ class MockNeftchiRepository : NeftchiRepository {
                 LeagueStanding(4, Team(5, "AGMK", ""), 15, 8, 4, 3, 28)
             )
         )
+    }
+
+    override fun getVideos(): Flow<List<Video>> = flow {
+        delay(700)
+        emit(listOf(
+            Video(
+                id = "vid1",
+                title = "HIGHLIGHTS: Neftchi 2-1 Nasaf",
+                thumbnailUrl = "https://placehold.co/600x400/006400/FFFFFF?text=Highlights",
+                videoUrl = "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+                duration = "05:21"
+            ),
+            Video(
+                id = "vid2",
+                title = "Behind the Scenes: Training Day",
+                thumbnailUrl = "https://placehold.co/600x400/333333/FFFFFF?text=Training",
+                videoUrl = "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+                duration = "10:15"
+            ),
+            Video(
+                id = "vid3",
+                title = "Interview with Sharof Mukhiddinov",
+                thumbnailUrl = "https://placehold.co/600x400/000000/FFFFFF?text=Interview",
+                videoUrl = "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+                duration = "08:44"
+            )
+        ))
     }
 }

@@ -12,4 +12,5 @@ interface NeftchiRepository {
     fun getTeam(): Flow<List<Player>>
     fun getLeagueTable(): Flow<List<LeagueStanding>>
     fun getNewsArticleById(id: String): Flow<NewsArticle?>
+    fun getVideos(): Flow<List<Video>>
 }

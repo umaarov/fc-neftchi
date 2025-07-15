@@ -19,6 +19,18 @@
             android:layout_marginBottom="16dp"/>
 
         <TextView
+            android:id="@+id/team_button"
+            style="?attr/textAppearanceListItem"
+            android:drawableStart="@drawable/ic_team"
+            android:drawablePadding="16dp"
+            android:gravity="center_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackground"
+            android:padding="16dp"
+            android:text="@string/title_team"/>
+
+        <TextView
             style="?attr/textAppearanceListItem"
             android:drawableStart="@drawable/ic_table"
             android:drawablePadding="16dp"

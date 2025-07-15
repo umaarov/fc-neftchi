@@ -42,11 +42,21 @@
     <fragment
         android:id="@+id/teamFragment"
         android:name="uz.umarov.fcneftchi.ui.team.TeamFragment"
-        android:label="fragment_team"
+        android:label="@string/title_team"
         tools:layout="@layout/fragment_team" />
     <fragment
         android:id="@+id/moreFragment"
         android:name="uz.umarov.fcneftchi.ui.more.MoreFragment"
         android:label="fragment_more"
-        tools:layout="@layout/fragment_more" />
+        tools:layout="@layout/fragment_more" >
+        <action
+            android:id="@+id/action_moreFragment_to_teamFragment"
+            app:destination="@id/teamFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/videosFragment"
+        android:name="uz.umarov.fcneftchi.ui.videos.VideosFragment"
+        android:label="@string/title_videos"
+        tools:layout="@layout/fragment_videos" />
 </navigation>
