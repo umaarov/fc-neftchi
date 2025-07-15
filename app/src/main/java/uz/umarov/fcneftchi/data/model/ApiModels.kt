@@ -239,3 +239,61 @@ data class TopPlayer(
     @Json(name = "goals") val goals: Int,
     @Json(name = "assists") val assists: Int
 )
+
+data class GameDetailResponse(
+    @Json(name = "data") val data: GameDetail
+)
+
+data class GameDetail(
+    @Json(name = "id") val id: Int,
+    @Json(name = "startDate") val startDate: String,
+    @Json(name = "homeTeam") val homeTeam: ApiGameTeam,
+    @Json(name = "awayTeam") val awayTeam: ApiGameTeam,
+    @Json(name = "homeGoal") val homeGoal: Int,
+    @Json(name = "awayGoal") val awayGoal: Int,
+    @Json(name = "events") val events: List<GameEvent>,
+    @Json(name = "players") val players: List<GameLineupPlayer>,
+    @Json(name = "statistics") val statistics: GameStatistics?
+)
+
+data class GameEvent(
+    @Json(name = "id") val id: Int,
+    @Json(name = "clubId") val clubId: Int,
+    @Json(name = "primaryPlayerId") val primaryPlayerId: Int?,
+    @Json(name = "secondaryPlayerId") val secondaryPlayerId: Int?,
+    @Json(name = "time") val time: Int,
+    @Json(name = "extraTime") val extraTime: Int?,
+    @Json(name = "type") val type: Int
+)
+
+data class GameLineupPlayer(
+    @Json(name = "status") val status: Int,
+    @Json(name = "clubId") val clubId: Int,
+    @Json(name = "player") val player: LineupPlayerDetail
+)
+
+data class LineupPlayerDetail(
+    @Json(name = "id") val id: Int,
+    @Json(name = "firstName") val firstName: String?,
+    @Json(name = "lastName") val lastName: String,
+    @Json(name = "clubPlayers") val clubPlayers: List<ClubPlayerNumber>
+)
+
+data class ClubPlayerNumber(
+    @Json(name = "number") val number: Int
+)
+
+data class GameStatistics(
+    @Json(name = "fouls_home") val foulsHome: Int,
+    @Json(name = "fouls_away") val foulsAway: Int,
+    @Json(name = "shots_home") val shotsHome: Int,
+    @Json(name = "shots_away") val shotsAway: Int,
+    @Json(name = "accurate_shots_home") val shotsOnTargetHome: Int,
+    @Json(name = "accurate_shots_away") val shotsOnTargetAway: Int,
+    @Json(name = "offside_home") val offsideHome: Int,
+    @Json(name = "offside_away") val offsideAway: Int,
+    @Json(name = "warning_home") val yellowCardsHome: Int,
+    @Json(name = "warning_away") val yellowCardsAway: Int,
+    @Json(name = "corner_kicks_home") val cornersHome: Int,
+    @Json(name = "corner_kicks_away") val cornersAway: Int
+)

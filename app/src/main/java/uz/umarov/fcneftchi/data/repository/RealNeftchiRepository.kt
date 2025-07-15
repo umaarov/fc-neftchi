@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.flow
 import uz.umarov.fcneftchi.data.api.PflApiService
 import uz.umarov.fcneftchi.data.model.ApiGame
 import uz.umarov.fcneftchi.data.model.ApiPlayer
+import uz.umarov.fcneftchi.data.model.GameDetail
 import uz.umarov.fcneftchi.data.model.LeagueStanding
 import uz.umarov.fcneftchi.data.model.Match
 import uz.umarov.fcneftchi.data.model.MatchStatus
@@ -263,6 +264,15 @@ class RealNeftchiRepository @Inject constructor(
             emit(response.data.scorers)
         } catch (e: Exception) {
             emit(emptyList())
+        }
+    }
+
+    override fun getGameDetails(gameId: Int): Flow<GameDetail?> = flow {
+        try {
+            val response = apiService.getGameDetails(gameId)
+            emit(response.data)
+        } catch (e: Exception) {
+            emit(null)
         }
     }
 
