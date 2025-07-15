@@ -13,6 +13,12 @@
         <action
             android:id="@+id/action_homeFragment_to_newsArticleFragment"
             app:destination="@id/newsArticleFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_leagueTableFragment"
+            app:destination="@id/leagueTableFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_matchDetailFragment"
+            app:destination="@id/matchDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/matchesFragment"

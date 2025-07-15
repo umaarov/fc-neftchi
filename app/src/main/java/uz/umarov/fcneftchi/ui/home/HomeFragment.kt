@@ -1,6 +1,8 @@
 package uz.umarov.fcneftchi.ui.home
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,14 +15,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import uz.umarov.fcneftchi.R
 import uz.umarov.fcneftchi.databinding.FragmentHomeBinding
 import uz.umarov.fcneftchi.databinding.ItemLastMatchBinding
 import uz.umarov.fcneftchi.databinding.ItemNextMatchBinding
 import uz.umarov.fcneftchi.ui.home.adapter.NewsHomeAdapter
 import uz.umarov.fcneftchi.ui.home.adapter.StandingsAdapter
 import java.text.SimpleDateFormat
-import java.util.Locale
-import java.util.TimeZone
+import java.util.*
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
@@ -32,8 +34,12 @@ class HomeFragment : Fragment() {
     private lateinit var newsAdapter: NewsHomeAdapter
     private lateinit var standingsAdapter: StandingsAdapter
 
+    private val countdownHandler = Handler(Looper.getMainLooper())
+    private var countdownRunnable: Runnable? = null
+
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
@@ -43,13 +49,17 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupRecyclerViews()
+        setupClickListeners()
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.uiState.collect { state ->
                 binding.progressBar.isVisible = state.isLoading
                 binding.contentGroup.isVisible = !state.isLoading
 
-                state.nextMatch?.let { bindNextMatch(binding.nextMatchCard, it) }
+                state.nextMatch?.let {
+                    bindNextMatch(binding.nextMatchCard, it)
+                    startCountdown(it.matchDate)
+                }
                 state.lastMatch?.let { bindLastMatch(binding.lastMatchCard, it) }
                 newsAdapter.submitList(state.news)
                 standingsAdapter.submitList(state.standings)
@@ -69,7 +79,8 @@ class HomeFragment : Fragment() {
         }
         binding.newsRecyclerView.apply {
             adapter = newsAdapter
-            layoutManager = LinearLayoutManager(context)
+            // Gorizontal scroll uchun
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         }
 
         standingsAdapter = StandingsAdapter()
@@ -77,6 +88,62 @@ class HomeFragment : Fragment() {
             adapter = standingsAdapter
             layoutManager = LinearLayoutManager(context)
         }
+    }
+
+    private fun setupClickListeners() {
+        binding.viewAllNewsButton.setOnClickListener {
+            findNavController().navigate(R.id.newsFragment)
+        }
+        binding.viewAllStandingsButton.setOnClickListener {
+            findNavController().navigate(R.id.action_homeFragment_to_leagueTableFragment)
+        }
+        binding.nextMatchCard.root.setOnClickListener {
+            viewModel.uiState.value.nextMatch?.let { match ->
+                val action =
+                    HomeFragmentDirections.actionHomeFragmentToMatchDetailFragment(match.id.toInt())
+                findNavController().navigate(action)
+            }
+        }
+        binding.lastMatchCard.root.setOnClickListener {
+            viewModel.uiState.value.lastMatch?.let { match ->
+                val action =
+                    HomeFragmentDirections.actionHomeFragmentToMatchDetailFragment(match.id.toInt())
+                findNavController().navigate(action)
+            }
+        }
+    }
+
+    private fun startCountdown(matchDateString: String?) {
+        countdownRunnable?.let { countdownHandler.removeCallbacks(it) }
+        if (matchDateString == null) return
+
+        val matchDate = try {
+            val parser = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
+            parser.timeZone = TimeZone.getTimeZone("UTC")
+            parser.parse(matchDateString)
+        } catch (e: Exception) {
+            null
+        } ?: return
+
+        countdownRunnable = object : Runnable {
+            override fun run() {
+                val currentTime = System.currentTimeMillis()
+                val diff = matchDate.time - currentTime
+
+                if (diff > 0) {
+                    val days = diff / (1000 * 60 * 60 * 24)
+                    val hours = (diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+                    val minutes = (diff % (1000 * 60 * 60)) / (1000 * 60)
+                    val seconds = (diff % (1000 * 60)) / 1000
+                    binding.nextMatchCard.countdownTimer.text =
+                        String.format("%02d : %02d : %02d : %02d", days, hours, minutes, seconds)
+                    countdownHandler.postDelayed(this, 1000)
+                } else {
+                    binding.nextMatchCard.countdownTimer.text = "MATCH STARTED"
+                }
+            }
+        }
+        countdownHandler.post(countdownRunnable!!)
     }
 
     private fun bindNextMatch(
@@ -110,16 +177,18 @@ class HomeFragment : Fragment() {
             val parser = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
             parser.timeZone = TimeZone.getTimeZone("UTC")
             val date = parser.parse(dateString)
-            val formatter = SimpleDateFormat("dd MMM, HH:mm", Locale.ENGLISH).apply { timeZone = TimeZone.getDefault() }
+            val formatter = SimpleDateFormat("dd MMM, HH:mm", Locale.ENGLISH).apply {
+                timeZone = TimeZone.getDefault()
+            }
             date?.let { formatter.format(it).toUpperCase(Locale.ROOT) } ?: "N/A"
         } catch (e: Exception) {
             "N/A"
         }
     }
 
-
     override fun onDestroyView() {
         super.onDestroyView()
+        countdownRunnable?.let { countdownHandler.removeCallbacks(it) }
         _binding = null
     }
 }
