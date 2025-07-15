@@ -5,6 +5,7 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 import uz.umarov.fcneftchi.data.model.ClubDetailResponse
 import uz.umarov.fcneftchi.data.model.PlayerApiResponse
+import uz.umarov.fcneftchi.data.model.StatisticsResponse
 
 interface PflApiService {
 
@@ -20,4 +21,7 @@ interface PflApiService {
         @Path("id") clubId: Int,
         @Query("teamId") teamId: Int
     ): PlayerApiResponse
+
+    @GET("v1/web/club/{id}/statistics")
+    suspend fun getClubStatistics(@Path("id") id: Int): StatisticsResponse
 }

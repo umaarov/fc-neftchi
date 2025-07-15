@@ -31,6 +31,18 @@
             android:text="@string/title_team"/>
 
         <TextView
+            android:id="@+id/statistics_button"
+            style="?attr/textAppearanceListItem"
+            android:drawableStart="@drawable/ic_stats"
+            android:drawablePadding="16dp"
+            android:gravity="center_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackground"
+            android:padding="16dp"
+            android:text="@string/title_statistics"/>
+
+        <TextView
             style="?attr/textAppearanceListItem"
             android:drawableStart="@drawable/ic_table"
             android:drawablePadding="16dp"

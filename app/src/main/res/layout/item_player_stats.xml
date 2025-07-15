@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/selectableItemBackground"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingStart="16dp"
+    android:paddingTop="8dp"
+    android:paddingEnd="8dp"
+    android:paddingBottom="8dp">
+
+    <ImageView
+        android:id="@+id/player_image"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        tools:src="@tools:sample/avatars" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/player_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            tools:text="Jamshid Iskanderov" />
+
+        <TextView
+            android:id="@+id/player_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            tools:text="#10" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/stat_games"
+        style="@style/StatData.Small"
+        tools:text="15" />
+
+    <TextView
+        android:id="@+id/stat_goals"
+        style="@style/StatData.Small"
+        tools:text="3" />
+
+    <TextView
+        android:id="@+id/stat_assists"
+        style="@style/StatData.Small"
+        tools:text="6" />
+
+    <TextView
+        android:id="@+id/stat_yellow"
+        style="@style/StatData.Small"
+        tools:text="2" />
+
+    <TextView
+        android:id="@+id/stat_red"
+        style="@style/StatData.Small"
+        tools:text="0" />
+</LinearLayout>

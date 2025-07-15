@@ -11,6 +11,7 @@ import uz.umarov.fcneftchi.data.model.Match
 import uz.umarov.fcneftchi.data.model.NewsArticle
 import uz.umarov.fcneftchi.data.model.Player
 import uz.umarov.fcneftchi.data.model.Squad
+import uz.umarov.fcneftchi.data.model.StatisticsData
 import uz.umarov.fcneftchi.data.model.Video
 import javax.inject.Inject
 
@@ -19,6 +20,15 @@ class RealNeftchiRepository @Inject constructor(
 ) : NeftchiRepository {
 
     private val neftchiClubId = 7
+
+    override fun getClubStatistics(): Flow<StatisticsData?> = flow {
+        try {
+            val response = apiService.getClubStatistics(neftchiClubId)
+            emit(response.data)
+        } catch (e: Exception) {
+            emit(null)
+        }
+    }
 
     override fun getSquads(): Flow<List<Squad>> = flow {
         coroutineScope {

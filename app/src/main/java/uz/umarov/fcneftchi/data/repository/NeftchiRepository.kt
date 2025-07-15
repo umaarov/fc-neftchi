@@ -16,4 +16,5 @@ interface NeftchiRepository {
 
     fun getTeam(): Flow<List<Player>>
     fun getSquads(): Flow<List<Squad>>
+    fun getClubStatistics(): Flow<StatisticsData?>
 }

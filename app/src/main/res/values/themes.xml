@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <style name="Theme.FCNeftchi" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="colorPrimary">@color/neftchi_green</item>
         <item name="colorPrimaryVariant">@color/neftchi_green_dark</item>
@@ -9,5 +10,36 @@
         <item name="colorOnSecondary">@color/black</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
+    </style>
+
+    <style name="StatLabel">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">start</item>
+        <item name="android:textAppearance">?attr/textAppearanceBody2</item>
+    </style>
+
+    <style name="StatValue" parent="StatLabel">
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_gravity">fill_horizontal</item>
+        <item name="android:gravity">end</item>
+    </style>
+
+    <style name="StatHeader">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="StatHeader.Small" parent="StatHeader">
+        <item name="android:layout_width">36dp</item>
+    </style>
+
+    <style name="StatData" parent="StatHeader" />
+
+    <style name="StatData.Small" parent="StatData">
+        <item name="android:layout_width">36dp</item>
+        <item name="android:textStyle">normal</item>
     </style>
 </resources>

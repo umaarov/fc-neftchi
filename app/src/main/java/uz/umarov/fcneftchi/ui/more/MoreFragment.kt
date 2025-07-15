@@ -28,6 +28,10 @@ class MoreFragment : Fragment() {
         binding.teamButton.setOnClickListener {
             findNavController().navigate(R.id.action_moreFragment_to_teamFragment)
         }
+
+        binding.statisticsButton.setOnClickListener {
+            findNavController().navigate(R.id.action_moreFragment_to_statisticsFragment)
+        }
     }
 
     override fun onDestroyView() {
