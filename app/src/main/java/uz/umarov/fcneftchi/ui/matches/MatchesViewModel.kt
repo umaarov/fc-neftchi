@@ -23,24 +23,4 @@ class MatchesViewModel @Inject constructor(
 
     private val _uiState = MutableStateFlow(MatchesUiState())
     val uiState: StateFlow<MatchesUiState> = _uiState.asStateFlow()
-
-    init {
-        loadMatches()
-    }
-
-    private fun loadMatches() {
-        viewModelScope.launch {
-            _uiState.update { it.copy(isLoading = true) }
-            combine(
-                repository.getAllFixtures(),
-                repository.getAllResults()
-            ) { fixtures, results ->
-                MatchesUiState(fixtures = fixtures, results = results, isLoading = false)
-            }.catch { e ->
-                _uiState.update { it.copy(error = e.message, isLoading = false) }
-            }.collect { combinedState ->
-                _uiState.value = combinedState
-            }
-        }
-    }
 }

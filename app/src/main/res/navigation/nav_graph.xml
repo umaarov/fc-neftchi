@@ -35,7 +35,7 @@
         android:label="Article"
         tools:layout="@layout/fragment_news_article">
         <argument
-            android:name="articleId"
+            android:name="articleUrl"
             app:argType="string" />
     </fragment>
 

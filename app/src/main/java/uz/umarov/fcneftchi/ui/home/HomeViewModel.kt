@@ -34,24 +34,6 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true) }
 
-            combine(
-                repository.getNextMatch(),
-                repository.getLastMatch(),
-                repository.getNews(),
-                repository.getLeagueTable()
-            ) { nextMatch, lastMatch, news, standings ->
-                HomeUiState(
-                    nextMatch = nextMatch,
-                    lastMatch = lastMatch,
-                    news = news.take(3),
-                    standings = standings.take(4),
-                    isLoading = false
-                )
-            }.catch { e ->
-                _uiState.update { it.copy(error = e.message, isLoading = false) }
-            }.collect { combinedState ->
-                _uiState.value = combinedState
-            }
         }
     }
 }

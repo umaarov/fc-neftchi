@@ -4,9 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import uz.umarov.fcneftchi.data.model.NewsArticle
 import uz.umarov.fcneftchi.data.repository.NeftchiRepository
@@ -22,7 +20,7 @@ class NewsArticleViewModel @Inject constructor(
     private val repository: NeftchiRepository,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
-    private val articleId: String = savedStateHandle.get<String>("articleId")!!
+    private val articleUrl: String = savedStateHandle.get<String>("articleUrl")!!
 
     private val _uiState = MutableStateFlow(NewsArticleState())
     val uiState = _uiState.asStateFlow()
@@ -33,7 +31,7 @@ class NewsArticleViewModel @Inject constructor(
 
     private fun loadArticle() {
         viewModelScope.launch {
-            repository.getNewsArticleById(articleId).collect { article ->
+            repository.getNewsArticleByUrl(articleUrl).collect { article ->
                 _uiState.update { it.copy(article = article, isLoading = false) }
             }
         }

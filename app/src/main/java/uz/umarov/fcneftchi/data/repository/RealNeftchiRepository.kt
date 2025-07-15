@@ -30,13 +30,34 @@ class RealNeftchiRepository @Inject constructor(
             NewsArticle(
                 id = newsItem.id.toString(),
                 title = newsItem.contents.title,
-                imageUrl = newsItem.image
-                    ?: "https://placehold.co/600x400/CCCCCC/FFFFFF?text=No+Image",
+                imageUrl = newsItem.image ?: "https://placehold.co/600x400/CCCCCC/FFFFFF?text=No+Image",
                 date = formatApiDate(newsItem.publicDate),
-                content = newsItem.contents.description ?: ""
+                content = newsItem.contents.description ?: "",
+                url = newsItem.contents.url
             )
         }
         emit(articles)
+    }
+
+    override fun getNewsArticleByUrl(url: String): Flow<NewsArticle?> = flow {
+        try {
+            val response = apiService.getNewsDetail(url)
+            val detailData = response.data
+            val fullContentHtml = detailData.text.joinToString(separator = "") { textItem ->
+                textItem.value ?: ""
+            }
+            val article = NewsArticle(
+                id = detailData.id.toString(),
+                title = detailData.title,
+                imageUrl = detailData.image ?: "https://placehold.co/600x400/CCCCCC/FFFFFF?text=No+Image",
+                date = formatApiDate(detailData.publicDate),
+                content = fullContentHtml,
+                url = url
+            )
+            emit(article)
+        } catch (e: Exception) {
+            emit(null)
+        }
     }
 
     private fun formatApiDate(dateString: String): String {
@@ -104,12 +125,4 @@ class RealNeftchiRepository @Inject constructor(
             else -> "Noma'lum"
         }
     }
-
-    override fun getNextMatch(): Flow<Match> = flow { }
-    override fun getLastMatch(): Flow<Match> = flow { }
-    override fun getAllFixtures(): Flow<List<Match>> = flow { emit(emptyList()) }
-    override fun getAllResults(): Flow<List<Match>> = flow { emit(emptyList()) }
-    override fun getLeagueTable(): Flow<List<LeagueStanding>> = flow { emit(emptyList()) }
-    override fun getNewsArticleById(id: String): Flow<NewsArticle?> = flow { emit(null) }
-    override fun getVideos(): Flow<List<Video>> = flow { emit(emptyList()) }
 }

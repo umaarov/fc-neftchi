@@ -30,14 +30,6 @@ data class Player(
     val nationality: String
 )
 
-data class NewsArticle(
-    val id: String,
-    val title: String,
-    val imageUrl: String,
-    val date: String,
-    val content: String
-)
-
 data class LeagueStanding(
     val position: Int,
     val team: Team,

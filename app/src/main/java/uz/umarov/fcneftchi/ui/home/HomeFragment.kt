@@ -63,7 +63,7 @@ class HomeFragment : Fragment() {
 
     private fun setupRecyclerViews() {
         newsAdapter = NewsHomeAdapter { article ->
-            val action = HomeFragmentDirections.actionHomeFragmentToNewsArticleFragment(article.id)
+            val action = HomeFragmentDirections.actionHomeFragmentToNewsArticleFragment(article.url)
             findNavController().navigate(action)
         }
         binding.newsRecyclerView.apply {

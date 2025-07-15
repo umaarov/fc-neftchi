@@ -48,7 +48,7 @@ class NewsFragment : Fragment() {
 
     private fun setupRecyclerView() {
         newsAdapter = NewsAdapter { article ->
-            val action = NewsFragmentDirections.actionNewsFragmentToNewsArticleFragment(article.id)
+            val action = NewsFragmentDirections.actionNewsFragmentToNewsArticleFragment(article.url)
             findNavController().navigate(action)
         }
         binding.newsRecyclerView.apply {

@@ -23,15 +23,4 @@ class VideosViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(VideosUiState())
     val uiState = _uiState.asStateFlow()
 
-    init {
-        loadVideos()
-    }
-
-    private fun loadVideos() {
-        viewModelScope.launch {
-            repository.getVideos().collect { videos ->
-                _uiState.value = VideosUiState(videos = videos, isLoading = false)
-            }
-        }
-    }
 }
