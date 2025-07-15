@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.flow
 import uz.umarov.fcneftchi.data.api.PflApiService
 import uz.umarov.fcneftchi.data.model.ApiGame
 import uz.umarov.fcneftchi.data.model.ApiPlayer
+import uz.umarov.fcneftchi.data.model.LeagueStanding
 import uz.umarov.fcneftchi.data.model.Match
 import uz.umarov.fcneftchi.data.model.MatchStatus
 import uz.umarov.fcneftchi.data.model.NewsArticle
@@ -234,4 +235,25 @@ class RealNeftchiRepository @Inject constructor(
             null
         }
     }
+
+    override fun getLeagueTable(): Flow<List<LeagueStanding>> = flow {
+        val response = apiService.getLeagueTable()
+        val standings = response.data.table.mapIndexed { index, tableItem ->
+            LeagueStanding(
+                position = index + 1,
+                team = Team(
+                    id = tableItem.id,
+                    name = tableItem.title,
+                    logoUrl = tableItem.logo
+                ),
+                played = tableItem.games,
+                wins = tableItem.wins,
+                draws = tableItem.draws,
+                losses = tableItem.losses,
+                points = tableItem.points
+            )
+        }
+        emit(standings)
+    }
+
 }

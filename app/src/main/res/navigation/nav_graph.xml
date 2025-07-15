@@ -59,7 +59,17 @@
         <action
             android:id="@+id/action_moreFragment_to_statisticsFragment"
             app:destination="@id/statisticsFragment" />
+        <action
+            android:id="@+id/action_moreFragment_to_leagueTableFragment"
+            app:destination="@id/leagueTableFragment" />
+
     </fragment>
+
+    <fragment
+        android:id="@+id/leagueTableFragment"
+        android:name="uz.umarov.fcneftchi.ui.table.LeagueTableFragment"
+        android:label="@string/title_league_table"
+        tools:layout="@layout/fragment_league_table" />
 
     <fragment
         android:id="@+id/videosFragment"

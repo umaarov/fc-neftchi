@@ -195,3 +195,23 @@ data class ApiGameClub(
     @Json(name = "title") val title: String,
     @Json(name = "logo") val logo: String
 )
+
+data class LeagueTableResponse(
+    @Json(name = "data") val data: LeagueTableData
+)
+
+data class LeagueTableData(
+    @Json(name = "table") val table: List<LeagueTableItem>
+)
+
+data class LeagueTableItem(
+    @Json(name = "id") val id: Int,
+    @Json(name = "title") val title: String,
+    @Json(name = "logo") val logo: String,
+    @Json(name = "c_games") val games: Int,
+    @Json(name = "c_games_vic") val wins: Int,
+    @Json(name = "c_games_drw") val draws: Int,
+    @Json(name = "c_games_def") val losses: Int,
+    @Json(name = "c_goal_tf") val goalDifference: Int,
+    @Json(name = "c_point") val points: Int
+)

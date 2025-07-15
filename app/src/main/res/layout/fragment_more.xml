@@ -43,14 +43,16 @@
             android:text="@string/title_statistics"/>
 
         <TextView
+            android:id="@+id/league_table_button"
             style="?attr/textAppearanceListItem"
             android:drawableStart="@drawable/ic_table"
             android:drawablePadding="16dp"
             android:gravity="center_vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackground"
             android:padding="16dp"
-            android:text="League Table"/>
+            android:text="@string/title_league_table"/>
 
         <TextView
             style="?attr/textAppearanceListItem"

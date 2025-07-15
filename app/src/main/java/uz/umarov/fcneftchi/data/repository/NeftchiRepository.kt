@@ -1,7 +1,13 @@
 package uz.umarov.fcneftchi.data.repository
 
 import kotlinx.coroutines.flow.Flow
-import uz.umarov.fcneftchi.data.model.*
+import uz.umarov.fcneftchi.data.model.LeagueStanding
+import uz.umarov.fcneftchi.data.model.Match
+import uz.umarov.fcneftchi.data.model.NewsArticle
+import uz.umarov.fcneftchi.data.model.Player
+import uz.umarov.fcneftchi.data.model.PlayerProfile
+import uz.umarov.fcneftchi.data.model.Squad
+import uz.umarov.fcneftchi.data.model.StatisticsData
 
 interface NeftchiRepository {
     fun getTeam(): Flow<List<Player>>
@@ -14,4 +20,5 @@ interface NeftchiRepository {
     fun getLastMatch(): Flow<Match>
     fun getAllFixtures(): Flow<List<Match>>
     fun getAllResults(): Flow<List<Match>>
+    fun getLeagueTable(): Flow<List<LeagueStanding>>
 }

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:paddingStart="8dp"
+    android:paddingEnd="8dp"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp">
+
+    <TextView
+        android:id="@+id/team_position"
+        style="@style/StatData.Small"
+        android:layout_width="24dp"
+        tools:text="1"/>
+
+    <ImageView
+        android:id="@+id/team_logo"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="12dp"
+        tools:src="@tools:sample/avatars"/>
+
+    <TextView
+        android:id="@+id/team_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginStart="12dp"
+        android:textStyle="bold"
+        tools:text="Neftchi"/>
+
+    <TextView android:id="@+id/stat_games" tools:text="15" style="@style/StatData.Small"/>
+    <TextView android:id="@+id/stat_wins" tools:text="8" style="@style/StatData.Small"/>
+    <TextView android:id="@+id/stat_draws" tools:text="6" style="@style/StatData.Small"/>
+    <TextView android:id="@+id/stat_losses" tools:text="1" style="@style/StatData.Small"/>
+    <TextView android:id="@+id/stat_points" tools:text="30" style="@style/StatData.Small" android:textStyle="bold"/>
+</LinearLayout>

@@ -32,6 +32,10 @@ class MoreFragment : Fragment() {
         binding.statisticsButton.setOnClickListener {
             findNavController().navigate(R.id.action_moreFragment_to_statisticsFragment)
         }
+
+        binding.leagueTableButton.setOnClickListener {
+            findNavController().navigate(R.id.action_moreFragment_to_leagueTableFragment)
+        }
     }
 
     override fun onDestroyView() {
