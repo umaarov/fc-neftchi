@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.stats.StatisticsFragment">
+    tools:context=".ui.topplayers.TopPlayersFragment">
 
     <ProgressBar
         android:id="@+id/progress_bar"
@@ -26,28 +26,41 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="8dp">
-
-            <include
-                android:id="@+id/club_stats_card"
-                layout="@layout/item_club_stats" />
+            android:paddingBottom="16dp">
 
             <TextView
-                style="@style/TextAppearance.MaterialComponents.Headline6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                android:text="Player Statistics" />
-
-            <include layout="@layout/item_player_stats_header" />
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="8dp"
+                android:text="Eng yaxshi to'purarlar"
+                android:textAppearance="?attr/textAppearanceHeadline6" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/player_stats_recycler_view"
+                android:id="@+id/top_scorers_recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:nestedScrollingEnabled="false"
                 tools:itemCount="5"
-                tools:listitem="@layout/item_player_stats" />
+                tools:listitem="@layout/item_top_player" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="8dp"
+                android:text="Eng yaxshi assistentlar"
+                android:textAppearance="?attr/textAppearanceHeadline6" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/top_assisters_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"
+                tools:itemCount="5"
+                tools:listitem="@layout/item_top_player" />
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

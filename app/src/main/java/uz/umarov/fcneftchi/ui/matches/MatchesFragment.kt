@@ -26,6 +26,7 @@ class MatchesFragment : Fragment() {
         val viewPager = binding.viewPager
         val tabLayout = binding.tabLayout
 
+        viewPager.isUserInputEnabled = false
         viewPager.adapter = MatchesViewPagerAdapter(this)
 
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
@@ -38,6 +39,7 @@ class MatchesFragment : Fragment() {
             FIXTURES_PAGE_INDEX -> "Taqvim"
             RESULTS_PAGE_INDEX -> "Natijalar"
             TABLE_PAGE_INDEX -> "Jadval"
+            TOP_PLAYERS_PAGE_INDEX -> "To'purarlar"
             else -> null
         }
     }

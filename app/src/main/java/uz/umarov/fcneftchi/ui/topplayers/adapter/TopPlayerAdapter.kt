@@ -1,4 +1,4 @@
-package uz.umarov.fcneftchi.ui.stats.adapter
+package uz.umarov.fcneftchi.ui.topplayers.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
