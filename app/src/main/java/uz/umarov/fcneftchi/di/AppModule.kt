@@ -1,6 +1,8 @@
 package uz.umarov.fcneftchi.di
 
 import android.app.Application
+import android.content.Context
+import android.content.SharedPreferences
 import coil.ImageLoader
 import coil.decode.SvgDecoder
 import com.squareup.moshi.Moshi
@@ -75,5 +77,11 @@ object AppModule {
             .components {
                 add(SvgDecoder.Factory())
             }
+    }
+
+    @Provides
+    @Singleton
+    fun provideSharedPreferences(app: Application): SharedPreferences {
+        return app.getSharedPreferences("neftchi_prefs", Context.MODE_PRIVATE)
     }
 }

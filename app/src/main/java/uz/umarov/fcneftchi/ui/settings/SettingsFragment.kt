@@ -4,15 +4,21 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import dagger.hilt.android.AndroidEntryPoint
 import uz.umarov.fcneftchi.databinding.FragmentSettingsBinding
+import uz.umarov.fcneftchi.util.SharedPrefsHelper
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class SettingsFragment : Fragment() {
 
     private var _binding: FragmentSettingsBinding? = null
     private val binding get() = _binding!!
+
+    @Inject
+    lateinit var prefsHelper: SharedPrefsHelper
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,17 +40,19 @@ class SettingsFragment : Fragment() {
     }
 
     private fun setupCurrentSettings() {
-        val currentNightMode = AppCompatDelegate.getDefaultNightMode()
-        binding.darkModeSwitch.isChecked = currentNightMode == AppCompatDelegate.MODE_NIGHT_YES
+        binding.matchReminderSwitch.isChecked =
+            prefsHelper.getBoolean(SharedPrefsHelper.PREF_NOTIF_MATCH_REMINDER)
+        binding.newsAlertSwitch.isChecked =
+            prefsHelper.getBoolean(SharedPrefsHelper.PREF_NOTIF_NEWS_ALERTS)
     }
 
     private fun setupClickListeners() {
-        binding.darkModeSwitch.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-            } else {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-            }
+        binding.matchReminderSwitch.setOnCheckedChangeListener { _, isChecked ->
+            prefsHelper.setBoolean(SharedPrefsHelper.PREF_NOTIF_MATCH_REMINDER, isChecked)
+        }
+
+        binding.newsAlertSwitch.setOnCheckedChangeListener { _, isChecked ->
+            prefsHelper.setBoolean(SharedPrefsHelper.PREF_NOTIF_NEWS_ALERTS, isChecked)
         }
     }
 
