@@ -7,12 +7,12 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import uz.umarov.fcneftchi.data.model.Squad
+import uz.umarov.fcneftchi.data.model.Player
 import uz.umarov.fcneftchi.data.repository.NeftchiRepository
 import javax.inject.Inject
 
 data class TeamUiState(
-    val squads: List<Squad> = emptyList(),
+    val players: List<Player> = emptyList(),
     val isLoading: Boolean = true
 )
 
@@ -30,8 +30,9 @@ class TeamViewModel @Inject constructor(
 
     private fun loadTeam() {
         viewModelScope.launch {
-            repository.getSquads().collect { squads ->
-                _uiState.value = TeamUiState(squads = squads, isLoading = false)
+            _uiState.value = TeamUiState(isLoading = true)
+            repository.getTeam().collect { players ->
+                _uiState.value = TeamUiState(players = players, isLoading = false)
             }
         }
     }

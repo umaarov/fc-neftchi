@@ -28,7 +28,6 @@ interface PflApiService {
     @GET("v1/web/club/{id}/players")
     suspend fun getClubPlayers(
         @Path("id") clubId: Int,
-        @Query("teamId") teamId: Int
     ): PlayerApiResponse
 
     @GET("v1/web/club/{id}/statistics")

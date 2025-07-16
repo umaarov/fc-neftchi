@@ -100,31 +100,17 @@ class RealNeftchiRepository @Inject constructor(
         }
     }
 
-    override fun getSquads(): Flow<List<Squad>> = flow {
-        coroutineScope {
-            val clubDetails = apiService.getClubDetails(neftchiClubId)
-            val squadData = clubDetails.data.clubTeams.map { team ->
-                async {
-                    val playersResponse = apiService.getClubPlayers(neftchiClubId, team.id)
-                    val uiPlayers = playersResponse.data.players.map { apiPlayer ->
-                        mapApiPlayerToUiPlayer(apiPlayer)
-                    }
-                    Squad(teamName = team.title, players = uiPlayers)
-                }
-            }.map { it.await() }
-            emit(squadData)
-        }
-    }
-
     override fun getTeam(): Flow<List<Player>> = flow {
-        coroutineScope {
-            val clubDetails = apiService.getClubDetails(neftchiClubId)
-            val playersResponse =
-                apiService.getClubPlayers(neftchiClubId, clubDetails.data.clubTeams.first().id)
-            val uiPlayers = playersResponse.data.players.map { apiPlayer ->
-                mapApiPlayerToUiPlayer(apiPlayer)
-            }
+        try {
+            val apiPlayers = apiService.getClubPlayers(neftchiClubId).data.players
+            val uiPlayers = apiPlayers
+                .distinctBy { it.id }
+                .map { apiPlayer ->
+                    mapApiPlayerToUiPlayer(apiPlayer)
+                }
             emit(uiPlayers)
+        } catch (e: Exception) {
+            emit(emptyList())
         }
     }
 

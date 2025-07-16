@@ -14,7 +14,7 @@ import uz.umarov.fcneftchi.data.model.Video
 
 interface NeftchiRepository {
     fun getTeam(): Flow<List<Player>>
-    fun getSquads(): Flow<List<Squad>>
+//    fun getSquads(): Flow<List<Squad>>
     fun getClubStatistics(): Flow<StatisticsData?>
     fun getNews(): Flow<List<NewsArticle>>
     fun getNewsArticleByUrl(url: String): Flow<NewsArticle?>
