@@ -87,7 +87,27 @@
         <action
             android:id="@+id/action_moreFragment_to_stadiumFragment"
             app:destination="@id/stadiumFragment" />
+
+        <action
+            android:id="@+id/action_moreFragment_to_socialsFragment"
+            app:destination="@id/socialsFragment" />
+
+        <action
+            android:id="@+id/action_moreFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
     </fragment>
+
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="uz.umarov.fcneftchi.ui.settings.SettingsFragment"
+        android:label="@string/title_settings"
+        tools:layout="@layout/fragment_settings" />
+
+    <fragment
+        android:id="@+id/socialsFragment"
+        android:name="uz.umarov.fcneftchi.ui.socials.SocialsFragment"
+        android:label="@string/title_socials"
+        tools:layout="@layout/fragment_socials" />
 
     <fragment
         android:id="@+id/clubHistoryFragment"

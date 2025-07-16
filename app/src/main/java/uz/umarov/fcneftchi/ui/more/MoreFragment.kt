@@ -44,6 +44,14 @@ class MoreFragment : Fragment() {
         binding.stadiumButton.setOnClickListener {
             findNavController().navigate(R.id.action_moreFragment_to_stadiumFragment)
         }
+
+        binding.socialsButton.setOnClickListener {
+            findNavController().navigate(R.id.action_moreFragment_to_socialsFragment)
+        }
+
+        binding.settingsButton.setOnClickListener {
+            findNavController().navigate(R.id.action_moreFragment_to_settingsFragment)
+        }
     }
 
     override fun onDestroyView() {
