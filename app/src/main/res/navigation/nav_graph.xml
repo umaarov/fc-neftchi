@@ -80,8 +80,26 @@
         <action
             android:id="@+id/action_moreFragment_to_leagueTableFragment"
             app:destination="@id/leagueTableFragment" />
+        <action
+            android:id="@+id/action_moreFragment_to_clubHistoryFragment"
+            app:destination="@id/clubHistoryFragment" />
 
+        <action
+            android:id="@+id/action_moreFragment_to_stadiumFragment"
+            app:destination="@id/stadiumFragment" />
     </fragment>
+
+    <fragment
+        android:id="@+id/clubHistoryFragment"
+        android:name="uz.umarov.fcneftchi.ui.history.ClubHistoryFragment"
+        android:label="@string/title_club_history"
+        tools:layout="@layout/fragment_club_history" />
+
+    <fragment
+        android:id="@+id/stadiumFragment"
+        android:name="uz.umarov.fcneftchi.ui.stadium.StadiumFragment"
+        android:label="@string/title_stadium"
+        tools:layout="@layout/fragment_stadium" />
 
     <fragment
         android:id="@+id/leagueTableFragment"
@@ -93,7 +111,7 @@
         android:id="@+id/videosFragment"
         android:name="uz.umarov.fcneftchi.ui.videos.VideosFragment"
         android:label="@string/title_videos"
-        tools:layout="@layout/fragment_videos"/>
+        tools:layout="@layout/fragment_videos" />
 
     <fragment
         android:id="@+id/statisticsFragment"

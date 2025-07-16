@@ -10,12 +10,12 @@ import uz.umarov.fcneftchi.R
 import uz.umarov.fcneftchi.databinding.FragmentMoreBinding
 
 class MoreFragment : Fragment() {
-
     private var _binding: FragmentMoreBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentMoreBinding.inflate(inflater, container, false)
@@ -35,6 +35,14 @@ class MoreFragment : Fragment() {
 
         binding.leagueTableButton.setOnClickListener {
             findNavController().navigate(R.id.action_moreFragment_to_leagueTableFragment)
+        }
+
+        binding.clubHistoryButton.setOnClickListener {
+            findNavController().navigate(R.id.action_moreFragment_to_clubHistoryFragment)
+        }
+
+        binding.stadiumButton.setOnClickListener {
+            findNavController().navigate(R.id.action_moreFragment_to_stadiumFragment)
         }
     }
 

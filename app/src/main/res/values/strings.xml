@@ -9,6 +9,7 @@
     <string name="title_more">More</string>
     <string name="title_statistics">Statistics</string>
     <string name="title_league_table">League Table</string>
+    <string name="title_club_history">Club History</string>
     <string name="home_latest_news">Latest News</string>
     <string name="home_league_table">League Table</string>
     <string name="matches_fixtures">Fixtures</string>
@@ -19,6 +20,10 @@
     <string name="more_stadium_info">Stadium Info</string>
     <string name="more_tickets">Tickets</string>
     <string name="more_settings">Settings</string>
-    <!-- TODO: Remove or change this placeholder text -->
+    <string name="title_stadium">Stadion</string>
+    <string name="stadium_address">Farg‘ona shahri, Marg‘ilon ko‘chasi 1</string>
+    <string name="stadium_description">
+        "Istiqlol" sport majmuasi Farg\'onada joylashgan bo\'lib, 20 mingdan ortiq muxlisni qabul qila oladi. Zamonaviy va barcha zarur narsalar bilan jihozlangan chiroyli stadion 2015-yilda ochilgan.\n\nU xalqaro futbol o\'yinlari uchun ideal maydonga aylandi. "Istiqlol" — "Neftchi" futbol klubining uy arenasi hisoblanadi. Tomoshabinlar uchun o\'rindiqlar yuqori va pastki qavatlarga bo\'lingan. Kuzatuvchilar xonasi videotablo va musobaqani jonli translyatsiya qilish imkonini beruvchi uskunalar bilan jihozlangan.
+    </string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
