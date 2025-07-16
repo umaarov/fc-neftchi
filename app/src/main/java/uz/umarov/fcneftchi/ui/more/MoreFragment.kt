@@ -33,10 +33,6 @@ class MoreFragment : Fragment() {
             findNavController().navigate(R.id.action_moreFragment_to_statisticsFragment)
         }
 
-        binding.leagueTableButton.setOnClickListener {
-            findNavController().navigate(R.id.action_moreFragment_to_leagueTableFragment)
-        }
-
         binding.clubHistoryButton.setOnClickListener {
             findNavController().navigate(R.id.action_moreFragment_to_clubHistoryFragment)
         }
