@@ -93,7 +93,7 @@
         android:id="@+id/videosFragment"
         android:name="uz.umarov.fcneftchi.ui.videos.VideosFragment"
         android:label="@string/title_videos"
-        tools:layout="@layout/fragment_videos" />
+        tools:layout="@layout/fragment_videos"/>
 
     <fragment
         android:id="@+id/statisticsFragment"

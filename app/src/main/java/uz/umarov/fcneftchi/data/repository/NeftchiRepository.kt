@@ -10,6 +10,7 @@ import uz.umarov.fcneftchi.data.model.PlayerProfile
 import uz.umarov.fcneftchi.data.model.Squad
 import uz.umarov.fcneftchi.data.model.StatisticsData
 import uz.umarov.fcneftchi.data.model.TopPlayer
+import uz.umarov.fcneftchi.data.model.Video
 
 interface NeftchiRepository {
     fun getTeam(): Flow<List<Player>>
@@ -25,4 +26,5 @@ interface NeftchiRepository {
     fun getLeagueTable(): Flow<List<LeagueStanding>>
     fun getTopPlayers(): Flow<List<TopPlayer>>
     fun getGameDetails(gameId: Int): Flow<GameDetail?>
+    fun getVideos(): Flow<List<Video>>
 }

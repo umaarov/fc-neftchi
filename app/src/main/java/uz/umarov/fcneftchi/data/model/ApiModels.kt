@@ -80,11 +80,18 @@ data class NewsData(
     @Json(name = "list") val list: List<NewsListItem>
 )
 
+
 data class NewsListItem(
     @Json(name = "id") val id: Int,
     @Json(name = "image") val image: String?,
     @Json(name = "publicDate") val publicDate: String,
-    @Json(name = "contents") val contents: NewsContents
+    @Json(name = "contents") val contents: NewsContents,
+    @Json(name = "category") val category: NewsCategory
+)
+
+data class NewsCategory(
+    @Json(name = "id") val id: Int,
+    @Json(name = "title") val title: String
 )
 
 data class NewsContents(
