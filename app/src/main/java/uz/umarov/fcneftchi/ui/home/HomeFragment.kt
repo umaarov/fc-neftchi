@@ -13,6 +13,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import uz.umarov.fcneftchi.R
@@ -22,7 +23,8 @@ import uz.umarov.fcneftchi.databinding.ItemNextMatchBinding
 import uz.umarov.fcneftchi.ui.home.adapter.NewsHomeAdapter
 import uz.umarov.fcneftchi.ui.home.adapter.StandingsAdapter
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Locale
+import java.util.TimeZone
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
@@ -91,11 +93,12 @@ class HomeFragment : Fragment() {
     }
 
     private fun setupClickListeners() {
+        val bottomNav = requireActivity().findViewById<BottomNavigationView>(R.id.bottom_nav_view)
         binding.viewAllNewsButton.setOnClickListener {
-            findNavController().navigate(R.id.newsFragment)
+            bottomNav.selectedItemId = R.id.newsFragment
         }
         binding.viewAllStandingsButton.setOnClickListener {
-            findNavController().navigate(R.id.action_homeFragment_to_leagueTableFragment)
+            bottomNav.selectedItemId = R.id.matchesFragment
         }
         binding.nextMatchCard.root.setOnClickListener {
             viewModel.uiState.value.nextMatch?.let { match ->
