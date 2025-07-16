@@ -5,70 +5,54 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:padding="16dp"
     tools:context=".ui.socials.SocialsFragment">
 
-    <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
-        app:navigationIcon="@drawable/ic_arrow_back"
-        app:title="@string/title_socials"
-        app:titleTextColor="?attr/colorOnPrimary" />
-
-    <LinearLayout
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/telegram_button"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:padding="16dp"
+        android:text="Telegram"
+        app:icon="@drawable/ic_telegram"
+        app:iconGravity="textStart"
+        app:iconPadding="16dp" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/telegram_button"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:text="Telegram"
-            app:icon="@drawable/ic_telegram"
-            app:iconGravity="textStart"
-            app:iconPadding="16dp" />
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/instagram_button"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:padding="16dp"
+        android:text="Instagram"
+        app:icon="@drawable/ic_instagram"
+        app:iconGravity="textStart"
+        app:iconPadding="16dp" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/instagram_button"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:padding="16dp"
-            android:text="Instagram"
-            app:icon="@drawable/ic_instagram"
-            app:iconGravity="textStart"
-            app:iconPadding="16dp" />
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/youtube_button"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:padding="16dp"
+        android:text="YouTube"
+        app:icon="@drawable/ic_youtube"
+        app:iconGravity="textStart"
+        app:iconPadding="16dp" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/youtube_button"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:padding="16dp"
-            android:text="YouTube"
-            app:icon="@drawable/ic_youtube"
-            app:iconGravity="textStart"
-            app:iconPadding="16dp" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/facebook_button"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:padding="16dp"
-            android:text="Facebook"
-            app:icon="@drawable/ic_facebook"
-            app:iconGravity="textStart"
-            app:iconPadding="16dp" />
-
-    </LinearLayout>
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/facebook_button"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:padding="16dp"
+        android:text="Facebook"
+        app:icon="@drawable/ic_facebook"
+        app:iconGravity="textStart"
+        app:iconPadding="16dp" />
 
 </LinearLayout>

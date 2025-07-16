@@ -1,54 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:padding="16dp"
     tools:context=".ui.settings.SettingsFragment">
 
-    <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        app:navigationIcon="@drawable/ic_arrow_back"
-        app:title="@string/title_settings"
-        app:titleTextColor="?attr/colorOnPrimary"
-        android:background="?attr/colorPrimary" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="@string/settings_notifications"
+        android:textAppearance="?attr/textAppearanceHeadline6" />
 
-    <LinearLayout
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/match_reminder_switch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:checked="true"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp"
+        android:text="@string/settings_match_reminders"
+        android:textSize="16sp" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/settings_notifications"
-            android:textAppearance="?attr/textAppearanceHeadline6"
-            android:layout_marginBottom="8dp"/>
-
-        <com.google.android.material.switchmaterial.SwitchMaterial
-            android:id="@+id/match_reminder_switch"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/settings_match_reminders"
-            android:checked="true"
-            android:textSize="16sp"
-            android:paddingTop="12dp"
-            android:paddingBottom="12dp"/>
-
-        <com.google.android.material.switchmaterial.SwitchMaterial
-            android:id="@+id/news_alert_switch"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/settings_news_alerts"
-            android:checked="true"
-            android:textSize="16sp"
-            android:paddingTop="12dp"
-            android:paddingBottom="12dp"/>
-
-    </LinearLayout>
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/news_alert_switch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:checked="true"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp"
+        android:text="@string/settings_news_alerts"
+        android:textSize="16sp" />
 
 </LinearLayout>
