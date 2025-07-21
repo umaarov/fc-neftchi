@@ -110,6 +110,7 @@ data class NewsDetailData(
     @Json(name = "publicDate") val publicDate: String,
     @Json(name = "title") val title: String,
     @Json(name = "description") val description: String?,
+    @Json(name = "category") val category: NewsCategory?,
     @Json(name = "text") val text: List<NewsTextItem>
 )
 
@@ -124,6 +125,8 @@ data class NewsArticle(
     val imageUrl: String,
     val date: String,
     val content: String,
+    val description: String,
+    val category: String,
     val url: String
 )
 

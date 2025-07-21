@@ -10,7 +10,6 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import coil.load
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -39,17 +38,23 @@ class NewsArticleFragment : Fragment() {
         lifecycleScope.launch {
             viewModel.uiState.collect { state ->
                 binding.progressBar.isVisible = state.isLoading
-                binding.contentScrollView.isVisible = !state.isLoading
+                binding.contentScrollView.isVisible = !state.isLoading && state.article != null
 
                 state.article?.let { article ->
-                    binding.articleImage.load(article.imageUrl)
+                    binding.articleImage.load(article.imageUrl) {
+                        crossfade(true)
+                    }
                     binding.articleTitle.text = article.title
                     binding.articleDate.text = article.date
 
-                    val htmlContent =
-                        HtmlCompat.fromHtml(article.content, HtmlCompat.FROM_HTML_MODE_COMPACT)
-                    binding.articleContent.text = htmlContent
-                    binding.articleContent.movementMethod = LinkMovementMethod.getInstance()
+                    if (article.content.isNotBlank()) {
+                        val htmlContent =
+                            HtmlCompat.fromHtml(article.content, HtmlCompat.FROM_HTML_MODE_COMPACT)
+                        binding.articleContent.text = htmlContent
+                        binding.articleContent.movementMethod = LinkMovementMethod.getInstance()
+                    } else {
+                        binding.articleContent.text = "Ma'lumot topilmadi."
+                    }
                 }
             }
         }

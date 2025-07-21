@@ -13,9 +13,9 @@ class NewsAdapter(
     private val onItemClick: (NewsArticle) -> Unit
 ) : ListAdapter<NewsArticle, NewsAdapter.NewsViewHolder>(NewsDiffCallback) {
 
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsViewHolder {
-        val binding = ItemNewsFullBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding =
+            ItemNewsFullBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return NewsViewHolder(binding)
     }
 
@@ -23,14 +23,15 @@ class NewsAdapter(
         holder.bind(getItem(position))
     }
 
-    inner class NewsViewHolder(private val binding: ItemNewsFullBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class NewsViewHolder(private val binding: ItemNewsFullBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         fun bind(article: NewsArticle) {
             binding.newsImage.load(article.imageUrl) {
                 crossfade(true)
             }
+            binding.newsCategory.text = article.category.uppercase()
             binding.newsTitle.text = article.title
             binding.newsDate.text = article.date
-            binding.newsContentSnippet.text = article.content
 
             binding.root.setOnClickListener {
                 onItemClick(article)
@@ -38,9 +39,11 @@ class NewsAdapter(
         }
     }
 
-
     object NewsDiffCallback : DiffUtil.ItemCallback<NewsArticle>() {
-        override fun areItemsTheSame(oldItem: NewsArticle, newItem: NewsArticle): Boolean = oldItem.id == newItem.id
-        override fun areContentsTheSame(oldItem: NewsArticle, newItem: NewsArticle): Boolean = oldItem == newItem
+        override fun areItemsTheSame(oldItem: NewsArticle, newItem: NewsArticle): Boolean =
+            oldItem.id == newItem.id
+
+        override fun areContentsTheSame(oldItem: NewsArticle, newItem: NewsArticle): Boolean =
+            oldItem == newItem
     }
 }

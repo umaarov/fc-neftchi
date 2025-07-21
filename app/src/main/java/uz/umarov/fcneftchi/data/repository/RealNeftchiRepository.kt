@@ -1,5 +1,6 @@
 package uz.umarov.fcneftchi.data.repository
 
+import android.util.Log
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
@@ -14,7 +15,6 @@ import uz.umarov.fcneftchi.data.model.MatchStatus
 import uz.umarov.fcneftchi.data.model.NewsArticle
 import uz.umarov.fcneftchi.data.model.Player
 import uz.umarov.fcneftchi.data.model.PlayerProfile
-import uz.umarov.fcneftchi.data.model.Squad
 import uz.umarov.fcneftchi.data.model.StatisticsData
 import uz.umarov.fcneftchi.data.model.Team
 import uz.umarov.fcneftchi.data.model.TopPlayer
@@ -51,7 +51,9 @@ class RealNeftchiRepository @Inject constructor(
                     ?: "https://placehold.co/600x400/CCCCCC/FFFFFF?text=No+Image",
                 date = formatApiDate(newsItem.publicDate),
                 content = newsItem.contents.description ?: "",
-                url = newsItem.contents.url
+                url = newsItem.contents.url,
+                description = newsItem.contents.description ?: "",
+                category = newsItem.category.title
             )
         }
         emit(articles)
@@ -61,9 +63,13 @@ class RealNeftchiRepository @Inject constructor(
         try {
             val response = apiService.getNewsDetail(url)
             val detailData = response.data
+
+            Log.d("NewsRepo", "Fetched News Detail: $detailData")
+
             val fullContentHtml = detailData.text.joinToString(separator = "") { textItem ->
-                textItem.value ?: ""
+                textItem.value?.let { "<div>$it</div>" } ?: ""
             }
+
             val article = NewsArticle(
                 id = detailData.id.toString(),
                 title = detailData.title,
@@ -71,10 +77,13 @@ class RealNeftchiRepository @Inject constructor(
                     ?: "https://placehold.co/600x400/CCCCCC/FFFFFF?text=No+Image",
                 date = formatApiDate(detailData.publicDate),
                 content = fullContentHtml,
-                url = url
+                url = url,
+                description = detailData.description ?: "",
+                category = detailData.category?.title ?: ""
             )
             emit(article)
         } catch (e: Exception) {
+            Log.e("NewsRepo", "Error fetching news article by URL: $url", e)
             emit(null)
         }
     }
