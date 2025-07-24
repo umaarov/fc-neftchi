@@ -4,7 +4,8 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.view.WindowCompat
+import androidx.core.view.isVisible
+import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
@@ -13,28 +14,25 @@ import dagger.hilt.android.AndroidEntryPoint
 import uz.umarov.fcneftchi.R
 import uz.umarov.fcneftchi.databinding.ActivityMainBinding
 import uz.umarov.fcneftchi.util.applySystemBarPadding
-import uz.umarov.fcneftchi.util.slideDown
-import uz.umarov.fcneftchi.util.slideUp
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    private lateinit var appBarConfiguration: AppBarConfiguration
+    private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-        WindowCompat.setDecorFitsSystemWindows(window, false)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         binding.appBarLayout.applySystemBarPadding(top = true)
-        binding.bottomNavView.applySystemBarPadding(bottom = true)
+        binding.bottomNavView.applySystemBarPadding(bottom = true) // Apply padding to the correct view
 
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-        val navController = navHostFragment.navController
+        navController = navHostFragment.navController
 
         val topLevelDestinations = setOf(
             R.id.homeFragment,
@@ -43,20 +41,18 @@ class MainActivity : AppCompatActivity() {
             R.id.videosFragment,
             R.id.moreFragment
         )
+        val appBarConfiguration = AppBarConfiguration(topLevelDestinations)
 
-        appBarConfiguration = AppBarConfiguration(topLevelDestinations)
+        // Setup Toolbar and BottomNav with NavController
         binding.toolbar.setupWithNavController(navController, appBarConfiguration)
-        binding.bottomNavView.setupWithNavController(navController)
-        navController.addOnDestinationChangedListener { _, destination, _ ->
-            val isTopLevelDestination = topLevelDestinations.contains(destination.id)
+        binding.bottomNavView.setupWithNavController(navController) // The simple, correct way
 
-            if (isTopLevelDestination) {
-                binding.bottomNavView.slideUp()
-            } else {
-                binding.bottomNavView.slideDown()
-            }
+        // Show/Hide bottom nav based on destination
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            binding.bottomNavView.isVisible = destination.id in topLevelDestinations
         }
 
+        // Firebase Token Logic
         FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
             if (!task.isSuccessful) {
                 Log.w("FCM_TOKEN", "Fetching FCM registration token failed", task.exception)

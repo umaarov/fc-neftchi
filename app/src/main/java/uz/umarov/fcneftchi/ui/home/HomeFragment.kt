@@ -13,7 +13,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import uz.umarov.fcneftchi.R
@@ -81,7 +80,6 @@ class HomeFragment : Fragment() {
         }
         binding.newsRecyclerView.apply {
             adapter = newsAdapter
-            // Gorizontal scroll uchun
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         }
 
@@ -93,12 +91,14 @@ class HomeFragment : Fragment() {
     }
 
     private fun setupClickListeners() {
-        val bottomNav = requireActivity().findViewById<BottomNavigationView>(R.id.bottom_nav_view)
         binding.viewAllNewsButton.setOnClickListener {
-            bottomNav.selectedItemId = R.id.newsFragment
+            // Simply navigate to the correct fragment.
+            findNavController().navigate(R.id.newsFragment)
         }
         binding.viewAllStandingsButton.setOnClickListener {
-            bottomNav.selectedItemId = R.id.matchesFragment
+            // Navigate to the matches fragment.
+            // The FAB is responsible for the Matches screen, but this button can also navigate there.
+            findNavController().navigate(R.id.matchesFragment)
         }
         binding.nextMatchCard.root.setOnClickListener {
             viewModel.uiState.value.nextMatch?.let { match ->
