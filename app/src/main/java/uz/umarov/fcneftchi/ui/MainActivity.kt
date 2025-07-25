@@ -9,6 +9,7 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.tabs.TabLayout
 import com.google.firebase.messaging.FirebaseMessaging
 import dagger.hilt.android.AndroidEntryPoint
 import uz.umarov.fcneftchi.R
@@ -28,7 +29,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.appBarLayout.applySystemBarPadding(top = true)
-        binding.bottomNavView.applySystemBarPadding(bottom = true) // Apply padding to the correct view
+        binding.tabLayout.applySystemBarPadding(bottom = true)
 
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
@@ -36,23 +37,16 @@ class MainActivity : AppCompatActivity() {
 
         val topLevelDestinations = setOf(
             R.id.homeFragment,
-            R.id.matchesFragment,
             R.id.newsFragment,
+            R.id.matchesFragment,
             R.id.videosFragment,
             R.id.moreFragment
         )
         val appBarConfiguration = AppBarConfiguration(topLevelDestinations)
-
-        // Setup Toolbar and BottomNav with NavController
         binding.toolbar.setupWithNavController(navController, appBarConfiguration)
-        binding.bottomNavView.setupWithNavController(navController) // The simple, correct way
 
-        // Show/Hide bottom nav based on destination
-        navController.addOnDestinationChangedListener { _, destination, _ ->
-            binding.bottomNavView.isVisible = destination.id in topLevelDestinations
-        }
+        setupTabLayoutWithNavController()
 
-        // Firebase Token Logic
         FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
             if (!task.isSuccessful) {
                 Log.w("FCM_TOKEN", "Fetching FCM registration token failed", task.exception)
@@ -60,6 +54,49 @@ class MainActivity : AppCompatActivity() {
             }
             val token = task.result
             Log.d("FCM_TOKEN", token)
+        }
+    }
+
+    private fun setupTabLayoutWithNavController() {
+        val destinations = listOf(
+            Triple(R.id.homeFragment, "Home", R.drawable.ic_home),
+            Triple(R.id.newsFragment, "News", R.drawable.ic_news),
+            Triple(R.id.matchesFragment, "Matches", R.drawable.ic_matches),
+            Triple(R.id.videosFragment, "Videos", R.drawable.ic_videos),
+            Triple(R.id.moreFragment, "More", R.drawable.ic_more)
+        )
+
+        destinations.forEach { (destinationId, label, iconId) ->
+            val tab = binding.tabLayout.newTab().apply {
+                text = label
+                setIcon(iconId)
+                tag = destinationId
+            }
+            binding.tabLayout.addTab(tab)
+        }
+
+        binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                val destinationId = tab?.tag as? Int ?: return
+                if (navController.currentDestination?.id != destinationId) {
+                    navController.navigate(destinationId)
+                }
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {}
+            override fun onTabReselected(tab: TabLayout.Tab?) {}
+        })
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            binding.tabLayout.isVisible = destination.id in destinations.map { it.first }
+
+            for (i in 0 until binding.tabLayout.tabCount) {
+                val tab = binding.tabLayout.getTabAt(i)
+                if (tab?.tag as? Int == destination.id) {
+                    tab.select()
+                    break
+                }
+            }
         }
     }
 }
