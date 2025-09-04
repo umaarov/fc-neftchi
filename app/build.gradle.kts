@@ -59,16 +59,22 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.lifecycle.livedata.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
-
     implementation(libs.hilt.android)
     ksp(libs.hilt.android.compiler)
-
     implementation(libs.androidx.hilt.navigation.fragment)
-
     implementation(libs.retrofit)
     implementation(libs.converter.moshi)
     implementation(libs.logging.interceptor)
     implementation(libs.moshi.kotlin)
     implementation(libs.coil)
     implementation(libs.coil.svg)
+}
+
+configurations.all {
+    resolutionStrategy {
+        force("org.jetbrains.kotlin:kotlin-stdlib:2.0.21")
+        force("org.jetbrains.kotlin:kotlin-stdlib-jdk7:2.0.21")
+        force("org.jetbrains.kotlin:kotlin-stdlib-jdk8:2.0.21")
+        force("org.jetbrains.kotlin:kotlin-reflect:2.0.21")
+    }
 }
