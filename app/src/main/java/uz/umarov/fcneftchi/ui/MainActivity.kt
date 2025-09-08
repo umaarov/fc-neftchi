@@ -7,8 +7,6 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.isVisible
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.tabs.TabLayout
 import com.google.firebase.messaging.FirebaseMessaging
 import dagger.hilt.android.AndroidEntryPoint
@@ -35,14 +33,14 @@ class MainActivity : AppCompatActivity() {
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
 
-        val topLevelDestinations = setOf(
+        setOf(
             R.id.homeFragment,
             R.id.newsFragment,
             R.id.matchesFragment,
             R.id.videosFragment,
             R.id.moreFragment
         )
-        val appBarConfiguration = AppBarConfiguration(topLevelDestinations)
+//        val appBarConfiguration = AppBarConfiguration(topLevelDestinations)
 //        binding.toolbar.setupWithNavController(navController, appBarConfiguration)
 
         setupTabLayoutWithNavController()
@@ -88,7 +86,10 @@ class MainActivity : AppCompatActivity() {
         })
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            binding.tabLayout.isVisible = destination.id in destinations.map { it.first }
+
+            val isTopLevelDestination = destination.id in destinations.map { it.first }
+            binding.appBarLayout.isVisible = isTopLevelDestination
+            binding.tabLayout.isVisible = isTopLevelDestination
 
             for (i in 0 until binding.tabLayout.tabCount) {
                 val tab = binding.tabLayout.getTabAt(i)
