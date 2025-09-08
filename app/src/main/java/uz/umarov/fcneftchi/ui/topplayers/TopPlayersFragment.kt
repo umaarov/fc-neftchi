@@ -21,40 +21,31 @@ class TopPlayersFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel: TopPlayersViewModel by viewModels()
-    private lateinit var topScorersAdapter: TopPlayerAdapter
-    private lateinit var topAssistersAdapter: TopPlayerAdapter
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         _binding = FragmentTopPlayersBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupRecyclerViews()
+
+        val topPlayerAdapter = TopPlayerAdapter()
+        binding.topPlayersRecyclerView.apply {
+            adapter = topPlayerAdapter
+            layoutManager = LinearLayoutManager(context)
+        }
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.uiState.collect { state ->
                 binding.progressBar.isVisible = state.isLoading
-                binding.contentGroup.isVisible = !state.isLoading
-
-                topScorersAdapter.submitList(state.topScorers)
-                topAssistersAdapter.submitList(state.topAssisters)
+                binding.topPlayersRecyclerView.isVisible = !state.isLoading
+                topPlayerAdapter.submitList(state.items)
             }
-        }
-    }
-
-    private fun setupRecyclerViews() {
-        topScorersAdapter = TopPlayerAdapter(TopPlayerAdapter.StatType.GOALS)
-        binding.topScorersRecyclerView.apply {
-            adapter = topScorersAdapter
-            layoutManager = LinearLayoutManager(context)
-        }
-
-        topAssistersAdapter = TopPlayerAdapter(TopPlayerAdapter.StatType.ASSISTS)
-        binding.topAssistersRecyclerView.apply {
-            adapter = topAssistersAdapter
-            layoutManager = LinearLayoutManager(context)
         }
     }
 
