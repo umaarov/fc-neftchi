@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import uz.umarov.fcneftchi.databinding.FragmentResultsBinding
+import uz.umarov.fcneftchi.ui.matches.FixtureListItem
 import uz.umarov.fcneftchi.ui.matches.adapter.MatchAdapter
 
 @AndroidEntryPoint
@@ -36,7 +37,7 @@ class ResultsFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.uiState.collect {
                 binding.progressBar.isVisible = it.isLoading
-                matchAdapter.submitList(it.results)
+                matchAdapter.submitList(it.results as List<FixtureListItem?>?)
             }
         }
     }

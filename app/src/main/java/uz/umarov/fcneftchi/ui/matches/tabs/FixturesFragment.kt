@@ -40,7 +40,7 @@ class FixturesFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.uiState.collect {
                 binding.progressBar.isVisible = it.isLoading
-                matchAdapter.submitList(it.fixtures)
+                matchAdapter.submitList(it.items)
             }
         }
     }

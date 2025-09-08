@@ -2,93 +2,109 @@ package uz.umarov.fcneftchi.ui.matches.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.view.isVisible
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import coil.load
+import coil.load // <-- Import Coil
 import uz.umarov.fcneftchi.data.model.Match
-import uz.umarov.fcneftchi.data.model.MatchStatus
 import uz.umarov.fcneftchi.databinding.ItemMatchBinding
-import uz.umarov.fcneftchi.ui.matches.MatchesFragmentDirections
+import uz.umarov.fcneftchi.databinding.ItemMonthHeaderBinding
+import uz.umarov.fcneftchi.ui.matches.FixtureListItem
+import uz.umarov.fcneftchi.util.DateUtils
 import java.text.SimpleDateFormat
 import java.util.Locale
-import java.util.TimeZone
 
-class MatchAdapter : ListAdapter<Match, MatchAdapter.MatchViewHolder>(MatchDiffCallback) {
+private const val ITEM_VIEW_TYPE_HEADER = 0
+private const val ITEM_VIEW_TYPE_ITEM = 1
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MatchViewHolder {
-        val binding = ItemMatchBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return MatchViewHolder(binding)
+class MatchAdapter : ListAdapter<FixtureListItem, RecyclerView.ViewHolder>(MatchDiffCallback()) {
+
+    override fun getItemViewType(position: Int): Int {
+        return when (getItem(position)) {
+            is FixtureListItem.HeaderItem -> ITEM_VIEW_TYPE_HEADER
+            is FixtureListItem.MatchItem -> ITEM_VIEW_TYPE_ITEM
+        }
     }
 
-    override fun onBindViewHolder(holder: MatchViewHolder, position: Int) {
-        holder.bind(getItem(position))
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        return when (viewType) {
+            ITEM_VIEW_TYPE_HEADER -> HeaderViewHolder.from(parent)
+            ITEM_VIEW_TYPE_ITEM -> MatchViewHolder.from(parent)
+            else -> throw IllegalArgumentException("Unknown viewType $viewType")
+        }
     }
 
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        when (holder) {
+            is MatchViewHolder -> {
+                val matchItem = getItem(position) as FixtureListItem.MatchItem
+                holder.bind(matchItem.match)
+            }
 
-    inner class MatchViewHolder(private val binding: ItemMatchBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-        init {
-            itemView.setOnClickListener {
-                val position = adapterPosition
-                if (position != RecyclerView.NO_POSITION) {
-                    val match = getItem(position)
-                    val action = MatchesFragmentDirections.actionMatchesFragmentToMatchDetailFragment(match.id.toInt())
-                    it.findNavController().navigate(action)
-                }
+            is HeaderViewHolder -> {
+                val headerItem = getItem(position) as FixtureListItem.HeaderItem
+                holder.bind(headerItem)
             }
         }
+    }
+
+    class MatchViewHolder(private val binding: ItemMatchBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+
+        private val dateFormatter = SimpleDateFormat("E d MMM yyyy", Locale.getDefault())
+        private val timeFormatter = SimpleDateFormat("HH:mm", Locale.getDefault())
 
         fun bind(match: Match) {
-            binding.homeTeamLogo.load(match.homeTeam.logoUrl)
-            binding.awayTeamLogo.load(match.awayTeam.logoUrl)
             binding.homeTeamName.text = match.homeTeam.name
             binding.awayTeamName.text = match.awayTeam.name
-            binding.matchCompetition.text = match.competition
+            binding.matchCompetition.text = match.competition.uppercase()
 
-            if (match.status == MatchStatus.FINISHED) {
-                binding.scoreGroup.isVisible = true
-                binding.matchDate.isVisible = false
-                binding.homeTeamScore.text = match.homeScore.toString()
-                binding.awayTeamScore.text = match.awayScore.toString()
+            val date = DateUtils.parseDate(match.matchDate)
+
+            if (date != null) {
+                binding.matchDate.text = dateFormatter.format(date).uppercase()
+                binding.timeBackground.text = timeFormatter.format(date)
             } else {
-                binding.scoreGroup.isVisible = false
-                binding.matchDate.isVisible = true
-                binding.matchDate.text = formatMatchDate(match.matchDate)
+                binding.matchDate.text = "DATE UNAVAILABLE"
+                binding.timeBackground.text = "N/A"
             }
+
+            binding.homeTeamLogo.load(match.homeTeam.logoUrl) { crossfade(true) }
+            binding.awayTeamLogo.load(match.awayTeam.logoUrl) { crossfade(true) }
         }
 
-        private fun formatMatchDate(dateString: String): String {
-            return try {
-                val parser = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
-                parser.timeZone = TimeZone.getTimeZone("UTC")
-                val date = parser.parse(dateString)
-                val dayMonthFormatter = SimpleDateFormat("dd MMM", Locale.ENGLISH).apply {
-                    timeZone = TimeZone.getDefault()
-                }
-                val timeFormatter = SimpleDateFormat("HH:mm", Locale.getDefault()).apply {
-                    timeZone = TimeZone.getDefault()
-                }
-                date?.let {
-                    "${
-                        dayMonthFormatter.format(it).toUpperCase(Locale.ROOT)
-                    }\n${timeFormatter.format(it)}"
-                } ?: "N/A"
-            } catch (e: Exception) {
-                "N/A"
+        companion object {
+            fun from(parent: ViewGroup): MatchViewHolder {
+                val inflater = LayoutInflater.from(parent.context)
+                val binding = ItemMatchBinding.inflate(inflater, parent, false)
+                return MatchViewHolder(binding)
             }
         }
     }
 
-    object MatchDiffCallback : DiffUtil.ItemCallback<Match>() {
-        override fun areItemsTheSame(oldItem: Match, newItem: Match): Boolean {
-            return oldItem.id == newItem.id
+    class HeaderViewHolder(private val binding: ItemMonthHeaderBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun bind(header: FixtureListItem.HeaderItem) {
+            binding.monthHeaderText.text = header.monthYear
         }
 
-        override fun areContentsTheSame(oldItem: Match, newItem: Match): Boolean {
-            return oldItem == newItem
+        companion object {
+            fun from(parent: ViewGroup): HeaderViewHolder {
+                val inflater = LayoutInflater.from(parent.context)
+                val binding = ItemMonthHeaderBinding.inflate(inflater, parent, false)
+                return HeaderViewHolder(binding)
+            }
         }
+    }
+}
+
+class MatchDiffCallback : DiffUtil.ItemCallback<FixtureListItem>() {
+    override fun areItemsTheSame(oldItem: FixtureListItem, newItem: FixtureListItem): Boolean {
+        return (oldItem is FixtureListItem.MatchItem && newItem is FixtureListItem.MatchItem && oldItem.match.id == newItem.match.id) ||
+                (oldItem is FixtureListItem.HeaderItem && newItem is FixtureListItem.HeaderItem && oldItem.monthYear == newItem.monthYear)
+    }
+
+    override fun areContentsTheSame(oldItem: FixtureListItem, newItem: FixtureListItem): Boolean {
+        return oldItem == newItem
     }
 }

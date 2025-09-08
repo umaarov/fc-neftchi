@@ -81,4 +81,17 @@
         <item name="android:paddingBottom">4dp</item>
     </style>
 
+    <style name="Widget.App.TabLayout" parent="Widget.MaterialComponents.TabLayout">
+        <item name="android:background">?attr/colorPrimary</item>
+        <item name="tabIndicatorColor">@color/white</item>
+        <item name="tabIndicatorHeight">3dp</item>
+        <item name="tabTextColor">#B3FFFFFF</item> <item name="tabSelectedTextColor">@color/white</item>
+        <item name="tabTextAppearance">@style/TextAppearance.App.Tab</item>
+    </style>
+
+    <style name="TextAppearance.App.Tab" parent="TextAppearance.MaterialComponents.Button">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAllCaps">true</item>
+    </style>
+
 </resources>
