@@ -9,13 +9,16 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager2.widget.CompositePageTransformer
+import androidx.viewpager2.widget.MarginPageTransformer
+import androidx.viewpager2.widget.ViewPager2
 import coil.load
 import uz.umarov.fcneftchi.data.model.LeagueStanding
 import uz.umarov.fcneftchi.data.model.Match
 import uz.umarov.fcneftchi.data.model.NewsArticle
 import uz.umarov.fcneftchi.data.model.Video
 import uz.umarov.fcneftchi.databinding.ItemHomeHeaderBinding
-import uz.umarov.fcneftchi.databinding.ItemHomeHeroNewsBinding
+import uz.umarov.fcneftchi.databinding.ItemHomeHeroCarouselBinding
 import uz.umarov.fcneftchi.databinding.ItemHomeLastResultBinding
 import uz.umarov.fcneftchi.databinding.ItemHomeNewsCarouselBinding
 import uz.umarov.fcneftchi.databinding.ItemHomeNextMatchBinding
@@ -25,14 +28,15 @@ import uz.umarov.fcneftchi.ui.home.HomeListItem
 import uz.umarov.fcneftchi.util.DateUtils
 import java.text.SimpleDateFormat
 import java.util.Locale
+import kotlin.math.abs
 
-private const val VIEW_TYPE_NEXT_MATCH = 0
-private const val VIEW_TYPE_LAST_RESULT = 1
-private const val VIEW_TYPE_HEADER = 2
-private const val VIEW_TYPE_NEWS_CAROUSEL = 3
-private const val VIEW_TYPE_STANDINGS = 4
-private const val VIEW_TYPE_HERO_NEWS = 5
-private const val VIEW_TYPE_FEATURED_VIDEO = 6
+private const val VIEW_TYPE_HERO_CAROUSEL = 0
+private const val VIEW_TYPE_NEXT_MATCH = 1
+private const val VIEW_TYPE_LAST_RESULT = 2
+private const val VIEW_TYPE_FEATURED_VIDEO = 3
+private const val VIEW_TYPE_HEADER = 4
+private const val VIEW_TYPE_NEWS_CAROUSEL = 5
+private const val VIEW_TYPE_STANDINGS = 6
 
 class HomeAdapter(
     private val onNavigate: (Int) -> Unit,
@@ -42,10 +46,12 @@ class HomeAdapter(
 ) : ListAdapter<HomeListItem, RecyclerView.ViewHolder>(HomeDiffCallback) {
 
     private val countdownHandlers = mutableMapOf<Int, Handler>()
+    private val heroCarouselHandlers = mutableMapOf<Int, Handler>()
+
 
     override fun getItemViewType(position: Int): Int {
         return when (getItem(position)) {
-            is HomeListItem.HeroNewsItem -> VIEW_TYPE_HERO_NEWS
+            is HomeListItem.HeroCarouselItem -> VIEW_TYPE_HERO_CAROUSEL
             is HomeListItem.NextMatchItem -> VIEW_TYPE_NEXT_MATCH
             is HomeListItem.LastResultItem -> VIEW_TYPE_LAST_RESULT
             is HomeListItem.FeaturedVideoItem -> VIEW_TYPE_FEATURED_VIDEO
@@ -58,8 +64,8 @@ class HomeAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         return when (viewType) {
-            VIEW_TYPE_HERO_NEWS -> HeroNewsViewHolder(
-                ItemHomeHeroNewsBinding.inflate(
+            VIEW_TYPE_HERO_CAROUSEL -> HeroCarouselViewHolder(
+                ItemHomeHeroCarouselBinding.inflate(
                     inflater,
                     parent,
                     false
@@ -89,7 +95,6 @@ class HomeAdapter(
                     false
                 ), onVideoClick
             )
-
 
             VIEW_TYPE_HEADER -> HeaderViewHolder(
                 ItemHomeHeaderBinding.inflate(
@@ -121,7 +126,9 @@ class HomeAdapter(
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (val item = getItem(position)) {
-            is HomeListItem.HeroNewsItem -> (holder as HeroNewsViewHolder).bind(item.article)
+            is HomeListItem.HeroCarouselItem -> (holder as HeroCarouselViewHolder).bind(
+                item.articles,
+                heroCarouselHandlers.getOrPut(position) { Handler(Looper.getMainLooper()) }) // Pass handler
             is HomeListItem.NextMatchItem -> (holder as NextMatchViewHolder).bind(item.match)
             is HomeListItem.LastResultItem -> (holder as LastResultViewHolder).bind(item.match)
             is HomeListItem.FeaturedVideoItem -> (holder as FeaturedVideoViewHolder).bind(item.video)
@@ -133,14 +140,77 @@ class HomeAdapter(
 
     override fun onViewRecycled(holder: RecyclerView.ViewHolder) {
         super.onViewRecycled(holder)
-        if (holder is NextMatchViewHolder) {
-            holder.clearCountdown()
-        }
+        if (holder is NextMatchViewHolder) holder.clearCountdown()
+        if (holder is HeroCarouselViewHolder) holder.clearCarouselTimer()
+    }
+
+    override fun onDetachedFromRecyclerView(recyclerView: RecyclerView) {
+        super.onDetachedFromRecyclerView(recyclerView)
+        release()
     }
 
     fun release() {
         countdownHandlers.values.forEach { it.removeCallbacksAndMessages(null) }
         countdownHandlers.clear()
+    }
+
+    class HeroCarouselViewHolder(
+        private val binding: ItemHomeHeroCarouselBinding,
+        private val onArticleClick: (NewsArticle) -> Unit
+    ) : RecyclerView.ViewHolder(binding.root) {
+
+        private lateinit var autoScrollHandler: Handler
+        private var autoScrollRunnable: Runnable? = null
+        private val AUTO_SCROLL_DELAY = 5000L
+
+        fun bind(articles: List<NewsArticle>, handler: Handler) {
+            autoScrollHandler = handler
+
+            val pagerAdapter = HeroNewsPagerAdapter(onArticleClick)
+            binding.heroNewsViewPager.adapter = pagerAdapter
+            pagerAdapter.submitList(articles)
+
+            val indicatorAdapter = IndicatorAdapter(articles.size)
+            binding.heroNewsIndicator.adapter = indicatorAdapter
+
+            binding.heroNewsViewPager.registerOnPageChangeCallback(object :
+                ViewPager2.OnPageChangeCallback() {
+                override fun onPageSelected(position: Int) {
+                    super.onPageSelected(position)
+                    indicatorAdapter.selectedPosition = position
+                    indicatorAdapter.notifyDataSetChanged()
+                }
+            })
+
+            val compositePageTransformer = CompositePageTransformer()
+            compositePageTransformer.addTransformer(MarginPageTransformer(40))
+            compositePageTransformer.addTransformer { page, position ->
+                val r = 1 - abs(position)
+                page.scaleY = 0.85f + r * 0.15f
+            }
+            binding.heroNewsViewPager.setPageTransformer(compositePageTransformer)
+
+            startAutoScroll(articles.size)
+        }
+
+        private fun startAutoScroll(itemCount: Int) {
+            clearCarouselTimer()
+            if (itemCount <= 1) return
+
+            autoScrollRunnable = object : Runnable {
+                override fun run() {
+                    val currentItem = binding.heroNewsViewPager.currentItem
+                    val nextItem = (currentItem + 1) % itemCount
+                    binding.heroNewsViewPager.setCurrentItem(nextItem, true)
+                    autoScrollHandler.postDelayed(this, AUTO_SCROLL_DELAY)
+                }
+            }
+            autoScrollHandler.postDelayed(autoScrollRunnable!!, AUTO_SCROLL_DELAY)
+        }
+
+        fun clearCarouselTimer() {
+            autoScrollRunnable?.let { autoScrollHandler.removeCallbacks(it) }
+        }
     }
 
     class NextMatchViewHolder(
@@ -256,19 +326,6 @@ class HomeAdapter(
             binding.standingsRecyclerView.layoutManager = LinearLayoutManager(itemView.context)
             binding.standingsRecyclerView.adapter = standingsHomeAdapter
             standingsHomeAdapter.submitList(standings)
-        }
-    }
-
-    class HeroNewsViewHolder(
-        private val binding: ItemHomeHeroNewsBinding,
-        private val onArticleClick: (NewsArticle) -> Unit
-    ) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(article: NewsArticle) {
-            binding.root.setOnClickListener { onArticleClick(article) }
-            binding.heroImage.load(article.imageUrl)
-            binding.heroTitle.text = article.title
-            binding.heroCategory.text = article.category
-            binding.heroDate.text = "• ${article.date}"
         }
     }
 

@@ -3,7 +3,12 @@ package uz.umarov.fcneftchi.ui.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import uz.umarov.fcneftchi.R
 import uz.umarov.fcneftchi.data.repository.NeftchiRepository
@@ -37,11 +42,12 @@ class HomeViewModel @Inject constructor(
                 repository.getNews(),
                 repository.getLeagueTable(),
                 repository.getVideos()
-
             ) { nextMatch, lastMatch, news, standings, videos ->
                 val homeItems = mutableListOf<HomeListItem>()
 
-                news.firstOrNull()?.let { homeItems.add(HomeListItem.HeroNewsItem(it)) }
+                if (news.isNotEmpty()) {
+                    homeItems.add(HomeListItem.HeroCarouselItem(news.take(3)))
+                }
 
                 nextMatch?.let { homeItems.add(HomeListItem.NextMatchItem(it)) }
 
@@ -52,7 +58,7 @@ class HomeViewModel @Inject constructor(
                     homeItems.add(HomeListItem.FeaturedVideoItem(it))
                 }
 
-                val otherNews = news.drop(1)
+                val otherNews = news.drop(3)
                 if (otherNews.isNotEmpty()) {
                     homeItems.add(HomeListItem.HeaderItem("So'nggi yangiliklar", R.id.newsFragment))
                     homeItems.add(HomeListItem.NewsCarouselItem(otherNews.take(5)))
