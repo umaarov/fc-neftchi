@@ -8,114 +8,25 @@
     android:layout_height="match_parent"
     tools:context=".ui.home.HomeFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/home_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:paddingBottom="16dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/item_home_next_match"/>
 
         <ProgressBar
             android:id="@+id/progress_bar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:visibility="gone"
-            tools:visibility="visible"/>
+            android:layout_gravity="center"
+            tools:visibility="gone"/>
 
-        <androidx.core.widget.NestedScrollView
-            android:id="@+id/content_scroll_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:clipToPadding="false">
-
-            <LinearLayout
-                android:id="@+id/content_group"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingBottom="16dp">
-
-                <include
-                    android:id="@+id/next_match_card"
-                    layout="@layout/item_next_match"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginEnd="16dp" />
-
-                <include
-                    android:id="@+id/last_match_card"
-                    layout="@layout/item_last_match"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginEnd="16dp" />
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
-                    android:paddingStart="16dp"
-                    android:paddingEnd="16dp">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="So'nggi yangiliklar"
-                        android:textAppearance="?attr/textAppearanceHeadline6"
-                        android:layout_alignParentStart="true"
-                        android:layout_centerVertical="true"/>
-                    <TextView
-                        android:id="@+id/view_all_news_button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Barchasi"
-                        android:background="?attr/selectableItemBackground"
-                        android:padding="8dp"
-                        android:layout_alignParentEnd="true"
-                        android:layout_centerVertical="true"/>
-                </RelativeLayout>
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/news_recycler_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:orientation="horizontal"
-                    android:clipToPadding="false"
-                    android:paddingStart="16dp"
-                    android:paddingEnd="16dp"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    tools:listitem="@layout/item_news_home"
-                    tools:itemCount="3"/>
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
-                    android:paddingStart="16dp"
-                    android:paddingEnd="16dp">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Turnir jadvali"
-                        android:textAppearance="?attr/textAppearanceHeadline6"
-                        android:layout_alignParentStart="true"
-                        android:layout_centerVertical="true"/>
-                    <TextView
-                        android:id="@+id/view_all_standings_button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Barchasi"
-                        android:background="?attr/selectableItemBackground"
-                        android:padding="8dp"
-                        android:layout_alignParentEnd="true"
-                        android:layout_centerVertical="true"/>
-                </RelativeLayout>
-
-            </LinearLayout>
-        </androidx.core.widget.NestedScrollView>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </FrameLayout>
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

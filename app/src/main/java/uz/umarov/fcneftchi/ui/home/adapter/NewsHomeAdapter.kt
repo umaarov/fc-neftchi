@@ -9,37 +9,29 @@ import coil.load
 import uz.umarov.fcneftchi.data.model.NewsArticle
 import uz.umarov.fcneftchi.databinding.ItemNewsHomeBinding
 
-class NewsHomeAdapter(private val onItemClick: (NewsArticle) -> Unit) :
-    ListAdapter<NewsArticle, NewsHomeAdapter.NewsViewHolder>(NewsDiffCallback) {
+class NewsHomeAdapter(
+    private val onItemClick: (NewsArticle) -> Unit
+) : ListAdapter<NewsArticle, NewsHomeAdapter.NewsHomeViewHolder>(DiffCallback) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsHomeViewHolder {
         val binding = ItemNewsHomeBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return NewsViewHolder(binding)
+        return NewsHomeViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: NewsViewHolder, position: Int) {
-        val newsArticle = getItem(position)
-        holder.bind(newsArticle)
-        holder.itemView.setOnClickListener { onItemClick(newsArticle) }
+    override fun onBindViewHolder(holder: NewsHomeViewHolder, position: Int) {
+        holder.bind(getItem(position))
     }
 
-    inner class NewsViewHolder(private val binding: ItemNewsHomeBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(newsArticle: NewsArticle) {
-            binding.newsImage.load(newsArticle.imageUrl) {
-                crossfade(true)
-            }
-            binding.newsTitle.text = newsArticle.title
-            binding.newsDate.text = newsArticle.date
+    inner class NewsHomeViewHolder(private val binding: ItemNewsHomeBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(article: NewsArticle) {
+            binding.newsImage.load(article.imageUrl) { crossfade(true) }
+            binding.newsTitle.text = article.title
+            binding.root.setOnClickListener { onItemClick(article) }
         }
     }
 
-    object NewsDiffCallback : DiffUtil.ItemCallback<NewsArticle>() {
-        override fun areItemsTheSame(oldItem: NewsArticle, newItem: NewsArticle): Boolean {
-            return oldItem.id == newItem.id
-        }
-
-        override fun areContentsTheSame(oldItem: NewsArticle, newItem: NewsArticle): Boolean {
-            return oldItem == newItem
-        }
+    object DiffCallback : DiffUtil.ItemCallback<NewsArticle>() {
+        override fun areItemsTheSame(oldItem: NewsArticle, newItem: NewsArticle): Boolean = oldItem.id == newItem.id
+        override fun areContentsTheSame(oldItem: NewsArticle, newItem: NewsArticle): Boolean = oldItem == newItem
     }
 }
