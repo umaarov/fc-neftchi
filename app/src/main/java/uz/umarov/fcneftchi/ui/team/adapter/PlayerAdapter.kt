@@ -46,6 +46,7 @@ class PlayerAdapter : ListAdapter<TeamListItem, RecyclerView.ViewHolder>(PlayerD
             is TeamListItem.HeaderItem -> (holder as HeaderViewHolder).bind(item)
             is TeamListItem.PlayerItem -> (holder as PlayerViewHolder).bind(item.player)
         }
+
     }
 
     class PlayerViewHolder(private val binding: ItemPlayerBinding) :
