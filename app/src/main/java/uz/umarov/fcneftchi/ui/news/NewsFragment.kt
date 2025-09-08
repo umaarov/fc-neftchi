@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import uz.umarov.fcneftchi.databinding.FragmentNewsBinding
+import uz.umarov.fcneftchi.ui.MainActivity
 import uz.umarov.fcneftchi.ui.news.adapter.NewsAdapter
 import uz.umarov.fcneftchi.util.applySystemBarPadding
 
@@ -55,6 +56,11 @@ class NewsFragment : Fragment() {
             adapter = newsAdapter
             layoutManager = LinearLayoutManager(context)
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        (activity as? MainActivity)?.showMainUI()
     }
 
     override fun onDestroyView() {

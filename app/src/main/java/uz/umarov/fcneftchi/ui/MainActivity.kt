@@ -86,24 +86,6 @@ class MainActivity : AppCompatActivity() {
         })
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            val bottomNavDestinations = setOf(
-                R.id.homeFragment,
-                R.id.newsFragment,
-                R.id.matchesFragment,
-                R.id.videosFragment,
-                R.id.moreFragment
-            )
-
-            val toolbarDestinations = setOf(
-                R.id.homeFragment,
-                R.id.newsFragment,
-                R.id.matchesFragment,
-                R.id.videosFragment
-            )
-
-            binding.tabLayout.isVisible = destination.id in bottomNavDestinations
-            binding.appBarLayout.isVisible = destination.id in toolbarDestinations
-
             for (i in 0 until binding.tabLayout.tabCount) {
                 val tab = binding.tabLayout.getTabAt(i)
                 if (tab?.tag as? Int == destination.id) {
@@ -113,4 +95,20 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
+    fun showMainUI() {
+        binding.appBarLayout.isVisible = true
+        binding.tabLayout.isVisible = true
+    }
+
+    fun hideMainUI() {
+        binding.appBarLayout.isVisible = false
+        binding.tabLayout.isVisible = false
+    }
+
+    fun hideToolbarOnly() {
+        binding.appBarLayout.isVisible = false
+        binding.tabLayout.isVisible = true
+    }
+
 }

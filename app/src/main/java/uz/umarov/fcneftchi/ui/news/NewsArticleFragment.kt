@@ -32,6 +32,7 @@ import kotlinx.coroutines.launch
 import uz.umarov.fcneftchi.R
 import uz.umarov.fcneftchi.data.model.NewsArticle
 import uz.umarov.fcneftchi.databinding.FragmentNewsArticleBinding
+import uz.umarov.fcneftchi.ui.MainActivity
 import kotlin.math.roundToInt
 
 @AndroidEntryPoint
@@ -154,6 +155,16 @@ class NewsArticleFragment : Fragment() {
             }
             startActivity(Intent.createChooser(intent, "Share Article"))
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        (activity as? MainActivity)?.hideMainUI()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        (activity as? MainActivity)?.showMainUI()
     }
 
     override fun onDestroyView() {

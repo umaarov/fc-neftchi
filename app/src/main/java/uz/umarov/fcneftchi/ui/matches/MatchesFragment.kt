@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.google.android.material.tabs.TabLayoutMediator
 import uz.umarov.fcneftchi.databinding.FragmentMatchesBinding
+import uz.umarov.fcneftchi.ui.MainActivity
 
 class MatchesFragment : Fragment() {
 
@@ -42,6 +43,11 @@ class MatchesFragment : Fragment() {
             TOP_PLAYERS_PAGE_INDEX -> "To'purarlar"
             else -> null
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        (activity as? MainActivity)?.showMainUI()
     }
 
     override fun onDestroyView() {

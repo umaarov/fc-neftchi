@@ -1,15 +1,16 @@
 package uz.umarov.fcneftchi.ui.more
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import uz.umarov.fcneftchi.R
 import uz.umarov.fcneftchi.databinding.FragmentMoreBinding
+import uz.umarov.fcneftchi.ui.MainActivity
 
 class MoreFragment : Fragment() {
     private var _binding: FragmentMoreBinding? = null
@@ -55,8 +56,18 @@ class MoreFragment : Fragment() {
     }
 
     private fun openUrl(url: String) {
-        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+        val intent = Intent(Intent.ACTION_VIEW, url.toUri())
         startActivity(intent)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        (activity as? MainActivity)?.hideToolbarOnly()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        (activity as? MainActivity)?.showMainUI()
     }
 
     override fun onDestroyView() {

@@ -12,6 +12,7 @@ import kotlinx.coroutines.launch
 import uz.umarov.fcneftchi.data.model.GameStatistics
 import uz.umarov.fcneftchi.databinding.FragmentMatchStatsBinding
 import uz.umarov.fcneftchi.databinding.ItemMatchStatBinding
+import uz.umarov.fcneftchi.ui.MainActivity
 
 @AndroidEntryPoint
 class MatchStatsFragment : Fragment() {

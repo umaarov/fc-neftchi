@@ -16,6 +16,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import uz.umarov.fcneftchi.databinding.FragmentMatchDetailBinding
+import uz.umarov.fcneftchi.ui.MainActivity
 import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.TimeZone
@@ -64,6 +65,17 @@ class MatchDetailFragment : Fragment() {
         }
     }
 
+
+    override fun onResume() {
+        super.onResume()
+        (activity as? MainActivity)?.hideMainUI()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        (activity as? MainActivity)?.showMainUI()
+    }
+
     private fun setupViewPager() {
         binding.viewPager.adapter = MatchDetailViewPagerAdapter(this)
         TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
@@ -98,6 +110,7 @@ class MatchDetailFragment : Fragment() {
             "N/A"
         }
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

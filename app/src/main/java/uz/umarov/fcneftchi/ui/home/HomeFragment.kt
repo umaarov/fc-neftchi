@@ -15,6 +15,7 @@ import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import uz.umarov.fcneftchi.databinding.FragmentHomeBinding
+import uz.umarov.fcneftchi.ui.MainActivity
 import uz.umarov.fcneftchi.ui.home.adapter.HomeAdapter
 
 @AndroidEntryPoint
@@ -74,6 +75,11 @@ class HomeFragment : Fragment() {
             viewModel.loadHomeData()
             binding.swipeRefreshLayout.isRefreshing = false
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        (activity as? MainActivity)?.showMainUI()
     }
 
     override fun onDestroyView() {
