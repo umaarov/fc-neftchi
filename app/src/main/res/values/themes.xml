@@ -2,16 +2,29 @@
 <resources>
 
     <style name="Theme.FCNeftchi" parent="Theme.MaterialComponents.Light.NoActionBar">
-        <item name="colorPrimary">@color/yellow_primary</item>
-        <item name="colorPrimaryVariant">@color/yellow_dark</item>
-        <item name="colorOnPrimary">@color/black</item>
-        <item name="colorSecondary">@color/yellow_light</item>
-        <item name="colorSecondaryVariant">@color/yellow_dark</item>
+        <item name="colorPrimary">@color/neftchi_green_primary</item>
+        <item name="colorPrimaryVariant">@color/neftchi_green_dark</item>
+        <item name="colorOnPrimary">@color/white</item>
+
+        <item name="colorSecondary">@color/neftchi_green_light</item>
         <item name="colorOnSecondary">@color/black</item>
+
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">false</item>
+
+        <item name="android:colorBackground">@color/background_light</item>
         <item name="bottomAppBarStyle">@style/Widget.App.BottomAppBar</item>
+        <item name="materialCardViewStyle">@style/Widget.App.CardView</item>
+
     </style>
+
+    <style name="Widget.App.CardView" parent="Widget.MaterialComponents.CardView">
+        <item name="cardElevation">2dp</item>
+        <item name="cardCornerRadius">8dp</item>
+        <item name="cardBackgroundColor">@color/card_background</item>
+    </style>
+
 
     <style name="Widget.App.BottomAppBar" parent="Widget.MaterialComponents.BottomAppBar">
         <item name="materialThemeOverlay">@style/ThemeOverlay.App.BottomAppBar</item>
@@ -19,6 +32,14 @@
 
     <style name="ThemeOverlay.App.BottomAppBar" parent="">
         <item name="colorOnPrimary">@color/black</item>
+    </style>
+
+    <style name="CustomTabTextStyle" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">10sp</item>
+        <item name="android:fontFamily">@font/montserrat_semibold</item>
+        <item name="fontFamily">@font/montserrat_semibold</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="textAllCaps">false</item>
     </style>
 
     <style name="StatLabel">
@@ -58,14 +79,6 @@
         <item name="android:orientation">horizontal</item>
         <item name="android:paddingTop">4dp</item>
         <item name="android:paddingBottom">4dp</item>
-    </style>
-
-    <style name="CustomTabTextStyle" parent="TextAppearance.Design.Tab">
-        <item name="android:textSize">10sp</item>
-        <item name="android:fontFamily">@font/montserrat_semibold</item>
-        <item name="fontFamily">@font/montserrat_semibold</item>
-        <item name="android:textAllCaps">false</item>
-        <item name="textAllCaps">false</item>
     </style>
 
 </resources>

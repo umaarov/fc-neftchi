@@ -1,8 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="neftchi_green_dark">#006400</color>
+
+    <color name="neftchi_green_primary">#00802B</color>
+    <color name="neftchi_green_dark">#006421</color>
+    <color name="neftchi_green_light">#3AAD5C</color>
+
+    <color name="background_light">#F5F5F5</color>
+    <color name="card_background">#FFFFFFFF</color>
+    <color name="divider">#1F000000</color>
+    <color name="text_primary">#DE000000</color>
+    <color name="text_secondary">#8A000000</color>
+
     <color name="neftchi_green">#008000</color>
-    <color name="neftchi_green_light">#90EE90</color>
 
     <color name="main_yellow">#FAEE00</color>
     <color name="main_yellow_dark">#D4C900</color>
