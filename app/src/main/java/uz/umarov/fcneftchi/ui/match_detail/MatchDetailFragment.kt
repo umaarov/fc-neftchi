@@ -2,21 +2,20 @@ package uz.umarov.fcneftchi.ui.match_detail
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.navigation.fragment.findNavController
 import coil.load
-import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import uz.umarov.fcneftchi.data.model.GameDetail
 import uz.umarov.fcneftchi.databinding.FragmentMatchDetailBinding
-import uz.umarov.fcneftchi.ui.match_detail.adapter.LineupAdapter
-import uz.umarov.fcneftchi.ui.match_detail.adapter.MatchEventsAdapter
 import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.TimeZone
@@ -40,6 +39,11 @@ class MatchDetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setHasOptionsMenu(true)
+
+        (activity as? AppCompatActivity)?.setSupportActionBar(binding.header.toolbar)
+        (activity as? AppCompatActivity)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        (activity as? AppCompatActivity)?.supportActionBar?.setDisplayShowTitleEnabled(false)
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.uiState.collect { state ->
@@ -54,80 +58,30 @@ class MatchDetailFragment : Fragment() {
                     binding.header.score.text = "${game.homeGoal} - ${game.awayGoal}"
                     binding.header.matchDate.text = formatMatchDate(game.startDate)
 
-                    setupTabs(game)
+                    setupViewPager()
                 }
             }
         }
     }
 
-    private fun setupTabs(game: GameDetail) {
-        showEvents(game)
-
-        binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-            override fun onTabSelected(tab: TabLayout.Tab?) {
-                when (tab?.position) {
-                    0 -> showEvents(game)
-                    1 -> showStats(game)
-                    2 -> showLineups(game)
-                }
+    private fun setupViewPager() {
+        binding.viewPager.adapter = MatchDetailViewPagerAdapter(this)
+        TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
+            tab.text = when (position) {
+                0 -> "Events"
+                1 -> "Stats"
+                2 -> "Lineups"
+                else -> null
             }
-
-            override fun onTabUnselected(tab: TabLayout.Tab?) {}
-            override fun onTabReselected(tab: TabLayout.Tab?) {}
-        })
+        }.attach()
     }
 
-    private fun showEvents(game: GameDetail) {
-        binding.eventsView.root.isVisible = true
-        binding.statsView.root.isVisible = false
-        binding.lineupsView.root.isVisible = false
-
-        val playersMap =
-            game.players.associate { it.player.id to "${it.player.firstName ?: ""} ${it.player.lastName}".trim() }
-        val eventsAdapter = MatchEventsAdapter(game.homeTeam.club.id, playersMap)
-        binding.eventsView.eventsRecyclerView.apply {
-            adapter = eventsAdapter
-            layoutManager = LinearLayoutManager(context)
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == android.R.id.home) {
+            findNavController().navigateUp()
+            return true
         }
-        eventsAdapter.submitList(game.events.sortedBy { it.time })
-    }
-
-    private fun showStats(game: GameDetail) {
-        binding.eventsView.root.isVisible = false
-        binding.statsView.root.isVisible = true
-        binding.lineupsView.root.isVisible = false
-
-        game.statistics?.let { stats ->
-            binding.statsView.statShots.text = "${stats.shotsHome} - ${stats.shotsAway}"
-            binding.statsView.statShotsOnTarget.text =
-                "${stats.shotsOnTargetHome} - ${stats.shotsOnTargetAway}"
-            binding.statsView.statCorners.text = "${stats.cornersHome} - ${stats.cornersAway}"
-            binding.statsView.statOffsides.text = "${stats.offsideHome} - ${stats.offsideAway}"
-            binding.statsView.statFouls.text = "${stats.foulsHome} - ${stats.foulsAway}"
-            binding.statsView.statYellowCards.text =
-                "${stats.yellowCardsHome} - ${stats.yellowCardsAway}"
-        }
-    }
-
-    private fun showLineups(game: GameDetail) {
-        binding.eventsView.root.isVisible = false
-        binding.statsView.root.isVisible = false
-        binding.lineupsView.root.isVisible = true
-
-        val homeLineupAdapter = LineupAdapter()
-        val awayLineupAdapter = LineupAdapter()
-
-        binding.lineupsView.homeLineupRecyclerView.apply {
-            adapter = homeLineupAdapter
-            layoutManager = LinearLayoutManager(context)
-        }
-        binding.lineupsView.awayLineupRecyclerView.apply {
-            adapter = awayLineupAdapter
-            layoutManager = LinearLayoutManager(context)
-        }
-
-        homeLineupAdapter.submitList(game.players.filter { it.clubId == game.homeTeam.club.id })
-        awayLineupAdapter.submitList(game.players.filter { it.clubId == game.awayTeam.club.id })
+        return super.onOptionsItemSelected(item)
     }
 
     private fun formatMatchDate(dateString: String?): String {

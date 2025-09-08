@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?android:colorBackground"
     android:orientation="vertical"
     tools:context=".ui.match_detail.MatchDetailFragment">
 
@@ -11,14 +12,15 @@
         android:id="@+id/progress_bar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:visibility="gone" />
+        android:layout_gravity="center" />
 
     <LinearLayout
         android:id="@+id/content_group"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="gone"
+        tools:visibility="visible">
 
         <include
             android:id="@+id/header"
@@ -26,46 +28,17 @@
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tab_layout"
+            style="@style/Widget.App.TabLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:tabGravity="fill"
-            app:tabMode="fixed">
+            app:tabMode="fixed" />
 
-            <com.google.android.material.tabs.TabItem
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Events" />
-
-            <com.google.android.material.tabs.TabItem
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Stats" />
-
-            <com.google.android.material.tabs.TabItem
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Lineups" />
-        </com.google.android.material.tabs.TabLayout>
-
-        <FrameLayout
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/view_pager"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1">
-
-            <include
-                android:id="@+id/events_view"
-                layout="@layout/page_match_events" />
-
-            <include
-                android:id="@+id/stats_view"
-                layout="@layout/page_match_stats"
-                android:visibility="gone" />
-
-            <include
-                android:id="@+id/lineups_view"
-                layout="@layout/page_match_lineups"
-                android:visibility="gone" />
-        </FrameLayout>
+            android:layout_weight="1" />
 
     </LinearLayout>
 </LinearLayout>

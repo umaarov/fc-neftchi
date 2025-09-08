@@ -10,10 +10,16 @@ import uz.umarov.fcneftchi.R
 import uz.umarov.fcneftchi.data.model.GameEvent
 import uz.umarov.fcneftchi.databinding.ItemMatchEventBinding
 
-class MatchEventsAdapter(
-    private val homeTeamId: Int,
-    private val playersMap: Map<Int, String>
-) : ListAdapter<GameEvent, MatchEventsAdapter.EventViewHolder>(EventDiffCallback) {
+class MatchEventsAdapter :
+    ListAdapter<GameEvent, MatchEventsAdapter.EventViewHolder>(EventDiffCallback) {
+
+    private var homeTeamId: Int = -1
+    private var playersMap: Map<Int, String> = emptyMap()
+
+    fun updateData(homeTeamId: Int, playersMap: Map<Int, String>) {
+        this.homeTeamId = homeTeamId
+        this.playersMap = playersMap
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EventViewHolder {
         val binding =

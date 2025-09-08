@@ -1,24 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:gravity="center_vertical"
-    android:padding="8dp">
+    android:paddingVertical="8dp"
+    android:paddingHorizontal="16dp">
 
     <TextView
         android:id="@+id/player_number"
-        android:layout_width="24dp"
+        android:layout_width="32dp"
         android:layout_height="wrap_content"
+        android:textAppearance="?attr/textAppearanceBody2"
+        android:fontFamily="@font/montserrat_regular"
         android:gravity="center"
-        tools:text="21"/>
+        android:textColor="@color/text_secondary"
+        android:text="10"/>
 
     <TextView
         android:id="@+id/player_name"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:layout_marginStart="8dp"
-        tools:text="Muhsinjon Ubaydullayev"/>
+        android:textAppearance="?attr/textAppearanceBody1"
+        android:fontFamily="@font/montserrat_semibold"
+        android:textColor="@color/text_primary"
+        android:text="Jaloliddin Masharipov"/>
 </LinearLayout>
