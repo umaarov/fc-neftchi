@@ -17,7 +17,8 @@ import java.util.Locale
 private const val ITEM_VIEW_TYPE_HEADER = 0
 private const val ITEM_VIEW_TYPE_ITEM = 1
 
-class MatchAdapter : ListAdapter<FixtureListItem, RecyclerView.ViewHolder>(MatchDiffCallback()) {
+class MatchAdapter(private val onItemClick: (Match) -> Unit) :
+    ListAdapter<FixtureListItem, RecyclerView.ViewHolder>(MatchDiffCallback()) {
 
     override fun getItemViewType(position: Int): Int {
         return when (getItem(position)) {
@@ -29,7 +30,7 @@ class MatchAdapter : ListAdapter<FixtureListItem, RecyclerView.ViewHolder>(Match
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             ITEM_VIEW_TYPE_HEADER -> HeaderViewHolder.from(parent)
-            ITEM_VIEW_TYPE_ITEM -> MatchViewHolder.from(parent)
+            ITEM_VIEW_TYPE_ITEM -> MatchViewHolder.from(parent, onItemClick)
             else -> throw IllegalArgumentException("Unknown viewType $viewType")
         }
     }
@@ -48,13 +49,18 @@ class MatchAdapter : ListAdapter<FixtureListItem, RecyclerView.ViewHolder>(Match
         }
     }
 
-    class MatchViewHolder(private val binding: ItemMatchBinding) :
-        RecyclerView.ViewHolder(binding.root) {
+    class MatchViewHolder(
+        private val binding: ItemMatchBinding,
+        private val onItemClick: (Match) -> Unit
+    ) : RecyclerView.ViewHolder(binding.root) {
 
         private val dateFormatter = SimpleDateFormat("E d MMM yyyy", Locale.getDefault())
         private val timeFormatter = SimpleDateFormat("HH:mm", Locale.getDefault())
 
         fun bind(match: Match) {
+            binding.root.setOnClickListener {
+                onItemClick(match)
+            }
             binding.homeTeamName.text = match.homeTeam.name
             binding.awayTeamName.text = match.awayTeam.name
             binding.matchCompetition.text = match.competition.uppercase()
@@ -74,10 +80,10 @@ class MatchAdapter : ListAdapter<FixtureListItem, RecyclerView.ViewHolder>(Match
         }
 
         companion object {
-            fun from(parent: ViewGroup): MatchViewHolder {
+            fun from(parent: ViewGroup, onItemClick: (Match) -> Unit): MatchViewHolder {
                 val inflater = LayoutInflater.from(parent.context)
                 val binding = ItemMatchBinding.inflate(inflater, parent, false)
-                return MatchViewHolder(binding)
+                return MatchViewHolder(binding, onItemClick)
             }
         }
     }

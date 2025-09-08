@@ -19,7 +19,9 @@ import java.util.Locale
 private const val VIEW_TYPE_HEADER = 0
 private const val VIEW_TYPE_RESULT = 1
 
-class ResultAdapter : ListAdapter<ResultListItem, RecyclerView.ViewHolder>(ResultDiffCallback()) {
+class ResultAdapter(
+    private val onItemClick: (Match) -> Unit
+) : ListAdapter<ResultListItem, RecyclerView.ViewHolder>(ResultDiffCallback()) {
 
     override fun getItemViewType(position: Int): Int {
         return when (getItem(position)) {
@@ -31,7 +33,7 @@ class ResultAdapter : ListAdapter<ResultListItem, RecyclerView.ViewHolder>(Resul
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             VIEW_TYPE_HEADER -> HeaderViewHolder.from(parent)
-            VIEW_TYPE_RESULT -> ResultViewHolder.from(parent)
+            VIEW_TYPE_RESULT -> ResultViewHolder.from(parent, onItemClick)
             else -> throw ClassCastException("Unknown viewType $viewType")
         }
     }
@@ -50,11 +52,16 @@ class ResultAdapter : ListAdapter<ResultListItem, RecyclerView.ViewHolder>(Resul
         }
     }
 
-    class ResultViewHolder(private val binding: ItemResultBinding) :
-        RecyclerView.ViewHolder(binding.root) {
+    class ResultViewHolder(
+        private val binding: ItemResultBinding,
+        private val onItemClick: (Match) -> Unit
+    ) : RecyclerView.ViewHolder(binding.root) {
         private val dateFormatter = SimpleDateFormat("E d MMM yyyy", Locale.getDefault())
 
         fun bind(match: Match) {
+            binding.root.setOnClickListener {
+                onItemClick(match)
+            }
             val context = binding.root.context
 
             binding.homeTeamName.text = match.homeTeam.name
@@ -86,10 +93,10 @@ class ResultAdapter : ListAdapter<ResultListItem, RecyclerView.ViewHolder>(Resul
         }
 
         companion object {
-            fun from(parent: ViewGroup): ResultViewHolder {
+            fun from(parent: ViewGroup, onItemClick: (Match) -> Unit): ResultViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
                 val binding = ItemResultBinding.inflate(layoutInflater, parent, false)
-                return ResultViewHolder(binding)
+                return ResultViewHolder(binding, onItemClick)
             }
         }
     }
