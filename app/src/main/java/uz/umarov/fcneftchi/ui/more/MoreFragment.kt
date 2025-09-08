@@ -1,5 +1,7 @@
 package uz.umarov.fcneftchi.ui.more
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -41,13 +43,20 @@ class MoreFragment : Fragment() {
             findNavController().navigate(R.id.action_moreFragment_to_stadiumFragment)
         }
 
-        binding.socialsButton.setOnClickListener {
-            findNavController().navigate(R.id.action_moreFragment_to_socialsFragment)
-        }
-
         binding.settingsButton.setOnClickListener {
             findNavController().navigate(R.id.action_moreFragment_to_settingsFragment)
         }
+
+        binding.telegramButton.setOnClickListener { openUrl("https://t.me/fcneftchiuz") }
+        binding.instagramButton.setOnClickListener { openUrl("https://www.instagram.com/fcfarneftchi/") }
+        binding.youtubeButton.setOnClickListener { openUrl("https://www.youtube.com/c/FCNEFTCHI") }
+        binding.facebookButton.setOnClickListener { openUrl("https://www.facebook.com/fcneftchi.uz/") }
+
+    }
+
+    private fun openUrl(url: String) {
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+        startActivity(intent)
     }
 
     override fun onDestroyView() {

@@ -86,10 +86,23 @@ class MainActivity : AppCompatActivity() {
         })
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
+            val bottomNavDestinations = setOf(
+                R.id.homeFragment,
+                R.id.newsFragment,
+                R.id.matchesFragment,
+                R.id.videosFragment,
+                R.id.moreFragment
+            )
 
-            val isTopLevelDestination = destination.id in destinations.map { it.first }
-            binding.appBarLayout.isVisible = isTopLevelDestination
-            binding.tabLayout.isVisible = isTopLevelDestination
+            val toolbarDestinations = setOf(
+                R.id.homeFragment,
+                R.id.newsFragment,
+                R.id.matchesFragment,
+                R.id.videosFragment
+            )
+
+            binding.tabLayout.isVisible = destination.id in bottomNavDestinations
+            binding.appBarLayout.isVisible = destination.id in toolbarDestinations
 
             for (i in 0 until binding.tabLayout.tabCount) {
                 val tab = binding.tabLayout.getTabAt(i)
