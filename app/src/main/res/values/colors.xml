@@ -32,4 +32,6 @@
     <color name="result_draw">#8A000000</color>
     <color name="result_loss">#B00020</color>
 
+    <color name="white_60_alpha">#99FFFFFF</color>
+
 </resources>
