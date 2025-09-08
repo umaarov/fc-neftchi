@@ -11,8 +11,8 @@ import uz.umarov.fcneftchi.data.model.Player
 import uz.umarov.fcneftchi.databinding.ItemPlayerBinding
 import uz.umarov.fcneftchi.ui.team.TeamFragmentDirections
 
+// The adapter now only handles the Player type
 class PlayerAdapter : ListAdapter<Player, PlayerAdapter.PlayerViewHolder>(PlayerDiffCallback) {
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlayerViewHolder {
         val binding = ItemPlayerBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -20,21 +20,21 @@ class PlayerAdapter : ListAdapter<Player, PlayerAdapter.PlayerViewHolder>(Player
     }
 
     override fun onBindViewHolder(holder: PlayerViewHolder, position: Int) {
-        val player = getItem(position)
-        holder.bind(player)
-        holder.itemView.setOnClickListener {
-            val action = TeamFragmentDirections.actionTeamFragmentToPlayerProfileFragment(player.id)
-            it.findNavController().navigate(action)
-        }
+        holder.bind(getItem(position))
     }
 
     class PlayerViewHolder(private val binding: ItemPlayerBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(player: Player) {
-            binding.playerImage.load(player.imageUrl) {
-                crossfade(true)
+            binding.root.setOnClickListener {
+                val action = TeamFragmentDirections.actionTeamFragmentToPlayerProfileFragment(player.id)
+                it.findNavController().navigate(action)
             }
-            binding.playerName.text = player.name
+            binding.playerImage.load(player.imageUrl) { crossfade(true) }
             binding.playerNumber.text = player.number.toString()
+
+            val names = player.name.split(" ")
+            binding.playerFirstName.text = names.firstOrNull()?.uppercase() ?: ""
+            binding.playerLastName.text = if (names.size > 1) names.last().uppercase() else ""
         }
     }
 

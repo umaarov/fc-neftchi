@@ -32,6 +32,7 @@ class TeamViewModel @Inject constructor(
         viewModelScope.launch {
             _uiState.value = TeamUiState(isLoading = true)
             repository.getTeam().collect { players ->
+                // No more grouping, just pass the list directly
                 _uiState.value = TeamUiState(players = players, isLoading = false)
             }
         }

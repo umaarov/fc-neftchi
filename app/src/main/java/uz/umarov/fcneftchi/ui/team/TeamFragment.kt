@@ -21,33 +21,27 @@ class TeamFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel: TeamViewModel by viewModels()
-    private lateinit var playerAdapter: PlayerAdapter
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentTeamBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupRecyclerView()
+
+        val playerAdapter = PlayerAdapter()
+        binding.teamRecyclerView.apply {
+            adapter = playerAdapter
+            layoutManager = GridLayoutManager(context, 2)
+        }
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.uiState.collect { state ->
                 binding.progressBar.isVisible = state.isLoading
+                binding.teamRecyclerView.isVisible = !state.isLoading
                 playerAdapter.submitList(state.players)
             }
-        }
-    }
-
-    private fun setupRecyclerView() {
-        playerAdapter = PlayerAdapter()
-        binding.teamRecyclerView.apply {
-            adapter = playerAdapter
-            layoutManager = GridLayoutManager(context, 3)
         }
     }
 

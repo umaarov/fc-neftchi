@@ -3,19 +3,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?android:colorBackground"
     tools:context=".ui.team.TeamFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/team_recycler_view"
         android:layout_width="match_parent"
-        android:clipToPadding="false"
         android:layout_height="match_parent"
-        tools:listitem="@layout/item_player"/>
+        android:clipToPadding="false"
+        android:padding="8dp"
+        tools:listitem="@layout/item_player" />
 
     <ProgressBar
         android:id="@+id/progress_bar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center" />
-
 </FrameLayout>
