@@ -1,40 +1,134 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:gravity="center_vertical"
-    android:paddingStart="8dp"
-    android:paddingEnd="8dp"
-    android:paddingTop="8dp"
-    android:paddingBottom="8dp">
+    android:background="@color/white">
 
-    <TextView
-        android:id="@+id/team_position"
-        style="@style/StatData.Small"
-        android:layout_width="24dp"
-        tools:text="1"/>
+    <View
+        android:id="@+id/highlight_bar"
+        android:layout_width="4dp"
+        android:layout_height="0dp"
+        android:background="?attr/colorPrimary"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="visible" />
 
-    <ImageView
-        android:id="@+id/team_logo"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_marginStart="12dp"
-        tools:src="@tools:sample/avatars"/>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingVertical="4dp">
 
-    <TextView
-        android:id="@+id/team_name"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:layout_marginStart="12dp"
-        android:textStyle="bold"
-        tools:text="Neftchi"/>
+        <LinearLayout
+            android:id="@+id/position_container"
+            android:layout_width="24dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-    <TextView android:id="@+id/stat_games" tools:text="15" style="@style/StatData.Small"/>
-    <TextView android:id="@+id/stat_wins" tools:text="8" style="@style/StatData.Small"/>
-    <TextView android:id="@+id/stat_draws" tools:text="6" style="@style/StatData.Small"/>
-    <TextView android:id="@+id/stat_losses" tools:text="1" style="@style/StatData.Small"/>
-    <TextView android:id="@+id/stat_points" tools:text="30" style="@style/StatData.Small" android:textStyle="bold"/>
-</LinearLayout>
+            <TextView
+                android:id="@+id/team_position"
+                style="@style/TextAppearance.App.Table.Data.Prominent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="2" />
+
+            <ImageView
+                android:id="@+id/trend_arrow"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                tools:src="@drawable/ic_arrow_up" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/team_logo"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_marginStart="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/position_container"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@tools:sample/avatars" />
+
+        <TextView
+            android:id="@+id/team_name"
+            style="@style/TextAppearance.App.Table.Data"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:fontFamily="@font/montserrat_bold"
+            android:gravity="start"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/stats_container"
+            app:layout_constraintStart_toEndOf="@id/team_logo"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Neftchi Fergana" />
+
+        <LinearLayout
+            android:id="@+id/stats_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/stat_games"
+                style="@style/TextAppearance.App.Table.Data"
+                android:layout_width="32dp"
+                android:layout_height="wrap_content"
+                tools:text="3" />
+
+            <TextView
+                android:id="@+id/stat_wins"
+                style="@style/TextAppearance.App.Table.Data"
+                android:layout_width="32dp"
+                android:layout_height="wrap_content"
+                tools:text="2" />
+
+            <TextView
+                android:id="@+id/stat_draws"
+                style="@style/TextAppearance.App.Table.Data"
+                android:layout_width="32dp"
+                android:layout_height="wrap_content"
+                tools:text="1" />
+
+            <TextView
+                android:id="@+id/stat_losses"
+                style="@style/TextAppearance.App.Table.Data"
+                android:layout_width="32dp"
+                android:layout_height="wrap_content"
+                tools:text="0" />
+
+            <TextView
+                android:id="@+id/stat_gd"
+                style="@style/TextAppearance.App.Table.Data"
+                android:layout_width="32dp"
+                android:layout_height="wrap_content"
+                tools:text="+6" />
+
+            <TextView
+                android:id="@+id/stat_points"
+                style="@style/TextAppearance.App.Table.Data.Prominent"
+                android:layout_width="32dp"
+                android:layout_height="wrap_content"
+                tools:text="7" />
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/divider"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

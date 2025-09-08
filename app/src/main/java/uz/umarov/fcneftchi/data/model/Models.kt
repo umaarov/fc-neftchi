@@ -37,7 +37,9 @@ data class LeagueStanding(
     val wins: Int,
     val draws: Int,
     val losses: Int,
-    val points: Int
+    val points: Int,
+    val goalDifference: Int = 0,
+    val trend: String = "up"
 )
 
 data class Video(

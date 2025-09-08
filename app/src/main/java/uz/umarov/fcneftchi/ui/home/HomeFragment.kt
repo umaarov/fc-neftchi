@@ -84,20 +84,13 @@ class HomeFragment : Fragment() {
         }
 
         standingsAdapter = StandingsAdapter()
-        binding.standingsRecyclerView.apply {
-            adapter = standingsAdapter
-            layoutManager = LinearLayoutManager(context)
-        }
     }
 
     private fun setupClickListeners() {
         binding.viewAllNewsButton.setOnClickListener {
-            // Simply navigate to the correct fragment.
             findNavController().navigate(R.id.newsFragment)
         }
         binding.viewAllStandingsButton.setOnClickListener {
-            // Navigate to the matches fragment.
-            // The FAB is responsible for the Matches screen, but this button can also navigate there.
             findNavController().navigate(R.id.matchesFragment)
         }
         binding.nextMatchCard.root.setOnClickListener {

@@ -2,42 +2,55 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/background_light"
+    android:gravity="center_vertical"
     android:orientation="horizontal"
-    android:paddingStart="8dp"
-    android:paddingTop="12dp"
-    android:paddingEnd="8dp"
-    android:paddingBottom="12dp">
+    android:paddingHorizontal="16dp"
+    android:paddingVertical="8dp">
 
     <TextView
-        style="@style/StatHeader.Small"
-        android:layout_width="24dp"
-        android:text="#" />
-
-    <TextView
-        style="@style/StatHeader"
-        android:layout_marginStart="12dp"
+        style="@style/TextAppearance.App.Table.Header"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:layout_weight="1"
         android:gravity="start"
+        android:paddingStart="40dp"
         android:text="Club" />
 
     <TextView
-        style="@style/StatHeader.Small"
+        style="@style/TextAppearance.App.Table.Header"
+        android:layout_width="32dp"
+        android:layout_height="wrap_content"
         android:text="P" />
 
     <TextView
-        style="@style/StatHeader.Small"
+        style="@style/TextAppearance.App.Table.Header"
+        android:layout_width="32dp"
+        android:layout_height="wrap_content"
         android:text="W" />
 
     <TextView
-        style="@style/StatHeader.Small"
+        style="@style/TextAppearance.App.Table.Header"
+        android:layout_width="32dp"
+        android:layout_height="wrap_content"
         android:text="D" />
 
     <TextView
-        style="@style/StatHeader.Small"
+        style="@style/TextAppearance.App.Table.Header"
+        android:layout_width="32dp"
+        android:layout_height="wrap_content"
         android:text="L" />
 
     <TextView
-        style="@style/StatHeader.Small"
-        android:text="Pts"
+        style="@style/TextAppearance.App.Table.Header"
+        android:layout_width="32dp"
+        android:layout_height="wrap_content"
+        android:text="GD" />
+
+    <TextView
+        style="@style/TextAppearance.App.Table.Header"
+        android:layout_width="32dp"
+        android:layout_height="wrap_content"
+        android:text="PTS"
         android:textStyle="bold" />
 </LinearLayout>
