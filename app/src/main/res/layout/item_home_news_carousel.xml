@@ -9,6 +9,7 @@
     android:orientation="horizontal"
     android:clipToPadding="false"
     android:paddingHorizontal="12dp"
+    android:paddingVertical="4dp"
     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
     tools:itemCount="3"
     tools:listitem="@layout/item_news_home"/>

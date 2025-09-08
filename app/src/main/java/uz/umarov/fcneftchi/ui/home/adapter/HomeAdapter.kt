@@ -5,13 +5,11 @@ import android.os.Handler
 import android.os.Looper
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
-import uz.umarov.fcneftchi.R
 import uz.umarov.fcneftchi.data.model.LeagueStanding
 import uz.umarov.fcneftchi.data.model.Match
 import uz.umarov.fcneftchi.data.model.NewsArticle
@@ -217,18 +215,15 @@ class HomeAdapter(
             binding.homeTeamLogo.load(match.homeTeam.logoUrl)
             binding.awayTeamLogo.load(match.awayTeam.logoUrl)
             binding.score.text = "${match.homeScore} - ${match.awayScore}"
+            binding.matchCompetition.text = match.competition
 
-            val myTeamName = "Neftchi"
-            val homeScore = match.homeScore ?: -1
-            val awayScore = match.awayScore ?: -1
-
-            val backgroundColor = when {
-                match.homeTeam.name == myTeamName && homeScore > awayScore -> R.color.result_win
-                match.awayTeam.name == myTeamName && awayScore > homeScore -> R.color.result_win
-                homeScore == awayScore -> R.color.result_draw
-                else -> R.color.result_loss
+            val date = DateUtils.parseDate(match.matchDate)
+            binding.matchDate.text = if (date != null) {
+                SimpleDateFormat("dd MMM, HH:mm", Locale.ENGLISH).format(date)
+                    .toUpperCase(Locale.ROOT)
+            } else {
+                "N/A"
             }
-            binding.score.background = ContextCompat.getDrawable(itemView.context, backgroundColor)
         }
     }
 

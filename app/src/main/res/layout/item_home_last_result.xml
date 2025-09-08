@@ -4,83 +4,151 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginStart="16dp"
-    android:layout_marginEnd="16dp"
-    android:layout_marginBottom="16dp"
+    android:layout_margin="16dp"
     app:cardCornerRadius="12dp"
     app:cardElevation="4dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="16dp">
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/stadium_background"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/celebrating"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="ContentDescription" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="#99000000"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/header_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
             android:fontFamily="@font/montserrat_semibold"
             android:text="OXIRGI NATIJA"
             android:textAppearance="?attr/textAppearanceCaption"
+            android:textColor="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/home_team_logo"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
             android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toStartOf="@id/guideline_left"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/header_title"
             tools:src="@tools:sample/avatars" />
 
         <TextView
             android:id="@+id/home_team_name"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
+            android:layout_marginTop="8dp"
+            android:ellipsize="end"
             android:fontFamily="@font/montserrat_bold"
-            android:textAppearance="?attr/textAppearanceBody1"
-            app:layout_constraintBottom_toBottomOf="@id/home_team_logo"
-            app:layout_constraintStart_toEndOf="@id/home_team_logo"
-            app:layout_constraintTop_toTopOf="@id/home_team_logo"
+            android:gravity="center"
+            android:maxLines="2"
+            android:textColor="@color/white"
+            app:layout_constraintEnd_toEndOf="@id/home_team_logo"
+            app:layout_constraintStart_toStartOf="@id/home_team_logo"
+            app:layout_constraintTop_toBottomOf="@id/home_team_logo"
             tools:text="Neftchi" />
 
         <ImageView
             android:id="@+id/away_team_logo"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/guideline_right"
             app:layout_constraintTop_toTopOf="@id/home_team_logo"
             tools:src="@tools:sample/avatars" />
 
         <TextView
             android:id="@+id/away_team_name"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="12dp"
+            android:layout_marginTop="8dp"
+            android:ellipsize="end"
             android:fontFamily="@font/montserrat_bold"
-            android:textAppearance="?attr/textAppearanceBody1"
-            app:layout_constraintBottom_toBottomOf="@id/away_team_logo"
-            app:layout_constraintEnd_toStartOf="@id/away_team_logo"
-            app:layout_constraintTop_toTopOf="@id/away_team_logo"
+            android:gravity="center"
+            android:maxLines="2"
+            android:textColor="@color/white"
+            app:layout_constraintEnd_toEndOf="@id/away_team_logo"
+            app:layout_constraintStart_toStartOf="@id/away_team_logo"
+            app:layout_constraintTop_toBottomOf="@id/away_team_logo"
             tools:text="Pakhtakor" />
 
         <TextView
             android:id="@+id/score"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/score_background_draw"
             android:fontFamily="@font/montserrat_bold"
-            android:paddingHorizontal="16dp"
-            android:paddingVertical="4dp"
-            android:textAppearance="?attr/textAppearanceHeadline6"
+            android:textAppearance="?attr/textAppearanceHeadline4"
             android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="@id/home_team_logo"
-            app:layout_constraintEnd_toStartOf="@id/away_team_name"
-            app:layout_constraintStart_toEndOf="@id/home_team_name"
+            app:layout_constraintEnd_toStartOf="@id/guideline_right"
+            app:layout_constraintStart_toEndOf="@id/guideline_left"
             app:layout_constraintTop_toTopOf="@id/home_team_logo"
             tools:text="2 - 1" />
+
+        <TextView
+            android:id="@+id/match_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/montserrat_semibold"
+            android:textAppearance="?attr/textAppearanceBody2"
+            android:textColor="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/home_team_name"
+            tools:text="06 SEP, 20:00" />
+
+        <TextView
+            android:id="@+id/match_competition"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="16dp"
+            android:fontFamily="@font/montserrat_regular"
+            android:textAppearance="?attr/textAppearanceCaption"
+            android:textColor="#B3FFFFFF"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/match_date"
+            tools:text="Uzbekistan Super League" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.3" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.7" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>
