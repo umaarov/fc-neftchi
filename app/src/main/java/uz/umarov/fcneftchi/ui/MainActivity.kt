@@ -43,7 +43,7 @@ class MainActivity : AppCompatActivity() {
             R.id.moreFragment
         )
         val appBarConfiguration = AppBarConfiguration(topLevelDestinations)
-        binding.toolbar.setupWithNavController(navController, appBarConfiguration)
+//        binding.toolbar.setupWithNavController(navController, appBarConfiguration)
 
         setupTabLayoutWithNavController()
 
