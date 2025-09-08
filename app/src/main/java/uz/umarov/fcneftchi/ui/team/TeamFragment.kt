@@ -21,27 +21,47 @@ class TeamFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel: TeamViewModel by viewModels()
+    private lateinit var playerAdapter: PlayerAdapter
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         _binding = FragmentTeamBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        val playerAdapter = PlayerAdapter()
-        binding.teamRecyclerView.apply {
-            adapter = playerAdapter
-            layoutManager = GridLayoutManager(context, 2)
-        }
+        setupRecyclerView()
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.uiState.collect { state ->
                 binding.progressBar.isVisible = state.isLoading
                 binding.teamRecyclerView.isVisible = !state.isLoading
-                playerAdapter.submitList(state.players)
+                playerAdapter.submitList(state.items)
             }
+        }
+    }
+
+    private fun setupRecyclerView() {
+        playerAdapter = PlayerAdapter()
+        val gridLayoutManager = GridLayoutManager(context, 2)
+
+        gridLayoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+            override fun getSpanSize(position: Int): Int {
+                return when (playerAdapter.getItemViewType(position)) {
+                    0 -> 2
+                    1 -> 1
+                    else -> 1
+                }
+            }
+        }
+
+        binding.teamRecyclerView.apply {
+            adapter = playerAdapter
+            layoutManager = gridLayoutManager
         }
     }
 

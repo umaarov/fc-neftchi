@@ -7,12 +7,12 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import uz.umarov.fcneftchi.data.model.Player
 import uz.umarov.fcneftchi.data.repository.NeftchiRepository
+import java.util.Locale
 import javax.inject.Inject
 
 data class TeamUiState(
-    val players: List<Player> = emptyList(),
+    val items: List<TeamListItem> = emptyList(),
     val isLoading: Boolean = true
 )
 
@@ -32,8 +32,32 @@ class TeamViewModel @Inject constructor(
         viewModelScope.launch {
             _uiState.value = TeamUiState(isLoading = true)
             repository.getTeam().collect { players ->
-                // No more grouping, just pass the list directly
-                _uiState.value = TeamUiState(players = players, isLoading = false)
+                val groupedItems = mutableListOf<TeamListItem>()
+
+                val playersByPosition = players.groupBy { it.position }
+
+                val positionOrder = listOf("Goalkeeper", "Defender", "Midfielder", "Forward")
+
+                val sortedPositions = playersByPosition.keys.sortedWith(compareBy { position ->
+                    val formattedPosition = position.replaceFirstChar {
+                        if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString()
+                    }
+                    val index = positionOrder.indexOf(formattedPosition)
+                    if (index == -1) Int.MAX_VALUE else index
+                })
+
+                sortedPositions.forEach { position ->
+                    playersByPosition[position]?.let { playerGroup ->
+                        val headerTitle =
+                            position.replaceFirstChar { it.titlecase(Locale.ROOT) } + "LAR"
+                        groupedItems.add(TeamListItem.HeaderItem(headerTitle.uppercase()))
+                        playerGroup.forEach { player ->
+                            groupedItems.add(TeamListItem.PlayerItem(player))
+                        }
+                    }
+                }
+
+                _uiState.value = TeamUiState(items = groupedItems, isLoading = false)
             }
         }
     }

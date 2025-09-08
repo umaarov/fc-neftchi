@@ -9,24 +9,51 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import uz.umarov.fcneftchi.data.model.Player
 import uz.umarov.fcneftchi.databinding.ItemPlayerBinding
+import uz.umarov.fcneftchi.databinding.ItemPlayerHeaderBinding
 import uz.umarov.fcneftchi.ui.team.TeamFragmentDirections
+import uz.umarov.fcneftchi.ui.team.TeamListItem
 
-// The adapter now only handles the Player type
-class PlayerAdapter : ListAdapter<Player, PlayerAdapter.PlayerViewHolder>(PlayerDiffCallback) {
+private const val VIEW_TYPE_HEADER = 0
+private const val VIEW_TYPE_PLAYER = 1
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlayerViewHolder {
-        val binding = ItemPlayerBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return PlayerViewHolder(binding)
+class PlayerAdapter : ListAdapter<TeamListItem, RecyclerView.ViewHolder>(PlayerDiffCallback) {
+
+    override fun getItemViewType(position: Int): Int {
+        return when (getItem(position)) {
+            is TeamListItem.HeaderItem -> VIEW_TYPE_HEADER
+            is TeamListItem.PlayerItem -> VIEW_TYPE_PLAYER
+        }
     }
 
-    override fun onBindViewHolder(holder: PlayerViewHolder, position: Int) {
-        holder.bind(getItem(position))
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        val inflater = LayoutInflater.from(parent.context)
+        return when (viewType) {
+            VIEW_TYPE_HEADER -> HeaderViewHolder(
+                ItemPlayerHeaderBinding.inflate(
+                    inflater,
+                    parent,
+                    false
+                )
+            )
+
+            VIEW_TYPE_PLAYER -> PlayerViewHolder(ItemPlayerBinding.inflate(inflater, parent, false))
+            else -> throw IllegalArgumentException("Unknown view type")
+        }
     }
 
-    class PlayerViewHolder(private val binding: ItemPlayerBinding) : RecyclerView.ViewHolder(binding.root) {
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        when (val item = getItem(position)) {
+            is TeamListItem.HeaderItem -> (holder as HeaderViewHolder).bind(item)
+            is TeamListItem.PlayerItem -> (holder as PlayerViewHolder).bind(item.player)
+        }
+    }
+
+    class PlayerViewHolder(private val binding: ItemPlayerBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         fun bind(player: Player) {
             binding.root.setOnClickListener {
-                val action = TeamFragmentDirections.actionTeamFragmentToPlayerProfileFragment(player.id)
+                val action =
+                    TeamFragmentDirections.actionTeamFragmentToPlayerProfileFragment(player.id)
                 it.findNavController().navigate(action)
             }
             binding.playerImage.load(player.imageUrl) { crossfade(true) }
@@ -38,8 +65,20 @@ class PlayerAdapter : ListAdapter<Player, PlayerAdapter.PlayerViewHolder>(Player
         }
     }
 
-    object PlayerDiffCallback : DiffUtil.ItemCallback<Player>() {
-        override fun areItemsTheSame(oldItem: Player, newItem: Player): Boolean = oldItem.id == newItem.id
-        override fun areContentsTheSame(oldItem: Player, newItem: Player): Boolean = oldItem == newItem
+    class HeaderViewHolder(private val binding: ItemPlayerHeaderBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun bind(header: TeamListItem.HeaderItem) {
+            binding.headerTitle.text = header.title
+        }
+    }
+
+    object PlayerDiffCallback : DiffUtil.ItemCallback<TeamListItem>() {
+        override fun areItemsTheSame(oldItem: TeamListItem, newItem: TeamListItem): Boolean {
+            return (oldItem is TeamListItem.PlayerItem && newItem is TeamListItem.PlayerItem && oldItem.player.id == newItem.player.id) ||
+                    (oldItem is TeamListItem.HeaderItem && newItem is TeamListItem.HeaderItem && oldItem.title == newItem.title)
+        }
+
+        override fun areContentsTheSame(oldItem: TeamListItem, newItem: TeamListItem): Boolean =
+            oldItem == newItem
     }
 }
