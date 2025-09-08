@@ -12,8 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import uz.umarov.fcneftchi.databinding.FragmentResultsBinding
-import uz.umarov.fcneftchi.ui.matches.FixtureListItem
-import uz.umarov.fcneftchi.ui.matches.adapter.MatchAdapter
+import uz.umarov.fcneftchi.ui.matches.adapter.ResultAdapter // <-- Use the new ResultAdapter
 
 @AndroidEntryPoint
 class ResultsFragment : Fragment() {
@@ -21,23 +20,28 @@ class ResultsFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel: ResultsViewModel by viewModels()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         _binding = FragmentResultsBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val matchAdapter = MatchAdapter()
+
+        val resultAdapter = ResultAdapter()
         binding.resultsRecyclerView.apply {
-            adapter = matchAdapter
+            adapter = resultAdapter
             layoutManager = LinearLayoutManager(context)
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.uiState.collect {
                 binding.progressBar.isVisible = it.isLoading
-                matchAdapter.submitList(it.results as List<FixtureListItem?>?)
+                resultAdapter.submitList(it.items)
             }
         }
     }

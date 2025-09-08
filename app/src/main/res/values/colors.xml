@@ -27,4 +27,9 @@
 
     <color name="card_stroke_color">#1F000000</color>
     <color name="table_header_background">#0A000000</color>
+
+    <color name="result_win">#00802B</color>
+    <color name="result_draw">#8A000000</color>
+    <color name="result_loss">#B00020</color>
+
 </resources>
