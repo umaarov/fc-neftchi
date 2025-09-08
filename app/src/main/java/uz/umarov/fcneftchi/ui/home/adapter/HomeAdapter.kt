@@ -211,18 +211,12 @@ class HomeAdapter(
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(match: Match) {
             binding.root.setOnClickListener { onMatchClick(match) }
-            val resultBinding = binding.resultInclude
-            resultBinding.homeTeamName.text = match.homeTeam.name
-            resultBinding.awayTeamName.text = match.awayTeam.name
-            resultBinding.homeTeamLogo.load(match.homeTeam.logoUrl)
-            resultBinding.awayTeamLogo.load(match.awayTeam.logoUrl)
-            resultBinding.matchCompetition.text = match.competition
-            val date = DateUtils.parseDate(match.matchDate)
-            resultBinding.matchDate.text =
-                if (date != null) SimpleDateFormat("E d MMM yyyy", Locale.getDefault()).format(date)
-                    .uppercase() else ""
-            resultBinding.homeScoreText.text = match.homeScore.toString()
-            resultBinding.awayScoreText.text = match.awayScore.toString()
+
+            binding.homeTeamName.text = match.homeTeam.name
+            binding.awayTeamName.text = match.awayTeam.name
+            binding.homeTeamLogo.load(match.homeTeam.logoUrl)
+            binding.awayTeamLogo.load(match.awayTeam.logoUrl)
+            binding.score.text = "${match.homeScore} - ${match.awayScore}"
 
             val myTeamName = "Neftchi"
             val homeScore = match.homeScore ?: -1
@@ -234,10 +228,10 @@ class HomeAdapter(
                 homeScore == awayScore -> R.color.result_draw
                 else -> R.color.result_loss
             }
-            resultBinding.scoreContainer.background =
-                ContextCompat.getDrawable(itemView.context, backgroundColor)
+            binding.score.background = ContextCompat.getDrawable(itemView.context, backgroundColor)
         }
     }
+
 
     class HeaderViewHolder(
         private val binding: ItemHomeHeaderBinding,

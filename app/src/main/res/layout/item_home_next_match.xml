@@ -5,20 +5,43 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="16dp"
-    app:cardElevation="4dp">
+    app:cardElevation="4dp"
+    app:cardCornerRadius="12dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="16dp">
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/stadium_background"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/stadium_background"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="ContentDescription" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="#99000000"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/header_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
             android:fontFamily="@font/montserrat_semibold"
             android:text="KEYINGI O'YIN"
             android:textAppearance="?attr/textAppearanceCaption"
+            android:textColor="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -40,7 +63,9 @@
             android:layout_marginTop="8dp"
             android:fontFamily="@font/montserrat_bold"
             android:gravity="center"
-            android:textAppearance="?attr/textAppearanceBody1"
+            android:textColor="@color/white"
+            android:maxLines="2"
+            android:ellipsize="end"
             app:layout_constraintEnd_toEndOf="@id/home_team_logo"
             app:layout_constraintStart_toStartOf="@id/home_team_logo"
             app:layout_constraintTop_toBottomOf="@id/home_team_logo"
@@ -62,7 +87,9 @@
             android:layout_marginTop="8dp"
             android:fontFamily="@font/montserrat_bold"
             android:gravity="center"
-            android:textAppearance="?attr/textAppearanceBody1"
+            android:textColor="@color/white"
+            android:maxLines="2"
+            android:ellipsize="end"
             app:layout_constraintEnd_toEndOf="@id/away_team_logo"
             app:layout_constraintStart_toStartOf="@id/away_team_logo"
             app:layout_constraintTop_toBottomOf="@id/away_team_logo"
@@ -74,22 +101,24 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/montserrat_bold"
             android:textAppearance="?attr/textAppearanceHeadline5"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/home_team_name"
-            tools:text="02 : 12 : 45 : 33" />
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="@id/home_team_logo"
+            app:layout_constraintEnd_toStartOf="@id/guideline_right"
+            app:layout_constraintStart_toEndOf="@id/guideline_left"
+            app:layout_constraintTop_toTopOf="@id/home_team_logo"
+            tools:text="02:12:45:33" />
 
         <TextView
             android:id="@+id/match_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="16dp"
             android:fontFamily="@font/montserrat_semibold"
             android:textAppearance="?attr/textAppearanceBody2"
-            app:layout_constraintBottom_toBottomOf="@id/home_team_logo"
-            app:layout_constraintEnd_toStartOf="@id/guideline_right"
-            app:layout_constraintStart_toEndOf="@id/guideline_left"
-            app:layout_constraintTop_toTopOf="@id/home_team_logo"
+            android:textColor="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/home_team_name"
             tools:text="12 SEP, 20:00" />
 
         <TextView
@@ -97,11 +126,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
+            android:layout_marginBottom="16dp"
             android:fontFamily="@font/montserrat_regular"
             android:textAppearance="?attr/textAppearanceCaption"
+            android:textColor="#B3FFFFFF"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/match_date"
+            app:layout_constraintBottom_toBottomOf="parent"
             tools:text="Uzbekistan Super League" />
 
         <androidx.constraintlayout.widget.Guideline
