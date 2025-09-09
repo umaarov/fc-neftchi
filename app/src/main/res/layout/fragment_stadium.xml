@@ -4,95 +4,167 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?android:colorBackground"
     tools:context=".ui.stadium.StadiumFragment">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="wrap_content">
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="250dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/img_stadium" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/carousel_container"
+            android:layout_width="0dp"
+            android:layout_height="300dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-            <com.google.android.material.card.MaterialCardView
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/stadium_image_pager"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:cardCornerRadius="8dp"
-                app:cardElevation="4dp">
+                android:layout_height="match_parent"
+                android:clipToPadding="false" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="16dp">
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/scrim_gradient_bottom" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Asosiy ma'lumotlar"
-                        android:textAppearance="?attr/textAppearanceHeadline6" />
-
-                    <LinearLayout
-                        style="@style/StatRow"
-                        android:layout_marginTop="16dp">
-
-                        <TextView
-                            style="@style/StatLabel"
-                            android:text="Sig'imi:" />
-
-                        <TextView
-                            style="@style/StatValue"
-                            android:text="20,000" />
-                    </LinearLayout>
-
-                    <LinearLayout style="@style/StatRow">
-
-                        <TextView
-                            style="@style/StatLabel"
-                            android:text="Ochilgan yili:" />
-
-                        <TextView
-                            style="@style/StatValue"
-                            android:text="2015" />
-                    </LinearLayout>
-
-                    <LinearLayout style="@style/StatRow">
-
-                        <TextView
-                            style="@style/StatLabel"
-                            android:text="Manzil:" />
-
-                        <TextView
-                            style="@style/StatValue"
-                            android:maxLines="2"
-                            android:text="@string/stadium_address" />
-                    </LinearLayout>
-
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-
-            <TextView
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/stadium_image_indicator"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:itemCount="3"
+                tools:listitem="@layout/item_indicator" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="24dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/carousel_container">
+
+            <TextView
+                android:id="@+id/stadium_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
                 android:layout_marginTop="24dp"
-                android:layout_marginBottom="8dp"
-                android:text="Tavsif"
-                android:textAppearance="?attr/textAppearanceHeadline6" />
+                android:fontFamily="@font/montserrat_bold"
+                android:textAppearance="?attr/textAppearanceHeadline5"
+                android:textColor="@color/text_primary"
+                tools:text="Istiqlol Stadium" />
+
+            <TextView
+                android:id="@+id/stadium_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="8dp"
+                android:drawablePadding="8dp"
+                android:fontFamily="@font/montserrat_semibold"
+                android:gravity="center_vertical"
+                android:textAppearance="?attr/textAppearanceBody2"
+                android:textColor="@color/text_secondary"
+                tools:text="1 Istiqlol Street, Fergana, Uzbekistan" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/stadium_capacity"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/montserrat_bold"
+                        android:textAppearance="?attr/textAppearanceHeadline5"
+                        android:textColor="?attr/colorPrimary"
+                        tools:text="20,000" />
+
+                    <TextView
+                        style="@style/TextAppearance.App.Table.Header"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="CAPACITY" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/stadium_opened_year"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/montserrat_bold"
+                        android:textAppearance="?attr/textAppearanceHeadline5"
+                        android:textColor="?attr/colorPrimary"
+                        tools:text="2015" />
+
+                    <TextView
+                        style="@style/TextAppearance.App.Table.Header"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="OPENED" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="24dp"
+                android:background="@color/divider" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="24dp"
+                android:fontFamily="@font/montserrat_bold"
+                android:text="About The Stadium"
+                android:textAppearance="?attr/textAppearanceHeadline6"
+                android:textColor="@color/text_primary" />
+
+            <TextView
+                android:id="@+id/stadium_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/montserrat_regular"
                 android:lineSpacingMultiplier="1.4"
-                android:text="@string/stadium_description" />
+                android:textAppearance="?attr/textAppearanceBody1"
+                android:textColor="@color/text_primary"
+                tools:text="@string/stadium_description" />
+
         </LinearLayout>
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

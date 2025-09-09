@@ -1,33 +1,134 @@
 package uz.umarov.fcneftchi.ui.stadium
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.viewpager2.widget.CompositePageTransformer
+import androidx.viewpager2.widget.MarginPageTransformer
+import androidx.viewpager2.widget.ViewPager2
+import uz.umarov.fcneftchi.R
 import uz.umarov.fcneftchi.databinding.FragmentStadiumBinding
+import uz.umarov.fcneftchi.ui.MainActivity
+import uz.umarov.fcneftchi.ui.stadium.adapter.IndicatorAdapter
+import uz.umarov.fcneftchi.ui.stadium.adapter.StadiumImagePagerAdapter
+import kotlin.math.abs
 
 class StadiumFragment : Fragment() {
 
     private var _binding: FragmentStadiumBinding? = null
     private val binding get() = _binding!!
 
+    private lateinit var autoScrollHandler: Handler
+    private var autoScrollRunnable: Runnable? = null
+    private val AUTO_SCROLL_DELAY = 5000L
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentStadiumBinding.inflate(inflater, container, false)
+        autoScrollHandler = Handler(Looper.getMainLooper())
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // binding.fabOpenMap.setOnClickListener { ... }
+        setupImageCarousel()
+        setupContent()
+    }
+
+    private fun setupImageCarousel() {
+        val stadiumImages = listOf(
+            R.drawable.img_stadium,
+            R.drawable.img_stadium_2,
+            R.drawable.img_stadium_3
+        )
+
+        val pagerAdapter = StadiumImagePagerAdapter(stadiumImages)
+        binding.stadiumImagePager.adapter = pagerAdapter
+
+        val indicatorAdapter = IndicatorAdapter(stadiumImages.size)
+        binding.stadiumImageIndicator.adapter = indicatorAdapter
+
+        val compositePageTransformer = CompositePageTransformer()
+        compositePageTransformer.addTransformer(MarginPageTransformer(40))
+        compositePageTransformer.addTransformer { page, position ->
+            val r = 1 - abs(position)
+            page.scaleY = 0.85f + r * 0.15f
+        }
+        binding.stadiumImagePager.setPageTransformer(compositePageTransformer)
+
+        binding.stadiumImagePager.registerOnPageChangeCallback(object :
+            ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                indicatorAdapter.selectedPosition = position
+                indicatorAdapter.notifyDataSetChanged()
+            }
+        })
+
+        startAutoScroll(stadiumImages.size)
+    }
+
+    private fun setupContent() {
+        binding.stadiumName.text = "Istiqlol Stadium"
+        binding.stadiumAddress.text = getString(R.string.stadium_address)
+        binding.stadiumCapacity.text = "20,000"
+        binding.stadiumOpenedYear.text = "2015"
+        binding.stadiumDescription.text = getString(R.string.stadium_description)
+
+        val locationIcon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_location_on)
+        binding.stadiumAddress.setCompoundDrawablesWithIntrinsicBounds(
+            locationIcon,
+            null,
+            null,
+            null
+        )
+    }
+
+    private fun startAutoScroll(itemCount: Int) {
+        clearCarouselTimer()
+        if (itemCount <= 1) return
+
+        autoScrollRunnable = object : Runnable {
+            override fun run() {
+                val currentItem = binding.stadiumImagePager.currentItem
+                val nextItem = (currentItem + 1) % itemCount
+                binding.stadiumImagePager.setCurrentItem(nextItem, true)
+                autoScrollHandler.postDelayed(this, AUTO_SCROLL_DELAY)
+            }
+        }
+        autoScrollHandler.postDelayed(autoScrollRunnable!!, AUTO_SCROLL_DELAY)
+    }
+
+    private fun clearCarouselTimer() {
+        autoScrollRunnable?.let { autoScrollHandler.removeCallbacks(it) }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        clearCarouselTimer()
+        (activity as? MainActivity)?.showMainUI()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        binding.stadiumImagePager.adapter?.itemCount?.let {
+            startAutoScroll(it)
+        }
+        (activity as? MainActivity)?.hideToolbarOnly()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
+        clearCarouselTimer()
+        binding.stadiumImagePager.adapter = null
         _binding = null
     }
 }
