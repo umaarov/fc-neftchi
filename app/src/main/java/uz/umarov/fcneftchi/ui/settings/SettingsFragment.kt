@@ -15,6 +15,7 @@ import androidx.navigation.fragment.findNavController
 import com.google.firebase.messaging.FirebaseMessaging
 import dagger.hilt.android.AndroidEntryPoint
 import uz.umarov.fcneftchi.databinding.FragmentSettingsBinding
+import uz.umarov.fcneftchi.ui.MainActivity
 import uz.umarov.fcneftchi.util.SharedPrefsHelper
 import javax.inject.Inject
 
@@ -102,6 +103,16 @@ class SettingsFragment : Fragment() {
                 requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        (activity as? MainActivity)?.hideToolbarOnly()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        (activity as? MainActivity)?.showMainUI()
     }
 
     override fun onDestroyView() {
