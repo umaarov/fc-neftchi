@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import uz.umarov.fcneftchi.databinding.FragmentStatisticsBinding
+import uz.umarov.fcneftchi.ui.MainActivity
 import uz.umarov.fcneftchi.ui.stats.adapter.PlayerStatsAdapter
 
 @AndroidEntryPoint
@@ -60,6 +61,16 @@ class StatisticsFragment : Fragment() {
             adapter = playerStatsAdapter
             layoutManager = LinearLayoutManager(context)
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        (activity as? MainActivity)?.hideToolbarOnly()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        (activity as? MainActivity)?.showMainUI()
     }
 
     override fun onDestroyView() {

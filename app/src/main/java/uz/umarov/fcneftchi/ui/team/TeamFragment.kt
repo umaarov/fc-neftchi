@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import uz.umarov.fcneftchi.databinding.FragmentTeamBinding
+import uz.umarov.fcneftchi.ui.MainActivity
 import uz.umarov.fcneftchi.ui.team.adapter.PlayerAdapter
 
 @AndroidEntryPoint
@@ -63,6 +64,16 @@ class TeamFragment : Fragment() {
             adapter = playerAdapter
             layoutManager = gridLayoutManager
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        (activity as? MainActivity)?.hideToolbarOnly()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        (activity as? MainActivity)?.showMainUI()
     }
 
     override fun onDestroyView() {
