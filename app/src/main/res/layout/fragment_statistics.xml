@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?android:colorBackground"
     tools:context=".ui.stats.StatisticsFragment">
 
     <ProgressBar
@@ -19,6 +20,7 @@
         android:id="@+id/content_group"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:clipToPadding="false"
         android:visibility="gone"
         tools:visibility="visible">
 
@@ -26,18 +28,22 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="8dp">
+            android:paddingBottom="16dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/montserrat_bold"
+                android:paddingHorizontal="16dp"
+                android:paddingTop="16dp"
+                android:paddingBottom="8dp"
+                android:text="Club Statistics"
+                android:textAppearance="?attr/textAppearanceHeadline6"
+                android:textColor="?attr/colorPrimary" />
 
             <include
                 android:id="@+id/club_stats_card"
                 layout="@layout/item_club_stats" />
-
-            <TextView
-                style="@style/TextAppearance.MaterialComponents.Headline6"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                android:text="Player Statistics" />
 
             <include layout="@layout/item_player_stats_header" />
 

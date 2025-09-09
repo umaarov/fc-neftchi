@@ -1,32 +1,186 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardCornerRadius="8dp"
-    app:cardElevation="2dp"
-    android:layout_margin="8dp">
+    android:layout_marginTop="4dp"
+    android:elevation="0dp"
+    app:cardCornerRadius="0dp"
+    app:cardElevation="0dp"
+    app:strokeWidth="0dp">
 
-    <GridLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:columnCount="3"
-        android:rowCount="2"
-        android:padding="16dp">
+        android:paddingVertical="16dp">
 
-        <TextView android:text="Matches" style="@style/StatLabel" />
-        <TextView android:id="@+id/stat_matches" tools:text="15" style="@style/StatValue" />
-        <TextView android:text="Wins" style="@style/StatLabel" />
-        <TextView android:id="@+id/stat_wins" tools:text="8" style="@style/StatValue" />
-        <TextView android:text="Draws" style="@style/StatLabel" />
-        <TextView android:id="@+id/stat_draws" tools:text="6" style="@style/StatValue" />
-        <TextView android:text="Losses" style="@style/StatLabel" />
-        <TextView android:id="@+id/stat_losses" tools:text="1" style="@style/StatValue" />
-        <TextView android:text="Goals Scored" style="@style/StatLabel" />
-        <TextView android:id="@+id/stat_goals_scored" tools:text="25" style="@style/StatValue" />
-        <TextView android:text="Goals Conceded" style="@style/StatLabel" />
-        <TextView android:id="@+id/stat_goals_conceded" tools:text="13" style="@style/StatValue" />
-    </GridLayout>
+        <LinearLayout
+            android:id="@+id/wins_layout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toStartOf="@id/draws_layout"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/stat_wins"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/montserrat_bold"
+                android:textAppearance="?attr/textAppearanceHeadline4"
+                android:textColor="?attr/colorPrimary"
+                tools:text="8" />
+
+            <TextView
+                style="@style/TextAppearance.App.Table.Header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="WINS" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/draws_layout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toStartOf="@id/losses_layout"
+            app:layout_constraintStart_toEndOf="@id/wins_layout"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/stat_draws"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/montserrat_bold"
+                android:textAppearance="?attr/textAppearanceHeadline4"
+                android:textColor="@color/text_primary"
+                tools:text="6" />
+
+            <TextView
+                style="@style/TextAppearance.App.Table.Header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="DRAWS" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/losses_layout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/draws_layout"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/stat_losses"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/montserrat_bold"
+                android:textAppearance="?attr/textAppearanceHeadline4"
+                android:textColor="@color/result_loss"
+                tools:text="1" />
+
+            <TextView
+                style="@style/TextAppearance.App.Table.Header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="LOSSES" />
+        </LinearLayout>
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="16dp"
+            android:background="@color/divider"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/wins_layout" />
+
+        <TextView
+            android:id="@+id/label_matches"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/montserrat_regular"
+            android:text="Matches Played"
+            android:textAppearance="?attr/textAppearanceBody2"
+            android:textColor="@color/text_secondary"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/divider" />
+
+        <TextView
+            android:id="@+id/stat_matches"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:fontFamily="@font/montserrat_bold"
+            android:textAppearance="?attr/textAppearanceBody1"
+            android:textColor="@color/text_primary"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/label_matches"
+            tools:text="15" />
+
+        <TextView
+            android:id="@+id/label_goals_scored"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="12dp"
+            android:fontFamily="@font/montserrat_regular"
+            android:text="Goals Scored"
+            android:textAppearance="?attr/textAppearanceBody2"
+            android:textColor="@color/text_secondary"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/label_matches" />
+
+        <TextView
+            android:id="@+id/stat_goals_scored"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:fontFamily="@font/montserrat_bold"
+            android:textAppearance="?attr/textAppearanceBody1"
+            android:textColor="@color/text_primary"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/label_goals_scored"
+            tools:text="25" />
+
+        <TextView
+            android:id="@+id/label_goals_conceded"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="12dp"
+            android:fontFamily="@font/montserrat_regular"
+            android:text="Goals Conceded"
+            android:textAppearance="?attr/textAppearanceBody2"
+            android:textColor="@color/text_secondary"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/label_goals_scored" />
+
+        <TextView
+            android:id="@+id/stat_goals_conceded"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:fontFamily="@font/montserrat_bold"
+            android:textAppearance="?attr/textAppearanceBody1"
+            android:textColor="@color/text_primary"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/label_goals_conceded"
+            tools:text="13" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>
