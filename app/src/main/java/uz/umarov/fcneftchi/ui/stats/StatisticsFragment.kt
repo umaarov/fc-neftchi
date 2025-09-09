@@ -24,7 +24,11 @@ class StatisticsFragment : Fragment() {
     private val viewModel: StatisticsViewModel by viewModels()
     private lateinit var playerStatsAdapter: PlayerStatsAdapter
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         _binding = FragmentStatisticsBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -65,7 +69,7 @@ class StatisticsFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        (activity as? MainActivity)?.hideToolbarOnly()
+        (activity as? MainActivity)?.hideMainUI()
     }
 
     override fun onPause() {

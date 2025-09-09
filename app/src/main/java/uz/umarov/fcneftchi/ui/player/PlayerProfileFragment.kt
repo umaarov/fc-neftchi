@@ -14,6 +14,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import uz.umarov.fcneftchi.R
 import uz.umarov.fcneftchi.databinding.FragmentPlayerProfileBinding
+import uz.umarov.fcneftchi.ui.MainActivity
 import uz.umarov.fcneftchi.ui.player.adapter.PlayerCareerAdapter
 import java.time.LocalDate
 import java.time.Period
@@ -114,6 +115,17 @@ class PlayerProfileFragment : Fragment() {
         } catch (e: Exception) {
             "N/A"
         }
+    }
+
+
+    override fun onResume() {
+        super.onResume()
+        (activity as? MainActivity)?.hideMainUI()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        (activity as? MainActivity)?.showMainUI()
     }
 
     override fun onDestroyView() {
