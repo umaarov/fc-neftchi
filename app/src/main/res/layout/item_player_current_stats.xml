@@ -1,30 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardCornerRadius="8dp"
-    app:cardElevation="2dp"
-    android:layout_marginStart="8dp"
-    android:layout_marginEnd="8dp">
-    <GridLayout
+    android:layout_marginTop="8dp"
+    app:cardCornerRadius="0dp"
+    app:cardElevation="0dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:columnCount="3"
-        android:rowCount="2"
         android:padding="16dp">
-        <TextView android:text="Games" style="@style/StatLabel" />
-        <TextView android:id="@+id/stat_games" style="@style/StatValue" />
-        <TextView android:text="Minutes" style="@style/StatLabel" />
-        <TextView android:id="@+id/stat_minutes" style="@style/StatValue" />
-        <TextView android:text="Goals" style="@style/StatLabel" />
-        <TextView android:id="@+id/stat_goals" style="@style/StatValue" />
-        <TextView android:text="Assists" style="@style/StatLabel" />
-        <TextView android:id="@+id/stat_assists" style="@style/StatValue" />
-        <TextView android:text="Yellow Cards" style="@style/StatLabel" />
-        <TextView android:id="@+id/stat_yellow" style="@style/StatValue" />
-        <TextView android:text="Red Cards" style="@style/StatLabel" />
-        <TextView android:id="@+id/stat_red" style="@style/StatValue" />
-    </GridLayout>
+
+        <include
+            android:id="@+id/stat_games"
+            layout="@layout/item_player_bio_stat"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toStartOf="@id/stat_goals"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <include
+            android:id="@+id/stat_goals"
+            layout="@layout/item_player_bio_stat"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toStartOf="@id/stat_assists"
+            app:layout_constraintStart_toEndOf="@id/stat_games"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <include
+            android:id="@+id/stat_assists"
+            layout="@layout/item_player_bio_stat"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/stat_goals"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="16dp"
+            android:background="@color/divider"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/stat_games" />
+
+        <include
+            android:id="@+id/stat_minutes"
+            layout="@layout/item_player_bio_stat"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toStartOf="@id/stat_yellow"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/divider" />
+
+        <include
+            android:id="@+id/stat_yellow"
+            layout="@layout/item_player_bio_stat"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toStartOf="@id/stat_red"
+            app:layout_constraintStart_toEndOf="@id/stat_minutes"
+            app:layout_constraintTop_toBottomOf="@id/divider" />
+
+        <include
+            android:id="@+id/stat_red"
+            layout="@layout/item_player_bio_stat"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/stat_yellow"
+            app:layout_constraintTop_toBottomOf="@id/divider" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

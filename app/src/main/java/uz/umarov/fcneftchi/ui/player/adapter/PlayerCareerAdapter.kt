@@ -10,10 +10,12 @@ import uz.umarov.fcneftchi.R
 import uz.umarov.fcneftchi.data.model.PlayerCareerItem
 import uz.umarov.fcneftchi.databinding.ItemPlayerCareerBinding
 
-class PlayerCareerAdapter : ListAdapter<PlayerCareerItem, PlayerCareerAdapter.CareerViewHolder>(CareerDiffCallback) {
+class PlayerCareerAdapter :
+    ListAdapter<PlayerCareerItem, PlayerCareerAdapter.CareerViewHolder>(CareerDiffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CareerViewHolder {
-        val binding = ItemPlayerCareerBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding =
+            ItemPlayerCareerBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return CareerViewHolder(binding)
     }
 
@@ -21,7 +23,8 @@ class PlayerCareerAdapter : ListAdapter<PlayerCareerItem, PlayerCareerAdapter.Ca
         holder.bind(getItem(position))
     }
 
-    class CareerViewHolder(private val binding: ItemPlayerCareerBinding) : RecyclerView.ViewHolder(binding.root) {
+    class CareerViewHolder(private val binding: ItemPlayerCareerBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         fun bind(item: PlayerCareerItem) {
             binding.clubLogo.load(item.clubLogo) {
                 placeholder(R.drawable.ic_team)
@@ -35,7 +38,14 @@ class PlayerCareerAdapter : ListAdapter<PlayerCareerItem, PlayerCareerAdapter.Ca
     }
 
     object CareerDiffCallback : DiffUtil.ItemCallback<PlayerCareerItem>() {
-        override fun areItemsTheSame(oldItem: PlayerCareerItem, newItem: PlayerCareerItem): Boolean = oldItem.year == newItem.year && oldItem.clubName == newItem.clubName
-        override fun areContentsTheSame(oldItem: PlayerCareerItem, newItem: PlayerCareerItem): Boolean = oldItem == newItem
+        override fun areItemsTheSame(
+            oldItem: PlayerCareerItem,
+            newItem: PlayerCareerItem
+        ): Boolean = oldItem.year == newItem.year && oldItem.clubName == newItem.clubName
+
+        override fun areContentsTheSame(
+            oldItem: PlayerCareerItem,
+            newItem: PlayerCareerItem
+        ): Boolean = oldItem == newItem
     }
 }

@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?android:colorBackground"
     tools:context=".ui.player.PlayerProfileFragment">
 
     <ProgressBar
@@ -15,6 +17,7 @@
         android:id="@+id/content_scroll_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:clipToPadding="false"
         android:visibility="gone"
         tools:visibility="visible">
 
@@ -22,29 +25,106 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="8dp">
+            android:paddingBottom="16dp">
 
-            <include
-                android:id="@+id/player_bio_card"
-                layout="@layout/item_player_bio" />
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/player_header_card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:cardCornerRadius="0dp"
+                app:cardElevation="0dp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp">
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/player_image"
+                        android:layout_width="100dp"
+                        android:layout_height="120dp"
+                        android:scaleType="centerCrop"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:shapeAppearanceOverlay="@style/ShapeAppearance.App.CornerSize12"
+                        tools:src="@tools:sample/avatars" />
+
+                    <TextView
+                        android:id="@+id/player_number"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:fontFamily="@font/montserrat_bold"
+                        android:textAppearance="?attr/textAppearanceHeadline6"
+                        android:textColor="?attr/colorPrimary"
+                        app:layout_constraintStart_toEndOf="@id/player_image"
+                        app:layout_constraintTop_toTopOf="@id/player_image"
+                        tools:text="#21" />
+
+                    <TextView
+                        android:id="@+id/player_name"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:fontFamily="@font/montserrat_bold"
+                        android:maxLines="2"
+                        android:textAppearance="?attr/textAppearanceHeadline5"
+                        android:textColor="@color/text_primary"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/player_image"
+                        app:layout_constraintTop_toBottomOf="@id/player_number"
+                        tools:text="Muhsinjon Ubaydullayev" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:orientation="horizontal"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/player_image">
+
+                        <include
+                            android:id="@+id/bio_position"
+                            layout="@layout/item_player_bio_stat"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1" />
+
+                        <include
+                            android:id="@+id/bio_country"
+                            layout="@layout/item_player_bio_stat"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="8dp"
+                            android:layout_weight="1" />
+
+                        <include
+                            android:id="@+id/bio_age"
+                            layout="@layout/item_player_bio_stat"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1" />
+
+                    </LinearLayout>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </com.google.android.material.card.MaterialCardView>
 
             <TextView
-                style="@style/TextAppearance.MaterialComponents.Headline6"
+                style="@style/TextAppearance.App.Table.Header"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                android:text="Current Season Stats" />
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="24dp"
+                android:text="Current Season Stats"
+                android:textAppearance="?attr/textAppearanceHeadline6" />
 
             <include
                 android:id="@+id/player_stats_card"
                 layout="@layout/item_player_current_stats" />
-
-            <TextView
-                style="@style/TextAppearance.MaterialComponents.Headline6"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                android:text="Career" />
 
             <include layout="@layout/item_player_career_header" />
 
@@ -55,6 +135,8 @@
                 android:nestedScrollingEnabled="false"
                 tools:itemCount="3"
                 tools:listitem="@layout/item_player_career" />
+
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
+
 </FrameLayout>

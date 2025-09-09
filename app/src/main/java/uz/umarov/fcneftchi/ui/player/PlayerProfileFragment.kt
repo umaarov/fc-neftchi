@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import uz.umarov.fcneftchi.R
 import uz.umarov.fcneftchi.databinding.FragmentPlayerProfileBinding
 import uz.umarov.fcneftchi.ui.player.adapter.PlayerCareerAdapter
 import java.time.LocalDate
@@ -43,24 +44,43 @@ class PlayerProfileFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.uiState.collect { state ->
                 binding.progressBar.isVisible = state.isLoading
+                // This is the correct line to show the content after loading
                 binding.contentScrollView.isVisible = !state.isLoading
 
                 state.profile?.let { profile ->
-                    binding.playerBioCard.playerImage.load(profile.details.photo)
-                    binding.playerBioCard.playerName.text =
-                        "${profile.details.firstName} ${profile.details.lastName}"
-                    binding.playerBioCard.playerNumber.text = "#${profile.details.number}"
-                    binding.playerBioCard.playerPosition.text =
-                        mapPosition(profile.details.position)
-                    binding.playerBioCard.playerCountry.text = profile.details.country.title
-                    binding.playerBioCard.playerAge.text = calculateAge(profile.details.birthday)
+                    val fullName = "${profile.details.firstName} ${profile.details.lastName}".trim()
+                    binding.playerImage.load(profile.details.photo) {
+                        placeholder(R.drawable.ic_team)
+                        error(R.drawable.ic_team)
+                    }
+                    binding.playerName.text = fullName
+                    binding.playerNumber.text = "#${profile.details.number}"
+                    binding.bioPosition.statLabel.text = "POSITION"
+                    binding.bioPosition.statValue.text = mapPosition(profile.details.position)
 
-                    binding.playerStatsCard.statGames.text = profile.stats.games.toString()
-                    binding.playerStatsCard.statMinutes.text = profile.stats.minutes.toString()
-                    binding.playerStatsCard.statGoals.text = profile.stats.goals.toString()
-                    binding.playerStatsCard.statAssists.text = profile.stats.assists.toString()
-                    binding.playerStatsCard.statYellow.text = profile.stats.yellowCards.toString()
-                    binding.playerStatsCard.statRed.text = profile.stats.redCards.toString()
+                    binding.bioCountry.statLabel.text = "COUNTRY"
+                    binding.bioCountry.statValue.text = profile.details.country.title
+
+                    binding.bioAge.statLabel.text = "AGE"
+                    binding.bioAge.statValue.text = calculateAge(profile.details.birthday)
+                    val stats = binding.playerStatsCard
+                    stats.statGames.statLabel.text = "GAMES"
+                    stats.statGames.statValue.text = profile.stats.games.toString()
+
+                    stats.statGoals.statLabel.text = "GOALS"
+                    stats.statGoals.statValue.text = profile.stats.goals.toString()
+
+                    stats.statAssists.statLabel.text = "ASSISTS"
+                    stats.statAssists.statValue.text = profile.stats.assists.toString()
+
+                    stats.statMinutes.statLabel.text = "MINUTES"
+                    stats.statMinutes.statValue.text = profile.stats.minutes.toString()
+
+                    stats.statYellow.statLabel.text = "YELLOW"
+                    stats.statYellow.statValue.text = profile.stats.yellowCards.toString()
+
+                    stats.statRed.statLabel.text = "RED"
+                    stats.statRed.statValue.text = profile.stats.redCards.toString()
 
                     careerAdapter.submitList(profile.career)
                 }
@@ -90,8 +110,7 @@ class PlayerProfileFragment : Fragment() {
         if (birthdayString == null) return "N/A"
         return try {
             val birthDate = LocalDate.parse(birthdayString, DateTimeFormatter.ISO_OFFSET_DATE_TIME)
-            val age = Period.between(birthDate, LocalDate.now()).years
-            "$age years old"
+            Period.between(birthDate, LocalDate.now()).years.toString()
         } catch (e: Exception) {
             "N/A"
         }
