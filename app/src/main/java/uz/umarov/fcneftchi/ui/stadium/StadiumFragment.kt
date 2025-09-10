@@ -4,10 +4,15 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.view.MenuProvider
+import androidx.core.view.WindowCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
 import androidx.viewpager2.widget.ViewPager2
@@ -32,15 +37,41 @@ class StadiumFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentStadiumBinding.inflate(inflater, container, false)
+        WindowCompat.setDecorFitsSystemWindows(requireActivity().window, false)
         autoScrollHandler = Handler(Looper.getMainLooper())
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        setupToolbar()
         setupImageCarousel()
         setupContent()
+    }
+
+    private fun setupToolbar() {
+        (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
+        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        (activity as AppCompatActivity).supportActionBar?.setDisplayShowTitleEnabled(true)
+
+        requireActivity().addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(
+                menu: android.view.Menu,
+                menuInflater: android.view.MenuInflater
+            ) {
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                return when (menuItem.itemId) {
+                    android.R.id.home -> {
+                        activity?.onBackPressedDispatcher?.onBackPressed()
+                        true
+                    }
+
+                    else -> false
+                }
+            }
+        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
 
     private fun setupImageCarousel() {
@@ -77,7 +108,9 @@ class StadiumFragment : Fragment() {
     }
 
     private fun setupContent() {
-        binding.stadiumName.text = "Istiqlol Stadium"
+        val stadiumName = "Istiqlol Stadium"
+        binding.collapsingToolbar.title = stadiumName
+        binding.stadiumName.text = stadiumName
         binding.stadiumAddress.text = getString(R.string.stadium_address)
         binding.stadiumCapacity.text = "20,000"
         binding.stadiumOpenedYear.text = "2015"
@@ -122,7 +155,7 @@ class StadiumFragment : Fragment() {
         binding.stadiumImagePager.adapter?.itemCount?.let {
             startAutoScroll(it)
         }
-        (activity as? MainActivity)?.hideToolbarOnly()
+        (activity as? MainActivity)?.hideMainUI()
     }
 
     override fun onDestroyView() {
@@ -130,5 +163,6 @@ class StadiumFragment : Fragment() {
         clearCarouselTimer()
         binding.stadiumImagePager.adapter = null
         _binding = null
+        WindowCompat.setDecorFitsSystemWindows(requireActivity().window, true)
     }
 }
