@@ -21,6 +21,7 @@ firebaseMessaging = "25.0.0"
 moshiKotlin = "1.15.2"
 navigationUiKtx = "2.9.3"
 safeargs = "2.9.3"
+shimmer = "0.5.0"
 swiperefreshlayout = "1.1.0"
 ksp = "2.0.21-1.0.27"
 
@@ -49,6 +50,7 @@ androidx-constraintlayout = { group = "androidx.constraintlayout", name = "const
 firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging", version.ref = "firebaseMessaging" }
 moshi-kotlin = { module = "com.squareup.moshi:moshi-kotlin", version.ref = "moshiKotlin" }
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "converterMoshi" }
+shimmer = { module = "com.facebook.shimmer:shimmer", version.ref = "shimmer" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
