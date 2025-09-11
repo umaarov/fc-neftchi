@@ -17,6 +17,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import uz.umarov.fcneftchi.databinding.FragmentSettingsBinding
 import uz.umarov.fcneftchi.ui.MainActivity
 import uz.umarov.fcneftchi.util.SharedPrefsHelper
+import uz.umarov.fcneftchi.util.applySystemBarPadding
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -50,9 +51,18 @@ class SettingsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.toolbarLayout.root.applySystemBarPadding(top = true)
+        setupToolbar()
         askNotificationPermission()
         setupCurrentSettings()
         setupClickListeners()
+    }
+
+
+    private fun setupToolbar() {
+        binding.toolbarLayout.toolbar.setNavigationOnClickListener {
+            findNavController().navigateUp()
+        }
     }
 
     private fun setupCurrentSettings() {

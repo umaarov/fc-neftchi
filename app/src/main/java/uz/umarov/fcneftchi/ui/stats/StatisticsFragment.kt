@@ -8,12 +8,14 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import uz.umarov.fcneftchi.databinding.FragmentStatisticsBinding
 import uz.umarov.fcneftchi.ui.MainActivity
 import uz.umarov.fcneftchi.ui.stats.adapter.PlayerStatsAdapter
+import uz.umarov.fcneftchi.util.applySystemBarPadding
 
 @AndroidEntryPoint
 class StatisticsFragment : Fragment() {
@@ -35,6 +37,8 @@ class StatisticsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.toolbarLayout.root.applySystemBarPadding(top = true)
+        setupToolbar()
         setupRecyclerViews()
 
         viewLifecycleOwner.lifecycleScope.launch {
@@ -55,6 +59,12 @@ class StatisticsFragment : Fragment() {
                     playerStatsAdapter.submitList(data.playerStats)
                 }
             }
+        }
+    }
+
+    private fun setupToolbar() {
+        binding.toolbarLayout.toolbar.setNavigationOnClickListener {
+            findNavController().navigateUp()
         }
     }
 

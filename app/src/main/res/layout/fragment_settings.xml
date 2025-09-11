@@ -6,8 +6,12 @@
     android:layout_height="match_parent"
     android:background="?android:colorBackground"
     android:orientation="vertical"
-    android:fitsSystemWindows="true"
     tools:context=".ui.settings.SettingsFragment">
+
+
+    <include
+        android:id="@+id/toolbar_layout"
+        layout="@layout/toolbar_secondary" />
 
     <TextView
         android:layout_width="match_parent"

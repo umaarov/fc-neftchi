@@ -5,8 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?android:colorBackground"
-    android:fitsSystemWindows="true"
     tools:context=".ui.stats.StatisticsFragment">
+
+    <include
+        android:id="@+id/toolbar_layout"
+        layout="@layout/toolbar_secondary"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <ProgressBar
         android:id="@+id/progress_bar"
@@ -20,7 +26,8 @@
     <androidx.core.widget.NestedScrollView
         android:id="@+id/content_group"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_layout"
+        android:layout_height="wrap_content"
         android:clipToPadding="false"
         android:visibility="gone"
         tools:visibility="visible">
