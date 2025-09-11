@@ -5,9 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import uz.umarov.fcneftchi.R
+import androidx.navigation.fragment.findNavController
 import uz.umarov.fcneftchi.databinding.FragmentClubHistoryBinding
 import uz.umarov.fcneftchi.ui.MainActivity
+import uz.umarov.fcneftchi.util.applySystemBarPadding
 
 class ClubHistoryFragment : Fragment() {
 
@@ -24,10 +25,18 @@ class ClubHistoryFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        binding.toolbarLayout.root.applySystemBarPadding(top = true)
+        setupToolbar()
         val historyAdapter = ClubHistoryAdapter(getHistoryData())
         binding.historyRecyclerView.adapter = historyAdapter
     }
+
+    private fun setupToolbar() {
+        binding.toolbarLayout.toolbar.setNavigationOnClickListener {
+            findNavController().navigateUp()
+        }
+    }
+
 
     private fun getHistoryData(): List<HistoryListItem> {
         return listOf(

@@ -8,12 +8,14 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import uz.umarov.fcneftchi.databinding.FragmentTeamBinding
 import uz.umarov.fcneftchi.ui.MainActivity
 import uz.umarov.fcneftchi.ui.team.adapter.PlayerAdapter
+import uz.umarov.fcneftchi.util.applySystemBarPadding
 
 @AndroidEntryPoint
 class TeamFragment : Fragment() {
@@ -35,6 +37,8 @@ class TeamFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.toolbarLayout.root.applySystemBarPadding(top = true)
+        setupToolbar()
         setupRecyclerView()
 
         viewLifecycleOwner.lifecycleScope.launch {
@@ -43,6 +47,12 @@ class TeamFragment : Fragment() {
                 binding.teamRecyclerView.isVisible = !state.isLoading
                 playerAdapter.submitList(state.items)
             }
+        }
+    }
+
+    private fun setupToolbar() {
+        binding.toolbarLayout.toolbar.setNavigationOnClickListener {
+            findNavController().navigateUp()
         }
     }
 

@@ -8,6 +8,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
 import dagger.hilt.android.AndroidEntryPoint
@@ -16,6 +17,7 @@ import uz.umarov.fcneftchi.R
 import uz.umarov.fcneftchi.databinding.FragmentPlayerProfileBinding
 import uz.umarov.fcneftchi.ui.MainActivity
 import uz.umarov.fcneftchi.ui.player.adapter.PlayerCareerAdapter
+import uz.umarov.fcneftchi.util.applySystemBarPadding
 import java.time.LocalDate
 import java.time.Period
 import java.time.format.DateTimeFormatter
@@ -40,12 +42,13 @@ class PlayerProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.toolbarLayout.root.applySystemBarPadding(top = true)
+        setupToolbar()
         setupRecyclerView()
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.uiState.collect { state ->
                 binding.progressBar.isVisible = state.isLoading
-                // This is the correct line to show the content after loading
                 binding.contentScrollView.isVisible = !state.isLoading
 
                 state.profile?.let { profile ->
@@ -86,6 +89,12 @@ class PlayerProfileFragment : Fragment() {
                     careerAdapter.submitList(profile.career)
                 }
             }
+        }
+    }
+
+    private fun setupToolbar() {
+        binding.toolbarLayout.toolbar.setNavigationOnClickListener {
+            findNavController().navigateUp()
         }
     }
 

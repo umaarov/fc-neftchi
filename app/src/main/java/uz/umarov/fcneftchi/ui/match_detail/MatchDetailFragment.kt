@@ -17,6 +17,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import uz.umarov.fcneftchi.databinding.FragmentMatchDetailBinding
 import uz.umarov.fcneftchi.ui.MainActivity
+import uz.umarov.fcneftchi.util.applySystemBarPadding
 import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.TimeZone
@@ -41,6 +42,8 @@ class MatchDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setHasOptionsMenu(true)
+        binding.toolbarLayout.root.applySystemBarPadding(top = true)
+        setupToolbar()
 
         (activity as? AppCompatActivity)?.setSupportActionBar(binding.header.toolbar)
         (activity as? AppCompatActivity)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -65,6 +68,11 @@ class MatchDetailFragment : Fragment() {
         }
     }
 
+    private fun setupToolbar() {
+        binding.toolbarLayout.toolbar.setNavigationOnClickListener {
+            findNavController().navigateUp()
+        }
+    }
 
     override fun onResume() {
         super.onResume()

@@ -6,8 +6,12 @@
     android:layout_height="match_parent"
     android:background="?android:colorBackground"
     android:orientation="vertical"
-    android:fitsSystemWindows="true"
     tools:context=".ui.match_detail.MatchDetailFragment">
+
+
+    <include
+        android:id="@+id/toolbar_layout"
+        layout="@layout/toolbar_secondary" />
 
     <ProgressBar
         android:id="@+id/progress_bar"

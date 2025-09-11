@@ -58,7 +58,6 @@ class SettingsFragment : Fragment() {
         setupClickListeners()
     }
 
-
     private fun setupToolbar() {
         binding.toolbarLayout.toolbar.setNavigationOnClickListener {
             findNavController().navigateUp()
