@@ -7,20 +7,13 @@
     android:background="?attr/colorPrimary"
     android:padding="16dp">
 
-    <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        app:layout_constraintTop_toTopOf="parent"
-        app:navigationIconTint="@color/white" />
-
     <ImageView
         android:id="@+id/home_team_logo"
         android:layout_width="64dp"
         android:layout_height="64dp"
         app:layout_constraintEnd_toStartOf="@id/score"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        app:layout_constraintTop_toTopOf="parent"
         tools:src="@tools:sample/avatars" />
 
     <TextView

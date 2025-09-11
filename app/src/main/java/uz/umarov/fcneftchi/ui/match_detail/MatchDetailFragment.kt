@@ -45,7 +45,6 @@ class MatchDetailFragment : Fragment() {
         binding.toolbarLayout.root.applySystemBarPadding(top = true)
         setupToolbar()
 
-        (activity as? AppCompatActivity)?.setSupportActionBar(binding.header.toolbar)
         (activity as? AppCompatActivity)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
         (activity as? AppCompatActivity)?.supportActionBar?.setDisplayShowTitleEnabled(false)
 
