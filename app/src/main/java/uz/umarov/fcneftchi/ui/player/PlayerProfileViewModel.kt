@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -33,6 +34,7 @@ class PlayerProfileViewModel @Inject constructor(
     private fun loadProfile() {
         viewModelScope.launch {
             repository.getPlayerProfile(playerId).collect { profile ->
+                delay(1500)
                 _uiState.value = PlayerProfileUiState(profile = profile, isLoading = false)
             }
         }

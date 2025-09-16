@@ -48,48 +48,75 @@ class PlayerProfileFragment : Fragment() {
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.uiState.collect { state ->
-                binding.progressBar.isVisible = state.isLoading
-                binding.contentScrollView.isVisible = !state.isLoading
-
-                state.profile?.let { profile ->
-                    val fullName = "${profile.details.firstName} ${profile.details.lastName}".trim()
-                    binding.playerImage.load(profile.details.photo) {
-                        placeholder(R.drawable.ic_team)
-                        error(R.drawable.ic_team)
-                    }
-                    binding.playerName.text = fullName
-                    binding.playerNumber.text = "#${profile.details.number}"
-                    binding.bioPosition.statLabel.text = "POSITION"
-                    binding.bioPosition.statValue.text = mapPosition(profile.details.position)
-
-                    binding.bioCountry.statLabel.text = "COUNTRY"
-                    binding.bioCountry.statValue.text = profile.details.country.title
-
-                    binding.bioAge.statLabel.text = "AGE"
-                    binding.bioAge.statValue.text = calculateAge(profile.details.birthday)
-                    val stats = binding.playerStatsCard
-                    stats.statGames.statLabel.text = "GAMES"
-                    stats.statGames.statValue.text = profile.stats.games.toString()
-
-                    stats.statGoals.statLabel.text = "GOALS"
-                    stats.statGoals.statValue.text = profile.stats.goals.toString()
-
-                    stats.statAssists.statLabel.text = "ASSISTS"
-                    stats.statAssists.statValue.text = profile.stats.assists.toString()
-
-                    stats.statMinutes.statLabel.text = "MINUTES"
-                    stats.statMinutes.statValue.text = profile.stats.minutes.toString()
-
-                    stats.statYellow.statLabel.text = "YELLOW"
-                    stats.statYellow.statValue.text = profile.stats.yellowCards.toString()
-
-                    stats.statRed.statLabel.text = "RED"
-                    stats.statRed.statValue.text = profile.stats.redCards.toString()
-
-                    careerAdapter.submitList(profile.career)
-                }
+                updateUi(state)
             }
         }
+    }
+
+    private fun updateUi(state: PlayerProfileUiState) {
+        if (state.isLoading) {
+            binding.shimmerContainer.startShimmer()
+            binding.shimmerContainer.isVisible = true
+            binding.contentScrollView.isVisible = false
+        } else {
+            binding.shimmerContainer.animate()
+                .alpha(0f)
+                .setDuration(400)
+                .withEndAction {
+                    binding.shimmerContainer.stopShimmer()
+                    binding.shimmerContainer.isVisible = false
+                }
+                .start()
+
+            state.profile?.let { profile ->
+                bindProfileData(profile)
+
+                binding.contentScrollView.alpha = 0f
+                binding.contentScrollView.isVisible = true
+                binding.contentScrollView.animate()
+                    .alpha(1f)
+                    .setDuration(500)
+                    .start()
+            }
+        }
+    }
+
+    private fun bindProfileData(profile: uz.umarov.fcneftchi.data.model.PlayerProfile) {
+        val fullName = "${profile.details.firstName} ${profile.details.lastName}".trim()
+        binding.playerImage.load(profile.details.photo) {
+            placeholder(R.drawable.ic_team)
+            error(R.drawable.ic_team)
+        }
+        binding.playerName.text = fullName
+        binding.playerNumber.text = "#${profile.details.number}"
+        binding.bioPosition.statLabel.text = "POSITION"
+        binding.bioPosition.statValue.text = mapPosition(profile.details.position)
+
+        binding.bioCountry.statLabel.text = "COUNTRY"
+        binding.bioCountry.statValue.text = profile.details.country.title
+
+        binding.bioAge.statLabel.text = "AGE"
+        binding.bioAge.statValue.text = calculateAge(profile.details.birthday)
+        val stats = binding.playerStatsCard
+        stats.statGames.statLabel.text = "GAMES"
+        stats.statGames.statValue.text = profile.stats.games.toString()
+
+        stats.statGoals.statLabel.text = "GOALS"
+        stats.statGoals.statValue.text = profile.stats.goals.toString()
+
+        stats.statAssists.statLabel.text = "ASSISTS"
+        stats.statAssists.statValue.text = profile.stats.assists.toString()
+
+        stats.statMinutes.statLabel.text = "MINUTES"
+        stats.statMinutes.statValue.text = profile.stats.minutes.toString()
+
+        stats.statYellow.statLabel.text = "YELLOW"
+        stats.statYellow.statValue.text = profile.stats.yellowCards.toString()
+
+        stats.statRed.statLabel.text = "RED"
+        stats.statRed.statValue.text = profile.stats.redCards.toString()
+
+        careerAdapter.submitList(profile.career)
     }
 
     private fun setupToolbar() {
@@ -125,7 +152,6 @@ class PlayerProfileFragment : Fragment() {
             "N/A"
         }
     }
-
 
     override fun onResume() {
         super.onResume()
