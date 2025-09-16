@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -15,6 +16,7 @@ import coil.load
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import uz.umarov.fcneftchi.data.model.GameDetail
 import uz.umarov.fcneftchi.databinding.FragmentMatchDetailBinding
 import uz.umarov.fcneftchi.ui.MainActivity
 import uz.umarov.fcneftchi.util.applySystemBarPadding
@@ -50,26 +52,66 @@ class MatchDetailFragment : Fragment() {
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.uiState.collect { state ->
-                binding.progressBar.isVisible = state.isLoading
-                binding.contentGroup.isVisible = !state.isLoading
-
-                state.gameDetail?.let { game ->
-                    binding.header.homeTeamLogo.load(game.homeTeam.club.logo)
-                    binding.header.awayTeamLogo.load(game.awayTeam.club.logo)
-                    binding.header.homeTeamName.text = game.homeTeam.club.title
-                    binding.header.awayTeamName.text = game.awayTeam.club.title
-                    binding.header.score.text = "${game.homeGoal} - ${game.awayGoal}"
-                    binding.header.matchDate.text = formatMatchDate(game.startDate)
-
-                    setupViewPager()
-                }
+                updateUi(state)
             }
         }
+    }
+
+    private fun updateUi(state: MatchDetailUiState) {
+        if (state.isLoading) {
+            binding.shimmerContainer.startShimmer()
+            binding.shimmerContainer.isVisible = true
+            binding.contentGroup.isVisible = false
+        } else {
+            binding.shimmerContainer.animate()
+                .alpha(0f)
+                .setDuration(400)
+                .withEndAction {
+                    binding.shimmerContainer.stopShimmer()
+                    binding.shimmerContainer.isVisible = false
+                }
+                .start()
+
+            state.gameDetail?.let { game ->
+                bindHeaderData(game)
+                setupViewPager()
+            }
+            binding.contentGroup.alpha = 0f
+            binding.contentGroup.isVisible = true
+            binding.contentGroup.animate()
+                .alpha(1f)
+                .setInterpolator(AccelerateDecelerateInterpolator())
+                .setDuration(500)
+                .start()
+        }
+    }
+
+    private fun bindHeaderData(game: GameDetail) {
+        binding.header.homeTeamLogo.load(game.homeTeam.club.logo)
+        binding.header.awayTeamLogo.load(game.awayTeam.club.logo)
+        binding.header.homeTeamName.text = game.homeTeam.club.title
+        binding.header.awayTeamName.text = game.awayTeam.club.title
+        binding.header.score.text = "${game.homeGoal} - ${game.awayGoal}"
+        binding.header.matchDate.text = formatMatchDate(game.startDate)
     }
 
     private fun setupToolbar() {
         binding.toolbarLayout.toolbar.setNavigationOnClickListener {
             findNavController().navigateUp()
+        }
+    }
+
+    private fun setupViewPager() {
+        if (binding.viewPager.adapter == null) {
+            binding.viewPager.adapter = MatchDetailViewPagerAdapter(this)
+            TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
+                tab.text = when (position) {
+                    0 -> "Events"
+                    1 -> "Stats"
+                    2 -> "Lineups"
+                    else -> null
+                }
+            }.attach()
         }
     }
 
@@ -81,18 +123,6 @@ class MatchDetailFragment : Fragment() {
     override fun onPause() {
         super.onPause()
         (activity as? MainActivity)?.showMainUI()
-    }
-
-    private fun setupViewPager() {
-        binding.viewPager.adapter = MatchDetailViewPagerAdapter(this)
-        TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
-            tab.text = when (position) {
-                0 -> "Events"
-                1 -> "Stats"
-                2 -> "Lineups"
-                else -> null
-            }
-        }.attach()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -117,7 +147,6 @@ class MatchDetailFragment : Fragment() {
             "N/A"
         }
     }
-
 
     override fun onDestroyView() {
         super.onDestroyView()

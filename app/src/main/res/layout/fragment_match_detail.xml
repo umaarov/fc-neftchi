@@ -8,42 +8,49 @@
     android:orientation="vertical"
     tools:context=".ui.match_detail.MatchDetailFragment">
 
-
     <include
         android:id="@+id/toolbar_layout"
         layout="@layout/toolbar_secondary" />
 
-    <ProgressBar
-        android:id="@+id/progress_bar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center" />
-
-    <LinearLayout
-        android:id="@+id/content_group"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:visibility="gone"
-        tools:visibility="visible">
+        android:layout_height="match_parent">
 
-        <include
-            android:id="@+id/header"
-            layout="@layout/item_match_detail_header" />
-
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tab_layout"
-            style="@style/Widget.App.TabLayout"
+        <LinearLayout
+            android:id="@+id/content_group"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:tabGravity="fill"
-            app:tabMode="fixed" />
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:visibility="invisible"
+            tools:visibility="visible">
 
-        <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/view_pager"
+            <include
+                android:id="@+id/header"
+                layout="@layout/item_match_detail_header" />
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tab_layout"
+                style="@style/Widget.App.TabLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:tabGravity="fill"
+                app:tabMode="fixed" />
+
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/view_pager"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+        </LinearLayout>
+
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/shimmer_container"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
+            android:layout_height="match_parent"
+            app:shimmer_auto_start="true">
 
-    </LinearLayout>
+            <include layout="@layout/placeholder_match_detail" />
+
+        </com.facebook.shimmer.ShimmerFrameLayout>
+    </FrameLayout>
 </LinearLayout>
