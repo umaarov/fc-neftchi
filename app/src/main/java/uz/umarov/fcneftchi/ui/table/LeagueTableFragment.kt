@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -23,7 +24,11 @@ class LeagueTableFragment : Fragment() {
     private val viewModel: LeagueTableViewModel by viewModels()
     private lateinit var tableAdapter: LeagueTableAdapter
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         _binding = FragmentLeagueTableBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -34,9 +39,7 @@ class LeagueTableFragment : Fragment() {
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.uiState.collect { state ->
-                binding.progressBar.isVisible = state.isLoading
-                binding.contentGroup.isVisible = !state.isLoading
-                tableAdapter.submitList(state.standings)
+                updateUi(state)
             }
         }
     }
@@ -46,6 +49,34 @@ class LeagueTableFragment : Fragment() {
         binding.tableRecyclerView.apply {
             adapter = tableAdapter
             layoutManager = LinearLayoutManager(context)
+        }
+    }
+
+    private fun updateUi(state: LeagueTableUiState) {
+        if (state.isLoading) {
+            binding.shimmerContainer.startShimmer()
+            binding.shimmerContainer.isVisible = true
+            binding.contentGroup.isVisible = false
+        } else {
+            binding.shimmerContainer.animate()
+                .alpha(0f)
+                .setDuration(400)
+                .withEndAction {
+                    binding.shimmerContainer.stopShimmer()
+                    binding.shimmerContainer.isVisible = false
+                }
+                .start()
+
+            tableAdapter.submitList(state.standings)
+            binding.contentGroup.apply {
+                alpha = 0f
+                isVisible = true
+                animate()
+                    .alpha(1f)
+                    .setInterpolator(AccelerateDecelerateInterpolator())
+                    .setDuration(500)
+                    .start()
+            }
         }
     }
 
