@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.Toast
 import androidx.core.net.toUri
 import androidx.core.view.isVisible
@@ -25,6 +26,7 @@ class HomeFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel: HomeViewModel by viewModels()
+    private lateinit var homeAdapter: HomeAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,8 +39,21 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupRecyclerView()
 
-        val homeAdapter = HomeAdapter(
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.uiState.collect { state ->
+                updateUi(state)
+            }
+        }
+
+        binding.swipeRefreshLayout.setOnRefreshListener {
+            viewModel.loadHomeData()
+        }
+    }
+
+    private fun setupRecyclerView() {
+        homeAdapter = HomeAdapter(
             onNavigate = { destinationId -> findNavController().navigate(destinationId) },
             onArticleClick = { article ->
                 val action =
@@ -59,21 +74,40 @@ class HomeFragment : Fragment() {
                 }
             }
         )
-
         binding.homeRecyclerView.adapter = homeAdapter
+    }
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.uiState.collect { state ->
-                binding.progressBar.isVisible = state.isLoading
-                if (!state.isLoading) {
-                    homeAdapter.submitList(state.items)
-                }
-            }
+    private fun updateUi(state: HomeUiState) {
+        if (!state.isLoading) {
+            binding.swipeRefreshLayout.isRefreshing = false
         }
 
-        binding.swipeRefreshLayout.setOnRefreshListener {
-            viewModel.loadHomeData()
-            binding.swipeRefreshLayout.isRefreshing = false
+        if (state.isLoading && homeAdapter.currentList.isEmpty()) {
+            binding.shimmerContainer.startShimmer()
+            binding.shimmerContainer.isVisible = true
+            binding.homeRecyclerView.isVisible = false
+        } else {
+            binding.shimmerContainer.animate()
+                .alpha(0f)
+                .setDuration(400)
+                .withEndAction {
+                    binding.shimmerContainer.stopShimmer()
+                    binding.shimmerContainer.isVisible = false
+                }
+                .start()
+
+            homeAdapter.submitList(state.items)
+            binding.homeRecyclerView.apply {
+                if (!isVisible) {
+                    alpha = 0f
+                    isVisible = true
+                    animate()
+                        .alpha(1f)
+                        .setInterpolator(AccelerateDecelerateInterpolator())
+                        .setDuration(500)
+                        .start()
+                }
+            }
         }
     }
 

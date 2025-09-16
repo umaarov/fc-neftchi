@@ -34,7 +34,9 @@ class HomeViewModel @Inject constructor(
 
     fun loadHomeData() {
         viewModelScope.launch {
-            _uiState.update { it.copy(isLoading = true) }
+            if (_uiState.value.items.isEmpty()) {
+                _uiState.update { it.copy(isLoading = true) }
+            }
 
             combine(
                 repository.getNextMatch(),
@@ -43,6 +45,7 @@ class HomeViewModel @Inject constructor(
                 repository.getLeagueTable(),
                 repository.getVideos()
             ) { nextMatch, lastMatch, news, standings, videos ->
+
                 val homeItems = mutableListOf<HomeListItem>()
 
                 if (news.isNotEmpty()) {
