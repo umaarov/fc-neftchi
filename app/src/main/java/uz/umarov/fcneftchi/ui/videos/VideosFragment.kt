@@ -1,12 +1,13 @@
 package uz.umarov.fcneftchi.ui.videos
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.Toast
+import androidx.core.net.toUri
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -41,8 +42,7 @@ class VideosFragment : Fragment() {
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.uiState.collect { state ->
-                binding.progressBar.isVisible = state.isLoading
-                videoAdapter.submitList(state.videos)
+                updateUi(state)
             }
         }
     }
@@ -50,7 +50,7 @@ class VideosFragment : Fragment() {
     private fun setupRecyclerView() {
         videoAdapter = VideoAdapter { video ->
             try {
-                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(video.videoUrl))
+                val intent = Intent(Intent.ACTION_VIEW, video.videoUrl.toUri())
                 startActivity(intent)
             } catch (e: Exception) {
                 Toast.makeText(context, "Could not open video", Toast.LENGTH_SHORT).show()
@@ -59,6 +59,34 @@ class VideosFragment : Fragment() {
         binding.videosRecyclerView.apply {
             adapter = videoAdapter
             layoutManager = LinearLayoutManager(context)
+        }
+    }
+
+    private fun updateUi(state: VideosUiState) {
+        if (state.isLoading) {
+            binding.shimmerContainer.startShimmer()
+            binding.shimmerContainer.isVisible = true
+            binding.videosRecyclerView.isVisible = false
+        } else {
+            binding.shimmerContainer.animate()
+                .alpha(0f)
+                .setDuration(400)
+                .withEndAction {
+                    binding.shimmerContainer.stopShimmer()
+                    binding.shimmerContainer.isVisible = false
+                }
+                .start()
+
+            videoAdapter.submitList(state.videos)
+            binding.videosRecyclerView.apply {
+                alpha = 0f
+                isVisible = true
+                animate()
+                    .alpha(1f)
+                    .setInterpolator(AccelerateDecelerateInterpolator())
+                    .setDuration(500)
+                    .start()
+            }
         }
     }
 

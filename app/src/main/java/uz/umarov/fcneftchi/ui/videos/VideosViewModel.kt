@@ -3,8 +3,10 @@ package uz.umarov.fcneftchi.ui.videos
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import uz.umarov.fcneftchi.data.model.Video
 import uz.umarov.fcneftchi.data.repository.NeftchiRepository
@@ -29,9 +31,9 @@ class VideosViewModel @Inject constructor(
 
     private fun loadVideos() {
         viewModelScope.launch {
-            _uiState.value = VideosUiState(isLoading = true)
+            _uiState.update { it.copy(isLoading = true) }
             repository.getVideos().collect { videos ->
-                _uiState.value = VideosUiState(videos = videos, isLoading = false)
+                _uiState.update { it.copy(videos = videos, isLoading = false) }
             }
         }
     }
