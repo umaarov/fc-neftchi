@@ -69,6 +69,7 @@ dependencies {
     implementation(libs.coil)
     implementation(libs.coil.svg)
     implementation(libs.shimmer)
+    implementation(libs.androidx.core.splashscreen)
 }
 
 configurations.all {

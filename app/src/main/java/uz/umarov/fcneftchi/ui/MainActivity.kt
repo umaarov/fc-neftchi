@@ -2,8 +2,10 @@ package uz.umarov.fcneftchi.ui
 
 import android.os.Bundle
 import android.util.Log
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.isVisible
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -19,10 +21,18 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
+    private val viewModel: MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        val splashScreen = installSplashScreen()
+
         super.onCreate(savedInstanceState)
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+
+        splashScreen.setKeepOnScreenCondition {
+            !viewModel.isReady.value
+        }
+
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -40,8 +50,6 @@ class MainActivity : AppCompatActivity() {
             R.id.videosFragment,
             R.id.moreFragment
         )
-//        val appBarConfiguration = AppBarConfiguration(topLevelDestinations)
-//        binding.toolbar.setupWithNavController(navController, appBarConfiguration)
 
         setupTabLayoutWithNavController()
 
@@ -54,6 +62,7 @@ class MainActivity : AppCompatActivity() {
             Log.d("FCM_TOKEN", token)
         }
     }
+
 
     private fun setupTabLayoutWithNavController() {
         val destinations = listOf(

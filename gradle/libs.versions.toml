@@ -2,6 +2,7 @@
 agp = "8.13.0"
 coilSvg = "2.7.0"
 converterMoshi = "3.0.0"
+coreSplashscreen = "1.0.1"
 hiltAndroidCompiler = "2.57.1"
 hiltAndroid = "2.57.1"
 hiltNavigationFragment = "1.2.0"
@@ -27,6 +28,7 @@ ksp = "2.0.21-1.0.27"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-core-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "coreSplashscreen" }
 androidx-hilt-navigation-fragment = { module = "androidx.hilt:hilt-navigation-fragment", version.ref = "hiltNavigationFragment" }
 androidx-lifecycle-livedata-ktx = { module = "androidx.lifecycle:lifecycle-livedata-ktx", version.ref = "lifecycleRuntimeKtx" }
 androidx-lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
