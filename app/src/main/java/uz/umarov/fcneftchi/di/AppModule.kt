@@ -19,6 +19,7 @@ import uz.umarov.fcneftchi.data.api.PflApiService
 import uz.umarov.fcneftchi.data.repository.NeftchiRepository
 import uz.umarov.fcneftchi.data.repository.RealNeftchiRepository
 import javax.inject.Singleton
+import uz.umarov.fcneftchi.BuildConfig
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -51,7 +52,7 @@ object AppModule {
     @Singleton
     fun provideRetrofit(okHttpClient: OkHttpClient, moshi: Moshi): Retrofit {
         return Retrofit.Builder()
-            .baseUrl(PflApiService.BASE_URL)
+            .baseUrl(BuildConfig.API_URL)
             .client(okHttpClient)
             .addConverterFactory(MoshiConverterFactory.create(moshi))
             .build()

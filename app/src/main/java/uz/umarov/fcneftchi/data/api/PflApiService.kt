@@ -17,11 +17,6 @@ import uz.umarov.fcneftchi.data.model.StatisticsResponse
 import uz.umarov.fcneftchi.data.model.TopPlayersResponse
 
 interface PflApiService {
-
-    companion object {
-        const val BASE_URL = "https://api.pfl.uz/"
-    }
-
     @GET("v1/web/club/{id}")
     suspend fun getClubDetails(@Path("id") id: Int): ClubDetailResponse
 
