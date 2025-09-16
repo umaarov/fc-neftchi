@@ -1,10 +1,7 @@
 import java.util.Properties
 
 plugins {
-    alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.ksp)
-    alias(libs.plugins.hilt)
+    id("android.application.convention")
     alias(libs.plugins.safeargs)
     alias(libs.plugins.google.gms.google.services)
 }
