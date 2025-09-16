@@ -2,7 +2,7 @@
 #include <sys/ptrace.h>
 #include <unistd.h>
 
-extern "C" JNIEXPORT jboolean  extern "C" JNICALL
+extern "C" JNIEXPORT jboolean  extern "C" jboolean
 Java_uz_umarov_fcneftchi_util_NativeSecurity_isDebuggerAttached(
         JNIEnv *env,
         jobject) {

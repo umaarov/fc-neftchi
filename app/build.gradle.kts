@@ -100,6 +100,7 @@ dependencies {
     implementation(libs.androidx.core.splashscreen)
     implementation(libs.androidx.profileinstaller)
     implementation(libs.androidx.security.crypto)
+    implementation(libs.androidx.metrics.performance)
 }
 
 configurations.all {

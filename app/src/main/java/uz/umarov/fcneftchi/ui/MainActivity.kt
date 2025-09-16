@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.isVisible
+import androidx.metrics.performance.JankStats
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.google.android.material.tabs.TabLayout
@@ -22,6 +23,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
     private val viewModel: MainViewModel by viewModels()
+
+    private lateinit var jankStats: JankStats
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val splashScreen = installSplashScreen()
@@ -61,8 +64,25 @@ class MainActivity : AppCompatActivity() {
             val token = task.result
             Log.d("FCM_TOKEN", token)
         }
+
+        val jankFrameListener = JankStats.OnFrameListener { frameData ->
+            if (frameData.isJank) {
+                Log.w("JankStats", "Janky frame detected: $frameData")
+            }
+        }
+
+        jankStats = JankStats.createAndTrack(window, jankFrameListener)
     }
 
+    override fun onResume() {
+        super.onResume()
+        jankStats.isTrackingEnabled = true
+    }
+
+    override fun onPause() {
+        super.onPause()
+        jankStats.isTrackingEnabled = false
+    }
 
     private fun setupTabLayoutWithNavController() {
         val destinations = listOf(
