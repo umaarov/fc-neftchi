@@ -25,17 +25,18 @@ class NewsAdapter(
 
     inner class NewsViewHolder(private val binding: ItemNewsFullBinding) :
         RecyclerView.ViewHolder(binding.root) {
+
         fun bind(article: NewsArticle) {
-            binding.newsImage.load(article.imageUrl) {
-                crossfade(true)
-            }
             binding.newsCategory.text = article.category.uppercase()
             binding.newsTitle.text = article.title
             binding.newsDate.text = article.date
 
-            binding.root.setOnClickListener {
-                onItemClick(article)
+            binding.newsImage.load(article.imageUrl) {
+                crossfade(true)
+                // placeholder(R.color.placeholder_bg)
             }
+
+            binding.root.setOnClickListener { onItemClick(article) }
         }
     }
 

@@ -68,7 +68,7 @@ dependencies {
     implementation(libs.moshi.kotlin)
     implementation(libs.coil)
     implementation(libs.coil.svg)
-    implementation(libs.shimmer )
+    implementation(libs.shimmer)
 }
 
 configurations.all {

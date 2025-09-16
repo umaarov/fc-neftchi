@@ -15,19 +15,18 @@ import kotlinx.coroutines.launch
 import uz.umarov.fcneftchi.databinding.FragmentNewsBinding
 import uz.umarov.fcneftchi.ui.MainActivity
 import uz.umarov.fcneftchi.ui.news.adapter.NewsAdapter
-import uz.umarov.fcneftchi.util.applySystemBarPadding
 
 @AndroidEntryPoint
 class NewsFragment : Fragment() {
 
     private var _binding: FragmentNewsBinding? = null
     private val binding get() = _binding!!
-
     private val viewModel: NewsViewModel by viewModels()
     private lateinit var newsAdapter: NewsAdapter
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentNewsBinding.inflate(inflater, container, false)
@@ -40,9 +39,7 @@ class NewsFragment : Fragment() {
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.uiState.collect { state ->
-                binding.progressBar.isVisible = state.isLoading
-                binding.newsRecyclerView.isVisible = !state.isLoading
-                newsAdapter.submitList(state.articles)
+                updateUI(state)
             }
         }
     }
@@ -52,11 +49,42 @@ class NewsFragment : Fragment() {
             val action = NewsFragmentDirections.actionNewsFragmentToNewsArticleFragment(article.url)
             findNavController().navigate(action)
         }
+
         binding.newsRecyclerView.apply {
             adapter = newsAdapter
             layoutManager = LinearLayoutManager(context)
         }
     }
+
+
+    private fun updateUI(state: NewsUiState) {
+        binding.shimmerContainer.isVisible = false
+        binding.shimmerContainer.stopShimmer()
+        binding.errorContainer.isVisible = false
+        binding.emptyContainer.isVisible = false
+        binding.newsRecyclerView.isVisible = false
+
+        when {
+            state.isLoading -> {
+                binding.shimmerContainer.isVisible = true
+                binding.shimmerContainer.startShimmer()
+            }
+
+            state.error != null -> {
+                binding.errorContainer.isVisible = true
+            }
+
+            state.articles.isEmpty() -> {
+                binding.emptyContainer.isVisible = true
+            }
+
+            else -> {
+                binding.newsRecyclerView.isVisible = true
+                newsAdapter.submitList(state.articles)
+            }
+        }
+    }
+
 
     override fun onResume() {
         super.onResume()
