@@ -21,7 +21,9 @@ googleGmsGoogleServices = "4.4.3"
 firebaseMessaging = "25.0.0"
 moshiKotlin = "1.15.2"
 navigationUiKtx = "2.9.3"
+profileinstaller = "1.4.1"
 safeargs = "2.9.3"
+securityCrypto = "1.1.0"
 shimmer = "0.5.0"
 swiperefreshlayout = "1.1.0"
 ksp = "2.0.21-1.0.27"
@@ -35,6 +37,8 @@ androidx-lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtim
 androidx-lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycleRuntimeKtx" }
 androidx-navigation-fragment-ktx = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "navigationUiKtx" }
 androidx-navigation-ui-ktx = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "navigationUiKtx" }
+androidx-profileinstaller = { module = "androidx.profileinstaller:profileinstaller", version.ref = "profileinstaller" }
+androidx-security-crypto = { module = "androidx.security:security-crypto", version.ref = "securityCrypto" }
 androidx-swiperefreshlayout = { module = "androidx.swiperefreshlayout:swiperefreshlayout", version.ref = "swiperefreshlayout" }
 coil = { module = "io.coil-kt:coil", version.ref = "coilSvg" }
 coil-svg = { module = "io.coil-kt:coil-svg", version.ref = "coilSvg" }

@@ -35,9 +35,8 @@ object AppModule {
     @Provides
     @Singleton
     fun provideOkHttpClient(loggingInterceptor: HttpLoggingInterceptor): OkHttpClient {
-        return OkHttpClient.Builder()
-            .addInterceptor(loggingInterceptor)
-            .build()
+        val builder = OkHttpClient.Builder()
+        return builder.build()
     }
 
     @Provides

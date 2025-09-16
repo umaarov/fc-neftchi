@@ -23,7 +23,8 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -70,6 +71,8 @@ dependencies {
     implementation(libs.coil.svg)
     implementation(libs.shimmer)
     implementation(libs.androidx.core.splashscreen)
+    implementation(libs.androidx.profileinstaller)
+    implementation(libs.androidx.security.crypto)
 }
 
 configurations.all {
