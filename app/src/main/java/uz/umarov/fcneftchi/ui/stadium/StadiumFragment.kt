@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.MenuProvider
 import androidx.core.view.WindowCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.widget.CompositePageTransformer
@@ -32,6 +33,8 @@ class StadiumFragment : Fragment() {
     private var autoScrollRunnable: Runnable? = null
     private val AUTO_SCROLL_DELAY = 5000L
 
+    private val contentRevealHandler = Handler(Looper.getMainLooper())
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -44,9 +47,35 @@ class StadiumFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupToolbar()
-        setupImageCarousel()
-        setupContent()
+
+        binding.shimmerContainer.startShimmer()
+        binding.shimmerContainer.isVisible = true
+
+        contentRevealHandler.postDelayed({
+            setupToolbar()
+            setupImageCarousel()
+            setupContent()
+            animateContentIn()
+        }, 500)
+    }
+
+    private fun animateContentIn() {
+        binding.shimmerContainer.animate()
+            .alpha(0f)
+            .setDuration(400)
+            .withEndAction {
+                binding.shimmerContainer.stopShimmer()
+                binding.shimmerContainer.isVisible = false
+            }
+            .start()
+
+        binding.appBar.alpha = 0f
+        binding.appBar.isVisible = true
+        binding.appBar.animate().alpha(1f).setDuration(500).start()
+
+        binding.contentScrollView.alpha = 0f
+        binding.contentScrollView.isVisible = true
+        binding.contentScrollView.animate().alpha(1f).setDuration(500).start()
     }
 
     private fun setupToolbar() {
@@ -152,8 +181,10 @@ class StadiumFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        binding.stadiumImagePager.adapter?.itemCount?.let {
-            startAutoScroll(it)
+        if (!binding.shimmerContainer.isVisible) {
+            binding.stadiumImagePager.adapter?.itemCount?.let {
+                startAutoScroll(it)
+            }
         }
         (activity as? MainActivity)?.hideMainUI()
     }
@@ -161,6 +192,7 @@ class StadiumFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         clearCarouselTimer()
+        contentRevealHandler.removeCallbacksAndMessages(null)
         binding.stadiumImagePager.adapter = null
         _binding = null
         WindowCompat.setDecorFitsSystemWindows(requireActivity().window, true)
