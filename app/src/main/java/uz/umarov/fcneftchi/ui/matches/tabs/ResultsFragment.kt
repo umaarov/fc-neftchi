@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -14,13 +15,14 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import uz.umarov.fcneftchi.databinding.FragmentResultsBinding
 import uz.umarov.fcneftchi.ui.matches.MatchesFragmentDirections
-import uz.umarov.fcneftchi.ui.matches.adapter.ResultAdapter // <-- Use the new ResultAdapter
+import uz.umarov.fcneftchi.ui.matches.adapter.ResultAdapter
 
 @AndroidEntryPoint
 class ResultsFragment : Fragment() {
     private var _binding: FragmentResultsBinding? = null
     private val binding get() = _binding!!
     private val viewModel: ResultsViewModel by viewModels()
+    private lateinit var resultAdapter: ResultAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -33,8 +35,17 @@ class ResultsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupRecyclerView()
 
-        val resultAdapter = ResultAdapter { match ->
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.uiState.collect { state ->
+                updateUi(state)
+            }
+        }
+    }
+
+    private fun setupRecyclerView() {
+        resultAdapter = ResultAdapter { match ->
             val action =
                 MatchesFragmentDirections.actionMatchesFragmentToMatchDetailFragment(match.id.toInt())
             findNavController().navigate(action)
@@ -43,11 +54,32 @@ class ResultsFragment : Fragment() {
             adapter = resultAdapter
             layoutManager = LinearLayoutManager(context)
         }
+    }
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.uiState.collect {
-                binding.progressBar.isVisible = it.isLoading
-                resultAdapter.submitList(it.items)
+    private fun updateUi(state: ResultsUiState) {
+        if (state.isLoading) {
+            binding.shimmerContainer.startShimmer()
+            binding.shimmerContainer.isVisible = true
+            binding.resultsRecyclerView.isVisible = false
+        } else {
+            binding.shimmerContainer.animate()
+                .alpha(0f)
+                .setDuration(400)
+                .withEndAction {
+                    binding.shimmerContainer.stopShimmer()
+                    binding.shimmerContainer.isVisible = false
+                }
+                .start()
+
+            resultAdapter.submitList(state.items)
+            binding.resultsRecyclerView.apply {
+                alpha = 0f
+                isVisible = true
+                animate()
+                    .alpha(1f)
+                    .setInterpolator(AccelerateDecelerateInterpolator())
+                    .setDuration(500)
+                    .start()
             }
         }
     }
