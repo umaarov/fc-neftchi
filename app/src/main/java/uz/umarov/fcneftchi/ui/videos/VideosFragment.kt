@@ -72,6 +72,7 @@ class VideosFragment : Fragment() {
                 .alpha(0f)
                 .setDuration(400)
                 .withEndAction {
+                    if (_binding == null) return@withEndAction
                     binding.shimmerContainer.stopShimmer()
                     binding.shimmerContainer.isVisible = false
                 }

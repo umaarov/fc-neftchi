@@ -63,6 +63,7 @@ class NewsFragment : Fragment() {
                 .alpha(0f)
                 .setDuration(400)
                 .withEndAction {
+                    if (_binding == null) return@withEndAction
                     binding.shimmerContainer.stopShimmer()
                     binding.shimmerContainer.isVisible = false
                 }
@@ -77,19 +78,15 @@ class NewsFragment : Fragment() {
                 binding.shimmerContainer.isVisible = true
                 binding.shimmerContainer.startShimmer()
             }
-
             state.error != null -> {
                 binding.errorContainer.isVisible = true
             }
-
             state.articles.isEmpty() -> {
                 binding.emptyContainer.isVisible = true
             }
-
             else -> {
                 binding.newsRecyclerView.isVisible = true
                 newsAdapter.submitList(state.articles)
-
                 binding.newsRecyclerView.apply {
                     alpha = 0f
                     translationY = 40f
