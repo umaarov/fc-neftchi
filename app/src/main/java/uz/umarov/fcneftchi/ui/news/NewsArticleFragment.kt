@@ -59,12 +59,39 @@ class NewsArticleFragment : Fragment() {
         setupToolbar()
         lifecycleScope.launch {
             viewModel.uiState.collect { state ->
-                binding.progressBar.isVisible = state.isLoading
-                binding.contentScrollView.isVisible = !state.isLoading && state.article != null
-                state.article?.let { article ->
-                    currentArticle = article
-                    bindArticleData(article)
+                updateUi(state)
+            }
+        }
+    }
+
+    private fun updateUi(state: NewsArticleState) {
+        if (state.isLoading) {
+            binding.shimmerContainer.startShimmer()
+            binding.shimmerContainer.isVisible = true
+            binding.appBar.isVisible = false
+            binding.contentScrollView.isVisible = false
+        } else {
+            binding.shimmerContainer.animate()
+                .alpha(0f)
+                .setDuration(400)
+                .withEndAction {
+                    binding.shimmerContainer.stopShimmer()
+                    binding.shimmerContainer.isVisible = false
                 }
+                .start()
+
+            state.article?.let {
+                currentArticle = it
+                bindArticleData(it)
+
+                binding.appBar.alpha = 0f
+                binding.contentScrollView.alpha = 0f
+                binding.appBar.isVisible = true
+                binding.contentScrollView.isVisible = true
+
+                binding.appBar.animate().alpha(1f).setDuration(500).start()
+                binding.contentScrollView.animate().alpha(1f).setDuration(500).setStartDelay(100)
+                    .start()
             }
         }
     }
@@ -116,7 +143,6 @@ class NewsArticleFragment : Fragment() {
     private fun coilImageGetter(textView: TextView): Html.ImageGetter {
         return Html.ImageGetter { source ->
             val placeholder = createBitmap(1, 1).toDrawable(resources)
-
             lifecycleScope.launch {
                 val request = ImageRequest.Builder(requireContext()).data(source).build()
                 val result = requireContext().imageLoader.execute(request).drawable
@@ -127,15 +153,12 @@ class NewsArticleFragment : Fragment() {
                     val originalHeight = it.intrinsicHeight
                     val aspectRatio = originalWidth.toFloat() / originalHeight.toFloat()
                     val finalHeight = (screenWidth / aspectRatio).roundToInt()
-
                     it.setBounds(0, 0, screenWidth, finalHeight)
                     placeholder.setBounds(0, 0, screenWidth, finalHeight)
-
                     placeholder.bitmap?.let { bmp ->
                         val canvas = Canvas(bmp)
                         it.draw(canvas)
                     }
-
                     textView.text = textView.text
                 }
             }
