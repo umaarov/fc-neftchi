@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -43,9 +44,7 @@ class TeamFragment : Fragment() {
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.uiState.collect { state ->
-                binding.progressBar.isVisible = state.isLoading
-                binding.teamRecyclerView.isVisible = !state.isLoading
-                playerAdapter.submitList(state.items)
+                updateUi(state)
             }
         }
     }
@@ -73,6 +72,34 @@ class TeamFragment : Fragment() {
         binding.teamRecyclerView.apply {
             adapter = playerAdapter
             layoutManager = gridLayoutManager
+        }
+    }
+
+    private fun updateUi(state: TeamUiState) {
+        if (state.isLoading) {
+            binding.shimmerContainer.startShimmer()
+            binding.shimmerContainer.isVisible = true
+            binding.teamRecyclerView.isVisible = false
+        } else {
+            binding.shimmerContainer.animate()
+                .alpha(0f)
+                .setDuration(400)
+                .withEndAction {
+                    binding.shimmerContainer.stopShimmer()
+                    binding.shimmerContainer.isVisible = false
+                }
+                .start()
+
+            playerAdapter.submitList(state.items)
+            binding.teamRecyclerView.apply {
+                alpha = 0f
+                isVisible = true
+                animate()
+                    .alpha(1f)
+                    .setInterpolator(AccelerateDecelerateInterpolator())
+                    .setDuration(500)
+                    .start()
+            }
         }
     }
 

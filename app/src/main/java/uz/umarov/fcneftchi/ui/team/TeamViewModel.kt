@@ -3,9 +3,11 @@ package uz.umarov.fcneftchi.ui.team
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import uz.umarov.fcneftchi.data.repository.NeftchiRepository
 import java.util.Locale
@@ -30,8 +32,10 @@ class TeamViewModel @Inject constructor(
 
     private fun loadTeam() {
         viewModelScope.launch {
-            _uiState.value = TeamUiState(isLoading = true)
+            _uiState.update { it.copy(isLoading = true) }
             repository.getTeam().collect { players ->
+                delay(1500)
+
                 val groupedItems = mutableListOf<TeamListItem>()
 
                 val playersByPosition = players.groupBy { it.position }
@@ -57,7 +61,7 @@ class TeamViewModel @Inject constructor(
                     }
                 }
 
-                _uiState.value = TeamUiState(items = groupedItems, isLoading = false)
+                _uiState.update { it.copy(items = groupedItems, isLoading = false) }
             }
         }
     }
