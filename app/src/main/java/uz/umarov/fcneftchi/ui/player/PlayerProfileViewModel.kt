@@ -34,7 +34,6 @@ class PlayerProfileViewModel @Inject constructor(
     private fun loadProfile() {
         viewModelScope.launch {
             repository.getPlayerProfile(playerId).collect { profile ->
-                delay(1500)
                 _uiState.value = PlayerProfileUiState(profile = profile, isLoading = false)
             }
         }
