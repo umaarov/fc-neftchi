@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -56,16 +57,23 @@ class NewsFragment : Fragment() {
         }
     }
 
-
     private fun updateUI(state: NewsUiState) {
-        binding.shimmerContainer.isVisible = false
-        binding.shimmerContainer.stopShimmer()
-        binding.errorContainer.isVisible = false
-        binding.emptyContainer.isVisible = false
-        binding.newsRecyclerView.isVisible = false
+        if (!state.isLoading) {
+            binding.shimmerContainer.animate()
+                .alpha(0f)
+                .setDuration(400)
+                .withEndAction {
+                    binding.shimmerContainer.stopShimmer()
+                    binding.shimmerContainer.isVisible = false
+                }
+                .start()
+        }
 
         when {
             state.isLoading -> {
+                binding.errorContainer.isVisible = false
+                binding.newsRecyclerView.isVisible = false
+                binding.shimmerContainer.alpha = 1f
                 binding.shimmerContainer.isVisible = true
                 binding.shimmerContainer.startShimmer()
             }
@@ -81,6 +89,17 @@ class NewsFragment : Fragment() {
             else -> {
                 binding.newsRecyclerView.isVisible = true
                 newsAdapter.submitList(state.articles)
+
+                binding.newsRecyclerView.apply {
+                    alpha = 0f
+                    translationY = 40f
+                    animate()
+                        .alpha(1f)
+                        .translationY(0f)
+                        .setInterpolator(AccelerateDecelerateInterpolator())
+                        .setDuration(500)
+                        .start()
+                }
             }
         }
     }
