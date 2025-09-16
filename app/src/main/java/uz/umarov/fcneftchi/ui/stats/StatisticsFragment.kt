@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -43,24 +44,49 @@ class StatisticsFragment : Fragment() {
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.uiState.collect { state ->
-                binding.progressBar.isVisible = state.isLoading
-                binding.contentGroup.isVisible = !state.isLoading
-
-                state.statsData?.let { data ->
-                    binding.clubStatsCard.statMatches.text = data.clubStats.totalMatches.toString()
-                    binding.clubStatsCard.statWins.text = data.clubStats.totalWins.toString()
-                    binding.clubStatsCard.statDraws.text = data.clubStats.totalDraws.toString()
-                    binding.clubStatsCard.statLosses.text = data.clubStats.totalLosses.toString()
-                    binding.clubStatsCard.statGoalsScored.text =
-                        data.clubStats.goalsScored.toString()
-                    binding.clubStatsCard.statGoalsConceded.text =
-                        data.clubStats.goalsConceded.toString()
-
-                    playerStatsAdapter.submitList(data.playerStats)
-                }
+                updateUi(state)
             }
         }
     }
+
+    private fun updateUi(state: StatisticsUiState) {
+        if (state.isLoading) {
+            binding.shimmerContainer.startShimmer()
+            binding.shimmerContainer.isVisible = true
+            binding.contentScrollView.isVisible = false
+        } else {
+            binding.shimmerContainer.animate()
+                .alpha(0f)
+                .setDuration(400)
+                .withEndAction {
+                    binding.shimmerContainer.stopShimmer()
+                    binding.shimmerContainer.isVisible = false
+                }
+                .start()
+
+            state.statsData?.let { data ->
+                binding.clubStatsCard.statMatches.text = data.clubStats.totalMatches.toString()
+                binding.clubStatsCard.statWins.text = data.clubStats.totalWins.toString()
+                binding.clubStatsCard.statDraws.text = data.clubStats.totalDraws.toString()
+                binding.clubStatsCard.statLosses.text = data.clubStats.totalLosses.toString()
+                binding.clubStatsCard.statGoalsScored.text =
+                    data.clubStats.goalsScored.toString()
+                binding.clubStatsCard.statGoalsConceded.text =
+                    data.clubStats.goalsConceded.toString()
+
+                playerStatsAdapter.submitList(data.playerStats)
+            }
+
+            binding.contentScrollView.alpha = 0f
+            binding.contentScrollView.isVisible = true
+            binding.contentScrollView.animate()
+                .alpha(1f)
+                .setInterpolator(AccelerateDecelerateInterpolator())
+                .setDuration(500)
+                .start()
+        }
+    }
+
 
     private fun setupToolbar() {
         binding.toolbarLayout.toolbar.setNavigationOnClickListener {

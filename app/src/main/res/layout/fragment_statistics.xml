@@ -10,31 +10,25 @@
     <include
         android:id="@+id/toolbar_layout"
         layout="@layout/toolbar_secondary"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <ProgressBar
-        android:id="@+id/progress_bar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.core.widget.NestedScrollView
-        android:id="@+id/content_group"
+        android:id="@+id/content_scroll_view"
         android:layout_width="match_parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar_layout"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:clipToPadding="false"
-        android:visibility="gone"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_layout"
         tools:visibility="visible">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical"
             android:paddingBottom="16dp">
 
@@ -65,5 +59,53 @@
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
+
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/shimmer_container"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_layout"
+        app:shimmer_auto_start="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingBottom="16dp">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="16dp"
+                android:background="@color/placeholder_bg" />
+
+            <include layout="@layout/placeholder_club_stats" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="16dp"
+                android:background="@color/placeholder_bg" />
+
+            <include layout="@layout/item_player_stats_placeholder" />
+
+            <include layout="@layout/item_player_stats_placeholder" />
+
+            <include layout="@layout/item_player_stats_placeholder" />
+
+            <include layout="@layout/item_player_stats_placeholder" />
+
+            <include layout="@layout/item_player_stats_placeholder" />
+
+            <include layout="@layout/item_player_stats_placeholder" />
+
+            <include layout="@layout/item_player_stats_placeholder" />
+
+        </LinearLayout>
+    </com.facebook.shimmer.ShimmerFrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
