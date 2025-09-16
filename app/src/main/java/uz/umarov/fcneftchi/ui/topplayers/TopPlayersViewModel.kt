@@ -26,7 +26,12 @@ class TopPlayersViewModel @Inject constructor(repository: NeftchiRepository) : V
             if (topScorers.isNotEmpty()) {
                 combinedList.add(TopPlayerListItem.HeaderItem("Eng yaxshi to'purarlar"))
                 topScorers.forEach { player ->
-                    combinedList.add(TopPlayerListItem.PlayerItem(player, TopPlayerAdapter.StatType.GOALS))
+                    combinedList.add(
+                        TopPlayerListItem.PlayerItem(
+                            player,
+                            TopPlayerAdapter.StatType.GOALS
+                        )
+                    )
                 }
             }
 
@@ -34,7 +39,12 @@ class TopPlayersViewModel @Inject constructor(repository: NeftchiRepository) : V
             if (topAssisters.isNotEmpty()) {
                 combinedList.add(TopPlayerListItem.HeaderItem("Eng yaxshi assistentlar"))
                 topAssisters.forEach { player ->
-                    combinedList.add(TopPlayerListItem.PlayerItem(player, TopPlayerAdapter.StatType.ASSISTS))
+                    combinedList.add(
+                        TopPlayerListItem.PlayerItem(
+                            player,
+                            TopPlayerAdapter.StatType.ASSISTS
+                        )
+                    )
                 }
             }
 
