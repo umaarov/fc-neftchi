@@ -14,10 +14,10 @@ class NeftchiApp : Application(), ImageLoaderFactory {
     @Inject
     lateinit var imageLoaderProvider: Provider<ImageLoader.Builder>
 
-    override fun onCreate() {
-        super.onCreate()
-        NativeSecurity.checkAndExit()
-    }
+//    override fun onCreate() {
+//        super.onCreate()
+//        NativeSecurity.checkAndExit()
+//    }
 
     override fun newImageLoader(): ImageLoader {
         return imageLoaderProvider.get()
