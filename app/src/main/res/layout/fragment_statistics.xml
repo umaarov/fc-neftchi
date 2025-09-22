@@ -39,7 +39,7 @@
                 android:paddingHorizontal="16dp"
                 android:paddingTop="16dp"
                 android:paddingBottom="8dp"
-                android:text="Club Statistics"
+                android:text="Klub statistikasi"
                 android:textAppearance="?attr/textAppearanceHeadline6"
                 android:textColor="?attr/colorPrimary" />
 

@@ -21,7 +21,7 @@
         style="@style/TextAppearance.App.Table.Header"
         android:layout_width="32dp"
         android:layout_height="wrap_content"
-        android:text="O'"
+        android:text="P"
         android:tooltipText="O'yinlar" />
 
     <TextView

@@ -39,7 +39,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="WINS" />
+                android:text="G'ALABA" />
         </LinearLayout>
 
 
@@ -67,7 +67,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="DRAWS" />
+                android:text="DURANG" />
         </LinearLayout>
 
         <LinearLayout
@@ -94,7 +94,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="LOSSES" />
+                android:text="MAG'LUBIYAT" />
         </LinearLayout>
 
         <View
@@ -115,7 +115,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:fontFamily="@font/montserrat_regular"
-            android:text="Matches Played"
+            android:text="Matchlar"
             android:textAppearance="?attr/textAppearanceBody2"
             android:textColor="@color/text_secondary"
             app:layout_constraintStart_toStartOf="parent"
@@ -140,7 +140,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="12dp"
             android:fontFamily="@font/montserrat_regular"
-            android:text="Goals Scored"
+            android:text="Urilgan gollar"
             android:textAppearance="?attr/textAppearanceBody2"
             android:textColor="@color/text_secondary"
             app:layout_constraintStart_toStartOf="parent"
@@ -165,7 +165,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="12dp"
             android:fontFamily="@font/montserrat_regular"
-            android:text="Goals Conceded"
+            android:text="O'tkazilgan gollar"
             android:textAppearance="?attr/textAppearanceBody2"
             android:textColor="@color/text_secondary"
             app:layout_constraintStart_toStartOf="parent"
