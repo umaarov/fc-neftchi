@@ -4,6 +4,7 @@ plugins {
     id("android.application.convention")
     alias(libs.plugins.safeargs)
     alias(libs.plugins.google.gms.google.services)
+    alias(libs.plugins.kotlin.android)
 }
 
 val localProperties = Properties()

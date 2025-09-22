@@ -27,14 +27,14 @@ class MainActivity : AppCompatActivity() {
     private lateinit var jankStats: JankStats
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        val splashScreen = installSplashScreen()
+//        val splashScreen = installSplashScreen()
 
         super.onCreate(savedInstanceState)
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
 
-        splashScreen.setKeepOnScreenCondition {
-            !viewModel.isReady.value
-        }
+//        splashScreen.setKeepOnScreenCondition {
+//            !viewModel.isReady.value
+//        }
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
