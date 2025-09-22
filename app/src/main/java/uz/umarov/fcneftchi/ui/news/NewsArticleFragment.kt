@@ -108,7 +108,7 @@ class NewsArticleFragment : Fragment() {
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 return when (menuItem.itemId) {
                     R.id.action_share -> {
-                        shareArticle()
+//                        shareArticle()
                         true
                     }
 
