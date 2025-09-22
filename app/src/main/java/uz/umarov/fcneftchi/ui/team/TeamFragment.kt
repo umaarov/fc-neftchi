@@ -13,10 +13,10 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import uz.umarov.fcneftchi.R
 import uz.umarov.fcneftchi.databinding.FragmentTeamBinding
 import uz.umarov.fcneftchi.ui.MainActivity
 import uz.umarov.fcneftchi.ui.team.adapter.PlayerAdapter
+import uz.umarov.fcneftchi.ui.team.adapter.ShimmerPlayerAdapter
 import uz.umarov.fcneftchi.util.applySystemBarPadding
 
 @AndroidEntryPoint
@@ -27,6 +27,7 @@ class TeamFragment : Fragment() {
 
     private val viewModel: TeamViewModel by viewModels()
     private lateinit var playerAdapter: PlayerAdapter
+    private lateinit var shimmerAdapter: ShimmerPlayerAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,6 +43,7 @@ class TeamFragment : Fragment() {
         binding.toolbarLayout.root.applySystemBarPadding(top = true)
         setupToolbar()
         setupRecyclerView()
+        setupShimmerRecyclerView()
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.uiState.collect { state ->
@@ -55,6 +57,7 @@ class TeamFragment : Fragment() {
             findNavController().navigateUp()
         }
     }
+
 
     private fun setupRecyclerView() {
         playerAdapter = PlayerAdapter()
@@ -72,6 +75,26 @@ class TeamFragment : Fragment() {
 
         binding.teamRecyclerView.apply {
             adapter = playerAdapter
+            layoutManager = gridLayoutManager
+        }
+    }
+
+    private fun setupShimmerRecyclerView() {
+        shimmerAdapter = ShimmerPlayerAdapter()
+        val gridLayoutManager = GridLayoutManager(context, 2)
+
+        gridLayoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+            override fun getSpanSize(position: Int): Int {
+                return when (shimmerAdapter.getItemViewType(position)) {
+                    0 -> 2
+                    1 -> 1
+                    else -> 1
+                }
+            }
+        }
+
+        binding.shimmerRecyclerView.apply {
+            adapter = shimmerAdapter
             layoutManager = gridLayoutManager
         }
     }
