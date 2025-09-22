@@ -135,7 +135,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="24dp"
-                android:text="Current Season Stats"
+                android:text="Joriy mavsum statistikasi"
                 android:textAppearance="?attr/textAppearanceHeadline6" />
 
             <include

@@ -89,31 +89,31 @@ class PlayerProfileFragment : Fragment() {
         }
         binding.playerName.text = fullName
         binding.playerNumber.text = "#${profile.details.number}"
-        binding.bioPosition.statLabel.text = "POSITION"
+        binding.bioPosition.statLabel.text = "POZITSIYA"
         binding.bioPosition.statValue.text = mapPosition(profile.details.position)
 
-        binding.bioCountry.statLabel.text = "COUNTRY"
+        binding.bioCountry.statLabel.text = "MAMLAKAT"
         binding.bioCountry.statValue.text = profile.details.country.title
 
-        binding.bioAge.statLabel.text = "AGE"
+        binding.bioAge.statLabel.text = "YOSH"
         binding.bioAge.statValue.text = calculateAge(profile.details.birthday)
         val stats = binding.playerStatsCard
-        stats.statGames.statLabel.text = "GAMES"
+        stats.statGames.statLabel.text = "MATCH"
         stats.statGames.statValue.text = profile.stats.games.toString()
 
-        stats.statGoals.statLabel.text = "GOALS"
+        stats.statGoals.statLabel.text = "GOL"
         stats.statGoals.statValue.text = profile.stats.goals.toString()
 
-        stats.statAssists.statLabel.text = "ASSISTS"
+        stats.statAssists.statLabel.text = "ASSIST"
         stats.statAssists.statValue.text = profile.stats.assists.toString()
 
-        stats.statMinutes.statLabel.text = "MINUTES"
+        stats.statMinutes.statLabel.text = "MINUT"
         stats.statMinutes.statValue.text = profile.stats.minutes.toString()
 
-        stats.statYellow.statLabel.text = "YELLOW"
+        stats.statYellow.statLabel.text = "SARIQ K"
         stats.statYellow.statValue.text = profile.stats.yellowCards.toString()
 
-        stats.statRed.statLabel.text = "RED"
+        stats.statRed.statLabel.text = "QIZIL K"
         stats.statRed.statValue.text = profile.stats.redCards.toString()
 
         careerAdapter.submitList(profile.career)
@@ -135,10 +135,10 @@ class PlayerProfileFragment : Fragment() {
 
     private fun mapPosition(positionId: Int): String {
         return when (positionId) {
-            1 -> "Goalkeeper"
-            2 -> "Defender"
-            3 -> "Midfielder"
-            4 -> "Forward"
+            1 -> "Darvozabon"
+            2 -> "Himoyachi"
+            3 -> "Yarim H."
+            4 -> "Hujumchi"
             else -> "Unknown"
         }
     }
