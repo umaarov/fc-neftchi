@@ -35,15 +35,13 @@ class TeamViewModel @Inject constructor(
             repository.getTeam().collect { players ->
                 val groupedItems = mutableListOf<TeamListItem>()
 
-                val playersByPosition = players.groupBy { it.position }
+                val positionOrder = listOf("darvozabon", "himoyachi", "yarim himoyachi", "hujumchi")
 
-                val positionOrder = listOf("Goalkeeper", "Defender", "Midfielder", "Forward")
+                val playersByPosition =
+                    players.groupBy { it.position.trim().lowercase(Locale.ROOT) }
 
                 val sortedPositions = playersByPosition.keys.sortedWith(compareBy { position ->
-                    val formattedPosition = position.replaceFirstChar {
-                        if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString()
-                    }
-                    val index = positionOrder.indexOf(formattedPosition)
+                    val index = positionOrder.indexOf(position)
                     if (index == -1) Int.MAX_VALUE else index
                 })
 
@@ -52,7 +50,9 @@ class TeamViewModel @Inject constructor(
                         val headerTitle =
                             position.replaceFirstChar { it.titlecase(Locale.ROOT) } + "LAR"
                         groupedItems.add(TeamListItem.HeaderItem(headerTitle.uppercase()))
-                        playerGroup.forEach { player ->
+
+                        val sortedPlayers = playerGroup.sortedBy { it.number }
+                        sortedPlayers.forEach { player ->
                             groupedItems.add(TeamListItem.PlayerItem(player))
                         }
                     }

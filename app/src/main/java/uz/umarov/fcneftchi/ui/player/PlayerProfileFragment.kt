@@ -84,8 +84,8 @@ class PlayerProfileFragment : Fragment() {
     private fun bindProfileData(profile: uz.umarov.fcneftchi.data.model.PlayerProfile) {
         val fullName = "${profile.details.firstName} ${profile.details.lastName}".trim()
         binding.playerImage.load(profile.details.photo) {
-            placeholder(R.drawable.ic_team)
-            error(R.drawable.ic_team)
+            placeholder(R.drawable.player_placeholder)
+            error(R.drawable.player_placeholder)
         }
         binding.playerName.text = fullName
         binding.playerNumber.text = "#${profile.details.number}"
