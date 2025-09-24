@@ -41,7 +41,7 @@ class VideoAdapter(private val lifecycle: Lifecycle) :
             binding.videoTitle.text = video.title
             binding.categoryTextView.text = "Asosiy Jamoa"
             binding.dateTextView.text = video.date
-            binding.durationTextView.text = video.duration
+            binding.durationTextView.text = "00:00:00"
 
             val videoId = YouTubeUrlParser.extractVideoId(video.videoUrl)
             currentVideoId = videoId
@@ -55,7 +55,7 @@ class VideoAdapter(private val lifecycle: Lifecycle) :
 
                 initializePlayer()
 
-                binding.bottomPlayButton.setOnClickListener {
+                binding.thumbnailGroup.setOnClickListener {
                     youTubePlayer?.let { player ->
                         binding.thumbnailGroup.visibility = View.INVISIBLE
                         binding.youtubePlayerView.visibility = View.VISIBLE
