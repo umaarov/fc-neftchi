@@ -14,10 +14,13 @@ import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
 import androidx.viewpager2.widget.ViewPager2
 import coil.load
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
 import uz.umarov.fcneftchi.data.model.LeagueStanding
 import uz.umarov.fcneftchi.data.model.Match
 import uz.umarov.fcneftchi.data.model.NewsArticle
 import uz.umarov.fcneftchi.data.model.Video
+import uz.umarov.fcneftchi.databinding.ItemFeaturedVideoBinding
 import uz.umarov.fcneftchi.databinding.ItemHomeHeaderBinding
 import uz.umarov.fcneftchi.databinding.ItemHomeHeroCarouselBinding
 import uz.umarov.fcneftchi.databinding.ItemHomeLastResultBinding
@@ -26,7 +29,9 @@ import uz.umarov.fcneftchi.databinding.ItemHomeNextMatchBinding
 import uz.umarov.fcneftchi.databinding.ItemHomeStandingsBinding
 import uz.umarov.fcneftchi.databinding.ItemVideoBinding
 import uz.umarov.fcneftchi.ui.home.HomeListItem
+import uz.umarov.fcneftchi.ui.videos.adapter.VideoAdapter.VideoViewHolder
 import uz.umarov.fcneftchi.util.DateUtils
+import uz.umarov.fcneftchi.util.YouTubeUrlParser
 import java.text.SimpleDateFormat
 import java.util.Locale
 import kotlin.math.abs
@@ -48,7 +53,6 @@ class HomeAdapter(
 
     private val countdownHandlers = mutableMapOf<Int, Handler>()
     private val heroCarouselHandlers = mutableMapOf<Int, Handler>()
-
 
     override fun getItemViewType(position: Int): Int {
         return when (getItem(position)) {
@@ -130,6 +134,7 @@ class HomeAdapter(
             is HomeListItem.HeroCarouselItem -> (holder as HeroCarouselViewHolder).bind(
                 item.articles,
                 heroCarouselHandlers.getOrPut(position) { Handler(Looper.getMainLooper()) })
+
             is HomeListItem.NextMatchItem -> (holder as NextMatchViewHolder).bind(item.match)
             is HomeListItem.LastResultItem -> (holder as LastResultViewHolder).bind(item.match)
             is HomeListItem.FeaturedVideoItem -> (holder as FeaturedVideoViewHolder).bind(item.video)
@@ -141,9 +146,13 @@ class HomeAdapter(
 
     override fun onViewRecycled(holder: RecyclerView.ViewHolder) {
         super.onViewRecycled(holder)
-        if (holder is NextMatchViewHolder) holder.clearCountdown()
-        if (holder is HeroCarouselViewHolder) holder.clearCarouselTimer()
+        when (holder) {
+            is NextMatchViewHolder -> holder.clearCountdown()
+            is HeroCarouselViewHolder -> holder.clearCarouselTimer()
+            is FeaturedVideoViewHolder -> holder.releasePlayer()
+        }
     }
+
 
     override fun onDetachedFromRecyclerView(recyclerView: RecyclerView) {
         super.onDetachedFromRecyclerView(recyclerView)
@@ -333,13 +342,30 @@ class HomeAdapter(
         private val binding: ItemVideoBinding,
         private val onVideoClick: (Video) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
+
         fun bind(video: Video) {
             binding.root.setOnClickListener { onVideoClick(video) }
-            binding.videoThumbnail.load(video.thumbnailUrl)
+
             binding.videoTitle.text = video.title
-            binding.videoDuration.text = video.duration
+
+            val videoId = YouTubeUrlParser.extractVideoId(video.videoUrl)
+
+            binding.youtubePlayerView.addYouTubePlayerListener(object :
+                AbstractYouTubePlayerListener() {
+                override fun onReady(youTubePlayer: YouTubePlayer) {
+                    videoId?.let {
+                        youTubePlayer.cueVideo(it, 0f)
+                    }
+                }
+            })
+        }
+
+        fun releasePlayer() {
+            binding.youtubePlayerView.release()
         }
     }
+
+
 
     object HomeDiffCallback : DiffUtil.ItemCallback<HomeListItem>() {
         override fun areItemsTheSame(oldItem: HomeListItem, newItem: HomeListItem): Boolean {

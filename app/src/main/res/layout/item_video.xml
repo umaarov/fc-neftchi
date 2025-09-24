@@ -14,68 +14,30 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/video_thumbnail"
+        <com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
+            android:id="@+id/youtube_player_view"
             android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:scaleType="centerCrop"
+            android:layout_height="wrap_content"
             app:layout_constraintDimensionRatio="16:9"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:src="@tools:sample/backgrounds/scenic" />
-
-        <View
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:background="#40000000"
-            app:layout_constraintBottom_toBottomOf="@id/video_thumbnail"
-            app:layout_constraintEnd_toEndOf="@id/video_thumbnail"
-            app:layout_constraintStart_toStartOf="@id/video_thumbnail"
-            app:layout_constraintTop_toTopOf="@id/video_thumbnail" />
-
-        <ImageView
-            android:layout_width="56dp"
-            android:layout_height="56dp"
-            android:src="@drawable/ic_play_circle"
-            app:layout_constraintBottom_toBottomOf="@id/video_thumbnail"
-            app:layout_constraintEnd_toEndOf="@id/video_thumbnail"
-            app:layout_constraintStart_toStartOf="@id/video_thumbnail"
-            app:layout_constraintTop_toTopOf="@id/video_thumbnail"
-            app:tint="@color/white"
-            tools:ignore="ContentDescription" />
-
-        <TextView
-            android:id="@+id/video_duration"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="12dp"
-            android:background="@drawable/duration_background"
-            android:fontFamily="@font/montserrat_semibold"
-            android:paddingHorizontal="8dp"
-            android:paddingVertical="4dp"
-            android:textColor="@color/white"
-            android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="@id/video_thumbnail"
-            app:layout_constraintEnd_toEndOf="@id/video_thumbnail"
-            tools:text="04:35" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/video_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20dp"
+            android:layout_marginHorizontal="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
-            android:fontFamily="@font/montserrat_bold"
-            android:lineSpacingExtra="3sp"
-            android:textAppearance="?attr/textAppearanceBody1"
-            android:textColor="@color/text_primary"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/video_thumbnail"
-            tools:text="HIGHLIGHTS: Neftchi 2 - 1 Nasaf" />
+            app:layout_constraintTop_toBottomOf="@id/youtube_player_view"
+            tools:text="This is a sample video title that is quite long." />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

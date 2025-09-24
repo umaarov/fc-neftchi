@@ -48,14 +48,8 @@ class VideosFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        videoAdapter = VideoAdapter { video ->
-            try {
-                val intent = Intent(Intent.ACTION_VIEW, video.videoUrl.toUri())
-                startActivity(intent)
-            } catch (e: Exception) {
-                Toast.makeText(context, "Could not open video", Toast.LENGTH_SHORT).show()
-            }
-        }
+        videoAdapter = VideoAdapter(viewLifecycleOwner.lifecycle)
+
         binding.videosRecyclerView.apply {
             adapter = videoAdapter
             layoutManager = LinearLayoutManager(context)

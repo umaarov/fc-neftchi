@@ -102,6 +102,7 @@ dependencies {
     implementation(libs.androidx.profileinstaller)
     implementation(libs.androidx.security.crypto)
     implementation(libs.androidx.metrics.performance)
+    implementation(libs.core)
 }
 
 configurations.all {
