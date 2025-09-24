@@ -1,13 +1,10 @@
 package uz.umarov.fcneftchi.ui.videos
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
-import android.widget.Toast
-import androidx.core.net.toUri
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -53,6 +50,7 @@ class VideosFragment : Fragment() {
         binding.videosRecyclerView.apply {
             adapter = videoAdapter
             layoutManager = LinearLayoutManager(context)
+            itemAnimator = null
         }
     }
 
@@ -92,6 +90,7 @@ class VideosFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        binding.videosRecyclerView.adapter = null
         _binding = null
     }
 }

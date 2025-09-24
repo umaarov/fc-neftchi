@@ -4,6 +4,7 @@ coilSvg = "2.7.0"
 converterMoshi = "3.0.0"
 core = "13.0.0"
 coreSplashscreen = "1.0.1"
+glide = "5.0.5"
 hiltAndroidCompiler = "2.57.1"
 hiltAndroid = "2.57.1"
 hiltNavigationFragment = "1.2.0"
@@ -47,6 +48,7 @@ coil = { module = "io.coil-kt:coil", version.ref = "coilSvg" }
 coil-svg = { module = "io.coil-kt:coil-svg", version.ref = "coilSvg" }
 converter-moshi = { module = "com.squareup.retrofit2:converter-moshi", version.ref = "converterMoshi" }
 core = { module = "com.pierfrancescosoffritti.androidyoutubeplayer:core", version.ref = "core" }
+glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltAndroid" }
 hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hiltAndroidCompiler" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }

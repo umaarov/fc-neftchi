@@ -103,6 +103,7 @@ dependencies {
     implementation(libs.androidx.security.crypto)
     implementation(libs.androidx.metrics.performance)
     implementation(libs.core)
+    implementation(libs.glide)
 }
 
 configurations.all {

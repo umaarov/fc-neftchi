@@ -1,13 +1,16 @@
 package uz.umarov.fcneftchi.ui.videos.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Lifecycle
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
+import uz.umarov.fcneftchi.R
 import uz.umarov.fcneftchi.data.model.Video
 import uz.umarov.fcneftchi.databinding.ItemVideoBinding
 import uz.umarov.fcneftchi.util.YouTubeUrlParser
@@ -17,6 +20,7 @@ class VideoAdapter(private val lifecycle: Lifecycle) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VideoViewHolder {
         val binding = ItemVideoBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        // YouTubePlayerView'ni Fragment lifecycle'iga qo'shish
         lifecycle.addObserver(binding.youtubePlayerView)
         return VideoViewHolder(binding)
     }
@@ -26,34 +30,52 @@ class VideoAdapter(private val lifecycle: Lifecycle) :
         holder.bind(video)
     }
 
-    override fun onViewRecycled(holder: VideoViewHolder) {
-        super.onViewRecycled(holder)
-        holder.releasePlayer()
-    }
-
     class VideoViewHolder(private val binding: ItemVideoBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
+        private var youTubePlayer: YouTubePlayer? = null
+        private var currentVideoId: String? = null
+
         fun bind(video: Video) {
+            resetToThumbnail()
+
             binding.videoTitle.text = video.title
-
             val videoId = YouTubeUrlParser.extractVideoId(video.videoUrl)
+            currentVideoId = videoId
 
-            binding.youtubePlayerView.addYouTubePlayerListener(object :
-                AbstractYouTubePlayerListener() {
-                override fun onReady(youTubePlayer: YouTubePlayer) {
-                    videoId?.let {
-                        youTubePlayer.cueVideo(it, 0f)
+            if (videoId != null) {
+                val thumbnailUrl = "https://img.youtube.com/vi/$videoId/hqdefault.jpg"
+                Glide.with(binding.thumbnailImageView.context)
+                    .load(thumbnailUrl)
+                    .placeholder(R.color.placeholder_bg)
+                    .into(binding.thumbnailImageView)
+
+                initializePlayer()
+
+                binding.thumbnailGroup.setOnClickListener {
+                    youTubePlayer?.let { player ->
+                        binding.thumbnailGroup.visibility = View.GONE
+                        binding.youtubePlayerView.visibility = View.VISIBLE
+                        player.loadVideo(videoId, 0f)
                     }
+                }
+            }
+        }
+
+        private fun initializePlayer() {
+            binding.youtubePlayerView.addYouTubePlayerListener(object : AbstractYouTubePlayerListener() {
+                override fun onReady(player: YouTubePlayer) {
+                    youTubePlayer = player
                 }
             })
         }
 
-        fun releasePlayer() {
-            binding.youtubePlayerView.release()
+        private fun resetToThumbnail() {
+            youTubePlayer?.pause()
+            binding.youtubePlayerView.visibility = View.GONE
+            binding.thumbnailGroup.visibility = View.VISIBLE
         }
     }
-
 
     object VideoDiffCallback : DiffUtil.ItemCallback<Video>() {
         override fun areItemsTheSame(oldItem: Video, newItem: Video): Boolean =
