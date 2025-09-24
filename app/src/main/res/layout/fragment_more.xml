@@ -18,7 +18,7 @@
             android:layout_width="54dp"
             android:layout_height="54dp"
             android:layout_marginBottom="32dp"
-            android:src="@drawable/splash_icon_v3_playstore"
+            android:src="@drawable/main_logo"
             tools:ignore="ContentDescription" />
 
         <TextView
