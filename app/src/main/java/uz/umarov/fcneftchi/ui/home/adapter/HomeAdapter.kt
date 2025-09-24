@@ -14,8 +14,10 @@ import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
 import androidx.viewpager2.widget.ViewPager2
 import coil.load
+import com.bumptech.glide.Glide
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
+import uz.umarov.fcneftchi.R
 import uz.umarov.fcneftchi.data.model.LeagueStanding
 import uz.umarov.fcneftchi.data.model.Match
 import uz.umarov.fcneftchi.data.model.NewsArticle
@@ -149,7 +151,7 @@ class HomeAdapter(
         when (holder) {
             is NextMatchViewHolder -> holder.clearCountdown()
             is HeroCarouselViewHolder -> holder.clearCarouselTimer()
-            is FeaturedVideoViewHolder -> holder.releasePlayer()
+//            is FeaturedVideoViewHolder -> holder.releasePlayer()
         }
     }
 
@@ -343,27 +345,57 @@ class HomeAdapter(
         private val onVideoClick: (Video) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
 
+        private var youTubePlayer: YouTubePlayer? = null
+        private var currentVideoId: String? = null
+
         fun bind(video: Video) {
+            resetToThumbnail()
+
             binding.root.setOnClickListener { onVideoClick(video) }
 
             binding.videoTitle.text = video.title
+            binding.categoryTextView.text = "Asosiy Jamoa"
+            binding.dateTextView.text = video.date
+            binding.durationTextView.text = video.duration
 
             val videoId = YouTubeUrlParser.extractVideoId(video.videoUrl)
+            currentVideoId = videoId
 
+            if (videoId != null) {
+                val thumbnailUrl = "https://img.youtube.com/vi/$videoId/hqdefault.jpg"
+                Glide.with(binding.thumbnailImageView.context)
+                    .load(thumbnailUrl)
+                    .placeholder(R.color.placeholder_bg)
+                    .into(binding.thumbnailImageView)
+
+                initializePlayer()
+
+                binding.bottomPlayButton.setOnClickListener {
+                    youTubePlayer?.let { player ->
+                        binding.thumbnailGroup.visibility = View.INVISIBLE
+                        binding.youtubePlayerView.visibility = View.VISIBLE
+                        player.loadVideo(videoId, 0f)
+                    }
+                }
+            }
+        }
+
+        private fun initializePlayer() {
             binding.youtubePlayerView.addYouTubePlayerListener(object :
                 AbstractYouTubePlayerListener() {
-                override fun onReady(youTubePlayer: YouTubePlayer) {
-                    videoId?.let {
-                        youTubePlayer.cueVideo(it, 0f)
-                    }
+                override fun onReady(player: YouTubePlayer) {
+                    youTubePlayer = player
                 }
             })
         }
 
-        fun releasePlayer() {
-            binding.youtubePlayerView.release()
+        private fun resetToThumbnail() {
+            youTubePlayer?.pause()
+            binding.youtubePlayerView.visibility = View.GONE
+            binding.thumbnailGroup.visibility = View.VISIBLE
         }
     }
+
 
 
 

@@ -25,10 +25,10 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <include layout="@layout/item_video_placeholder" />
-            <include layout="@layout/item_video_placeholder" />
-            <include layout="@layout/item_video_placeholder" />
-            <include layout="@layout/item_video_placeholder" />
+            <include layout="@layout/item_news_placeholder" />
+            <include layout="@layout/item_news_placeholder" />
+            <include layout="@layout/item_news_placeholder" />
+            <include layout="@layout/item_news_placeholder" />
 
         </LinearLayout>
     </com.facebook.shimmer.ShimmerFrameLayout>

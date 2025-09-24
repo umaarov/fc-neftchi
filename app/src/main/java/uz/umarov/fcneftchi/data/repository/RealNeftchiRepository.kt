@@ -304,6 +304,8 @@ class RealNeftchiRepository @Inject constructor(
                                 title = newsItem.contents.title,
                                 thumbnailUrl = newsItem.image ?: "",
                                 videoUrl = youtubeUrl,
+                                category = newsItem.category.title,
+                                date = formatApiDate(newsItem.publicDate),
                                 duration = ""
                             )
                         } else {

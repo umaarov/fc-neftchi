@@ -20,7 +20,6 @@ class VideoAdapter(private val lifecycle: Lifecycle) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VideoViewHolder {
         val binding = ItemVideoBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        // YouTubePlayerView'ni Fragment lifecycle'iga qo'shish
         lifecycle.addObserver(binding.youtubePlayerView)
         return VideoViewHolder(binding)
     }
@@ -40,6 +39,10 @@ class VideoAdapter(private val lifecycle: Lifecycle) :
             resetToThumbnail()
 
             binding.videoTitle.text = video.title
+            binding.categoryTextView.text = "Asosiy Jamoa"
+            binding.dateTextView.text = video.date
+            binding.durationTextView.text = video.duration
+
             val videoId = YouTubeUrlParser.extractVideoId(video.videoUrl)
             currentVideoId = videoId
 
@@ -52,9 +55,9 @@ class VideoAdapter(private val lifecycle: Lifecycle) :
 
                 initializePlayer()
 
-                binding.thumbnailGroup.setOnClickListener {
+                binding.bottomPlayButton.setOnClickListener {
                     youTubePlayer?.let { player ->
-                        binding.thumbnailGroup.visibility = View.GONE
+                        binding.thumbnailGroup.visibility = View.INVISIBLE
                         binding.youtubePlayerView.visibility = View.VISIBLE
                         player.loadVideo(videoId, 0f)
                     }
@@ -63,7 +66,8 @@ class VideoAdapter(private val lifecycle: Lifecycle) :
         }
 
         private fun initializePlayer() {
-            binding.youtubePlayerView.addYouTubePlayerListener(object : AbstractYouTubePlayerListener() {
+            binding.youtubePlayerView.addYouTubePlayerListener(object :
+                AbstractYouTubePlayerListener() {
                 override fun onReady(player: YouTubePlayer) {
                     youTubePlayer = player
                 }
