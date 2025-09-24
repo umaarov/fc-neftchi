@@ -20,7 +20,7 @@
             android:layout_height="32dp"
             android:layout_gravity="center"
             android:adjustViewBounds="true"
-            android:src="@drawable/main_logo"
+            android:src="@drawable/splash_icon_v3_playstore"
             tools:ignore="ContentDescription" />
     </com.google.android.material.appbar.MaterialToolbar>
 
