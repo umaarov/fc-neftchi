@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="16dp"
-    app:cardElevation="4dp"
-    app:cardCornerRadius="12dp">
+    app:cardCornerRadius="12dp"
+    app:cardElevation="4dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -63,9 +63,9 @@
             android:layout_marginTop="8dp"
             android:fontFamily="@font/montserrat_bold"
             android:gravity="center"
-            android:textColor="@color/white"
             android:maxLines="2"
             android:ellipsize="end"
+            android:textColor="@color/white"
             app:layout_constraintEnd_toEndOf="@id/home_team_logo"
             app:layout_constraintStart_toStartOf="@id/home_team_logo"
             app:layout_constraintTop_toBottomOf="@id/home_team_logo"
@@ -87,26 +87,126 @@
             android:layout_marginTop="8dp"
             android:fontFamily="@font/montserrat_bold"
             android:gravity="center"
-            android:textColor="@color/white"
             android:maxLines="2"
             android:ellipsize="end"
+            android:textColor="@color/white"
             app:layout_constraintEnd_toEndOf="@id/away_team_logo"
             app:layout_constraintStart_toStartOf="@id/away_team_logo"
             app:layout_constraintTop_toBottomOf="@id/away_team_logo"
             tools:text="Pakhtakor" />
 
-        <TextView
-            android:id="@+id/countdown_timer"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/countdown_container"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/montserrat_bold"
-            android:textAppearance="?attr/textAppearanceHeadline5"
-            android:textColor="@color/white"
+            android:gravity="center"
+            android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="@id/home_team_logo"
             app:layout_constraintEnd_toStartOf="@id/guideline_right"
             app:layout_constraintStart_toEndOf="@id/guideline_left"
-            app:layout_constraintTop_toTopOf="@id/home_team_logo"
-            tools:text="02:12:45:33" />
+            app:layout_constraintTop_toTopOf="@id/home_team_logo">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/days_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:textAppearance="?attr/textAppearanceHeadline6"
+                    android:textColor="@color/white"
+                    tools:text="06" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/montserrat_regular"
+                    android:text="KUN"
+                    android:textAppearance="?attr/textAppearanceCaption"
+                    android:textColor="#B3FFFFFF" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/hours_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:textAppearance="?attr/textAppearanceHeadline6"
+                    android:textColor="@color/white"
+                    tools:text="02" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/montserrat_regular"
+                    android:text="ST"
+                    android:textAppearance="?attr/textAppearanceCaption"
+                    android:textColor="#B3FFFFFF" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/minutes_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:textAppearance="?attr/textAppearanceHeadline6"
+                    android:textColor="@color/white"
+                    tools:text="28" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/montserrat_regular"
+                    android:text="MIN"
+                    android:textAppearance="?attr/textAppearanceCaption"
+                    android:textColor="#B3FFFFFF" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/seconds_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:textAppearance="?attr/textAppearanceHeadline6"
+                    android:textColor="@color/white"
+                    tools:text="51" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/montserrat_regular"
+                    android:text="SEK"
+                    android:textAppearance="?attr/textAppearanceCaption"
+                    android:textColor="#B3FFFFFF" />
+            </LinearLayout>
+
+        </LinearLayout>
 
         <TextView
             android:id="@+id/match_date"
@@ -130,10 +230,10 @@
             android:fontFamily="@font/montserrat_regular"
             android:textAppearance="?attr/textAppearanceCaption"
             android:textColor="#B3FFFFFF"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/match_date"
-            app:layout_constraintBottom_toBottomOf="parent"
             tools:text="Uzbekistan Super League" />
 
         <androidx.constraintlayout.widget.Guideline

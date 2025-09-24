@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.os.Handler
 import android.os.Looper
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -128,7 +129,7 @@ class HomeAdapter(
         when (val item = getItem(position)) {
             is HomeListItem.HeroCarouselItem -> (holder as HeroCarouselViewHolder).bind(
                 item.articles,
-                heroCarouselHandlers.getOrPut(position) { Handler(Looper.getMainLooper()) }) // Pass handler
+                heroCarouselHandlers.getOrPut(position) { Handler(Looper.getMainLooper()) })
             is HomeListItem.NextMatchItem -> (holder as NextMatchViewHolder).bind(item.match)
             is HomeListItem.LastResultItem -> (holder as LastResultViewHolder).bind(item.match)
             is HomeListItem.FeaturedVideoItem -> (holder as FeaturedVideoViewHolder).bind(item.video)
@@ -250,16 +251,15 @@ class HomeAdapter(
                         val hours = (diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
                         val minutes = (diff % (1000 * 60 * 60)) / (1000 * 60)
                         val seconds = (diff % (1000 * 60)) / 1000
-                        binding.countdownTimer.text = String.format(
-                            "%02d : %02d : %02d : %02d",
-                            days,
-                            hours,
-                            minutes,
-                            seconds
-                        )
+
+                        binding.daysText.text = String.format("%02d", days)
+                        binding.hoursText.text = String.format("%02d", hours)
+                        binding.minutesText.text = String.format("%02d", minutes)
+                        binding.secondsText.text = String.format("%02d", seconds)
+
                         countdownHandler.postDelayed(this, 1000)
                     } else {
-                        binding.countdownTimer.text = "STARTED"
+                        binding.countdownContainer.visibility = View.GONE
                     }
                 }
             }
