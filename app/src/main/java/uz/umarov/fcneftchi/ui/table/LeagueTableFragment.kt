@@ -5,12 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
+import android.widget.ArrayAdapter
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import uz.umarov.fcneftchi.databinding.FragmentLeagueTableBinding
@@ -25,6 +25,8 @@ class LeagueTableFragment : Fragment() {
     private val viewModel: LeagueTableViewModel by viewModels()
     private lateinit var tableAdapter: LeagueTableAdapter
 
+    private var isSeasonSelectorSetup = false
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -38,28 +40,11 @@ class LeagueTableFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setupRecyclerView()
 
-        binding.seasonFilterButton.setOnClickListener {
-            showSeasonSelectionDialog()
-        }
-
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.uiState.collect { state ->
                 updateUi(state)
             }
         }
-    }
-
-    private fun showSeasonSelectionDialog() {
-        val seasonsState = viewModel.uiState.value
-        val seasonNames = seasonsState.availableSeasons.keys.toTypedArray()
-
-        MaterialAlertDialogBuilder(requireContext())
-            .setTitle("Select Season")
-            .setItems(seasonNames) { _, which ->
-                val selectedSeasonName = seasonNames[which]
-                viewModel.changeSeason(selectedSeasonName)
-            }
-            .show()
     }
 
     private fun setupRecyclerView() {
@@ -70,8 +55,27 @@ class LeagueTableFragment : Fragment() {
         }
     }
 
+    private fun setupSeasonSelector(seasons: Map<String, Int>) {
+        val seasonNames = seasons.keys.toList()
+        val adapter =
+            ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, seasonNames)
+        binding.seasonSelectorInput.setAdapter(adapter)
+
+        binding.seasonSelectorInput.setOnItemClickListener { parent, _, position, _ ->
+            val selectedSeason = parent.getItemAtPosition(position) as String
+            if (selectedSeason != viewModel.uiState.value.selectedSeasonName) {
+                viewModel.changeSeason(selectedSeason)
+            }
+        }
+    }
+
     private fun updateUi(state: LeagueTableUiState) {
-        binding.seasonFilterButton.text = state.selectedSeasonName
+        if (!isSeasonSelectorSetup && state.availableSeasons.isNotEmpty()) {
+            setupSeasonSelector(state.availableSeasons)
+            isSeasonSelectorSetup = true
+        }
+
+        binding.seasonSelectorInput.setText(state.selectedSeasonName, false)
 
         if (state.isLoading) {
             binding.shimmerContainer.startShimmer()
