@@ -5,6 +5,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import uz.umarov.fcneftchi.R
 import uz.umarov.fcneftchi.data.api.PflApiService
 import uz.umarov.fcneftchi.data.model.ApiPlayer
 import uz.umarov.fcneftchi.data.model.GameCalendarMatch
@@ -129,8 +130,7 @@ class RealNeftchiRepository @Inject constructor(
             name = "${apiPlayer.firstName ?: ""} ${apiPlayer.lastName}".trim(),
             number = apiPlayer.number ?: 0,
             position = mapPosition(apiPlayer.position),
-            imageUrl = apiPlayer.photo
-                ?: "https://placehold.co/400x400/333333/FFFFFF?text=No+Image",
+            imageUrl = apiPlayer.photo ?: R.drawable.player_placeholder_inset,
             nationality = apiPlayer.countryTitle
         )
     }
