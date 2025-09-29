@@ -33,12 +33,13 @@ class MatchStatsFragment : Fragment() {
             viewModel.uiState.collect { state ->
                 state.gameDetail?.statistics?.let { stats ->
                     binding.statsContainer.removeAllViews()
-                    addStatView("Shots", stats.shotsHome, stats.shotsAway)
-                    addStatView("Shots on Target", stats.shotsOnTargetHome, stats.shotsOnTargetAway)
-                    addStatView("Corners", stats.cornersHome, stats.cornersAway)
-                    addStatView("Offsides", stats.offsideHome, stats.offsideAway)
-                    addStatView("Fouls", stats.foulsHome, stats.foulsAway)
-                    addStatView("Yellow Cards", stats.yellowCardsHome, stats.yellowCardsAway)
+                    addStatView("Zarbalar", stats.shotsHome, stats.shotsAway)
+                    addStatView("Aniq zarbalar", stats.shotsOnTargetHome, stats.shotsOnTargetAway)
+                    addStatView("Burchak zarbalari", stats.cornersHome, stats.cornersAway)
+                    addStatView("Offsayd", stats.offsideHome, stats.offsideAway)
+                    addStatView("Follar", stats.foulsHome, stats.foulsAway)
+                    addStatView("Ogohlantirish", stats.yellowCardsHome, stats.yellowCardsAway)
+                    addStatView("Chetlatish", stats.redCardsHome, stats.redCardsAway)
                 }
             }
         }
