@@ -23,25 +23,29 @@ data class FixturesUiState(
 class FixturesViewModel @Inject constructor(repository: NeftchiRepository) : ViewModel() {
     val uiState: StateFlow<FixturesUiState> = repository.getAllFixtures()
         .map { fixtures ->
+            val sortedMatches = fixtures
+                .mapNotNull { match ->
+                    val date = DateUtils.parseDate(match.matchDate)
+                    if (date != null) Pair(match, date) else null
+                }
+                .sortedBy { it.second }
+
+            val groupedByMonth = sortedMatches.groupBy(
+                keySelector = {
+                    val formatter = SimpleDateFormat("MMMM yyyy", Locale.getDefault())
+                    formatter.format(it.second)
+                },
+                valueTransform = { it.first }
+            )
+
             val groupedItems = mutableListOf<FixtureListItem>()
-            val groupedByMonth = fixtures.groupBy { match ->
-                val formatter = SimpleDateFormat("MMMM yyyy", Locale.getDefault())
-                val date = DateUtils.parseDate(match.matchDate)
-                if (date != null) {
-                    formatter.format(date)
-                } else {
-                    "Unknown Month"
+            for ((monthYear, matchesInMonth) in groupedByMonth) {
+                groupedItems.add(FixtureListItem.HeaderItem(monthYear.uppercase()))
+                matchesInMonth.forEach { match ->
+                    groupedItems.add(FixtureListItem.MatchItem(match))
                 }
             }
 
-            for ((monthYear, matchesInMonth) in groupedByMonth.toSortedMap()) {
-                if (monthYear != "Unknown Month") {
-                    groupedItems.add(FixtureListItem.HeaderItem(monthYear.uppercase()))
-                    matchesInMonth.forEach { match ->
-                        groupedItems.add(FixtureListItem.MatchItem(match))
-                    }
-                }
-            }
             FixturesUiState(groupedItems, false)
         }
         .stateIn(
