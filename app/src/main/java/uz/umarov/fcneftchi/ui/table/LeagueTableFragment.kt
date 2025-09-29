@@ -106,8 +106,11 @@ class LeagueTableFragment : Fragment() {
         binding.seasonSelectorInput.setText(state.selectedSeasonName, false)
 
         if (state.isLoading) {
-            binding.shimmerContainer.startShimmer()
-            binding.shimmerContainer.isVisible = true
+            binding.shimmerContainer.apply {
+                alpha = 1f
+                isVisible = true
+                startShimmer()
+            }
             binding.contentGroup.isVisible = false
         } else {
             binding.shimmerContainer.animate()
@@ -121,6 +124,7 @@ class LeagueTableFragment : Fragment() {
                 .start()
 
             tableAdapter.submitList(state.standings)
+
             binding.contentGroup.apply {
                 alpha = 0f
                 isVisible = true
@@ -132,6 +136,7 @@ class LeagueTableFragment : Fragment() {
             }
         }
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()
