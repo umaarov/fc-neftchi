@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import uz.umarov.fcneftchi.databinding.FragmentLeagueTableBinding
@@ -37,11 +38,28 @@ class LeagueTableFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setupRecyclerView()
 
+        binding.seasonFilterButton.setOnClickListener {
+            showSeasonSelectionDialog()
+        }
+
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.uiState.collect { state ->
                 updateUi(state)
             }
         }
+    }
+
+    private fun showSeasonSelectionDialog() {
+        val seasonsState = viewModel.uiState.value
+        val seasonNames = seasonsState.availableSeasons.keys.toTypedArray()
+
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle("Select Season")
+            .setItems(seasonNames) { _, which ->
+                val selectedSeasonName = seasonNames[which]
+                viewModel.changeSeason(selectedSeasonName)
+            }
+            .show()
     }
 
     private fun setupRecyclerView() {
@@ -53,6 +71,8 @@ class LeagueTableFragment : Fragment() {
     }
 
     private fun updateUi(state: LeagueTableUiState) {
+        binding.seasonFilterButton.text = state.selectedSeasonName
+
         if (state.isLoading) {
             binding.shimmerContainer.startShimmer()
             binding.shimmerContainer.isVisible = true

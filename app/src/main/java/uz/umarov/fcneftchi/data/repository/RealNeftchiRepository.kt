@@ -4,6 +4,7 @@ import android.util.Log
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import uz.umarov.fcneftchi.R
 import uz.umarov.fcneftchi.data.api.PflApiService
@@ -250,8 +251,8 @@ class RealNeftchiRepository @Inject constructor(
         }
     }
 
-    override fun getLeagueTable(): Flow<List<LeagueStanding>> = flow {
-        val response = apiService.getLeagueTable()
+    override fun getLeagueTable(seasonId: Int): Flow<List<LeagueStanding>> = flow {
+        val response = apiService.getLeagueTable(seasonId)
         val standings = response.data.table.mapIndexed { index, tableItem ->
             LeagueStanding(
                 position = index + 1,
@@ -264,10 +265,14 @@ class RealNeftchiRepository @Inject constructor(
                 wins = tableItem.wins,
                 draws = tableItem.draws,
                 losses = tableItem.losses,
-                points = tableItem.points
+                points = tableItem.points,
+                goalDifference = tableItem.goalDifference
             )
         }
         emit(standings)
+    }.catch { e ->
+        Log.e("NeftchiRepository", "API Error", e)
+        emit(emptyList())
     }
 
     override fun getTopPlayers(): Flow<List<TopPlayer>> = flow {
