@@ -40,6 +40,7 @@ class LeagueTableFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupRecyclerView()
+        setupLeagueSelector()
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.uiState.collect { state ->
@@ -55,6 +56,24 @@ class LeagueTableFragment : Fragment() {
             layoutManager = LinearLayoutManager(context)
         }
     }
+
+    private fun setupLeagueSelector() {
+        val leagues = listOf("Superliga")
+        val adapter = ArrayAdapter(
+            requireContext(),
+            R.layout.item_dropdown_season,
+            leagues
+        )
+        binding.leagueSelectorInput.apply {
+            setAdapter(adapter)
+            setDropDownBackgroundResource(R.drawable.bg_dropdown_popup)
+            setText("Superliga", false)
+
+            setOnItemClickListener { _, _, _, _ ->
+            }
+        }
+    }
+
 
     private fun setupSeasonSelector(seasons: Map<String, Int>) {
         val seasonNames = seasons.keys.toList()

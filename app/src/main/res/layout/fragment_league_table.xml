@@ -16,15 +16,36 @@
         android:orientation="horizontal"
         android:paddingHorizontal="16dp">
 
-        <TextView
-            android:id="@+id/league_filter_button"
-            style="@style/Widget.App.FilterButton"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/league_selector_layout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="12dp"
-            android:textStyle="bold"
             android:layout_weight="1"
-            android:text="Superliga" />
+            android:layout_marginEnd="12dp"
+            android:background="@android:color/transparent"
+            app:boxBackgroundColor="@android:color/transparent"
+            app:boxStrokeColor="@android:color/transparent"
+            app:boxStrokeWidth="0dp">
+
+            <AutoCompleteTextView
+                android:id="@+id/league_selector_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:fontFamily="@font/montserrat_regular"
+                android:drawableEnd="@drawable/ic_arrow_down"
+                android:drawablePadding="8dp"
+                android:paddingVertical="8dp"
+                android:cursorVisible="false"
+                android:focusable="true"
+                android:inputType="none"
+                tools:text="Superliga" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/season_selector_layout"
