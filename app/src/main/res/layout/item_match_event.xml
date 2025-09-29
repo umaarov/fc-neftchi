@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:paddingVertical="8dp">
+    android:layout_height="wrap_content">
 
     <View
         android:id="@+id/timeline_line"
@@ -59,6 +58,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
+        android:fontFamily="@font/montserrat_regular"
         android:gravity="end"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/home_event_icon"
@@ -100,6 +100,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:fontFamily="@font/montserrat_regular"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/away_event_icon"
