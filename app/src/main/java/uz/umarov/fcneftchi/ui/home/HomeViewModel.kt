@@ -42,7 +42,7 @@ class HomeViewModel @Inject constructor(
                 repository.getNextMatch(),
                 repository.getLastMatch(),
                 repository.getNews(),
-                repository.getLeagueTable(),
+                repository.getLeagueTable(seasonId = 10),
                 repository.getVideos()
             ) { nextMatch, lastMatch, news, standings, videos ->
 

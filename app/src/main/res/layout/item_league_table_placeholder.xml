@@ -80,10 +80,4 @@
             android:background="@color/placeholder_bg" />
     </LinearLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/divider"
-        app:layout_constraintBottom_toBottomOf="parent" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -134,7 +134,7 @@ class NewsArticleFragment : Fragment() {
             val styledText =
                 article.content.parseAsHtml(HtmlCompat.FROM_HTML_MODE_LEGACY, imageGetter)
             binding.articleContent.text = styledText
-            binding.articleContent.movementMethod = LinkMovementMethod.getInstance()
+            // binding.articleContent.movementMethod = LinkMovementMethod.getInstance()
         } else {
             binding.articleContent.text = "Ma'lumot topilmadi."
         }

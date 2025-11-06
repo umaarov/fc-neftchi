@@ -23,7 +23,7 @@ interface NeftchiRepository {
     fun getLastMatch(): Flow<Match>
     fun getAllFixtures(): Flow<List<Match>>
     fun getAllResults(): Flow<List<Match>>
-    fun getLeagueTable(): Flow<List<LeagueStanding>>
+    fun getLeagueTable(seasonId: Int): Flow<List<LeagueStanding>>
     fun getTopPlayers(): Flow<List<TopPlayer>>
     fun getGameDetails(gameId: Int): Flow<GameDetail?>
     fun getVideos(): Flow<List<Video>>

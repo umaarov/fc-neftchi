@@ -43,8 +43,11 @@ interface PflApiService {
     @GET("v1/web/game")
     suspend fun getGames(@Query("clubId") clubId: Int): GameApiResponse
 
+//    @GET("v1/web/game/table")
+//    suspend fun getLeagueTable(): LeagueTableResponse
+
     @GET("v1/web/game/table")
-    suspend fun getLeagueTable(): LeagueTableResponse
+    suspend fun getLeagueTable(@Query("seasonId") seasonId: Int): LeagueTableResponse
 
     @GET("v1/web/game/table/top-players")
     suspend fun getTopPlayers(): TopPlayersResponse

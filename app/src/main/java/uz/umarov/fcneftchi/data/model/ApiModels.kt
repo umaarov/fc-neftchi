@@ -304,6 +304,8 @@ data class GameStatistics(
     @Json(name = "offside_away") val offsideAway: Int,
     @Json(name = "warning_home") val yellowCardsHome: Int,
     @Json(name = "warning_away") val yellowCardsAway: Int,
+    @Json(name = "expulsion_home") val redCardsHome: Int,
+    @Json(name = "expulsion_away") val redCardsAway: Int,
     @Json(name = "corner_kicks_home") val cornersHome: Int,
     @Json(name = "corner_kicks_away") val cornersAway: Int
 )

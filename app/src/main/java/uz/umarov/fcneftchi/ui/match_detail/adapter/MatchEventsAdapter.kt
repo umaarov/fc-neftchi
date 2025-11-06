@@ -60,7 +60,7 @@ class MatchEventsAdapter :
 
                 6 -> { // Substitution
                     eventIcon = R.drawable.ic_substitution
-                    eventText = "$primaryPlayer  Substitution $secondaryPlayer"
+                    eventText = "$primaryPlayer $secondaryPlayer"
                 }
             }
 

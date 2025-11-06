@@ -3,7 +3,6 @@ package uz.umarov.fcneftchi.ui.matches.tabs
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
@@ -24,21 +23,29 @@ data class ResultsUiState(
 class ResultsViewModel @Inject constructor(repository: NeftchiRepository) : ViewModel() {
     val uiState: StateFlow<ResultsUiState> = repository.getAllResults()
         .map { results ->
-            val groupedItems = mutableListOf<ResultListItem>()
-            val groupedByMonth = results.groupBy { match ->
-                val formatter = SimpleDateFormat("MMMM yyyy", Locale.getDefault())
-                val date = DateUtils.parseDate(match.matchDate)
-                if (date != null) formatter.format(date) else "Unknown Month"
-            }
+            val sortedMatches = results
+                .mapNotNull { match ->
+                    val date = DateUtils.parseDate(match.matchDate)
+                    if (date != null) Pair(match, date) else null
+                }
+                .sortedByDescending { it.second }
 
-            for ((monthYear, matchesInMonth) in groupedByMonth.toSortedMap()) {
-                if (monthYear != "Unknown Month") {
-                    groupedItems.add(ResultListItem.HeaderItem(monthYear.uppercase()))
-                    matchesInMonth.forEach { match ->
-                        groupedItems.add(ResultListItem.ResultItem(match))
-                    }
+            val groupedByMonth = sortedMatches.groupBy(
+                keySelector = {
+                    val formatter = SimpleDateFormat("MMMM yyyy", Locale.getDefault())
+                    formatter.format(it.second)
+                },
+                valueTransform = { it.first }
+            )
+
+            val groupedItems = mutableListOf<ResultListItem>()
+            for ((monthYear, matchesInMonth) in groupedByMonth) {
+                groupedItems.add(ResultListItem.HeaderItem(monthYear.uppercase()))
+                matchesInMonth.forEach { match ->
+                    groupedItems.add(ResultListItem.ResultItem(match))
                 }
             }
+
             ResultsUiState(groupedItems, false)
         }
         .stateIn(
