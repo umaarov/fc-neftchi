@@ -1,11 +1,16 @@
 package uz.umarov.fcneftchi.ui
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.metrics.performance.JankStats
 import androidx.navigation.NavController
@@ -25,6 +30,17 @@ class MainActivity : AppCompatActivity() {
     private val viewModel: MainViewModel by viewModels()
 
     private lateinit var jankStats: JankStats
+
+    private val requestPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted: Boolean ->
+        if (isGranted) {
+            Log.d("Permission", "Notification permission granted")
+            subscribeToDefaultTopic()
+        } else {
+            Log.w("Permission", "Notification permission denied")
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
 //        val splashScreen = installSplashScreen()
@@ -56,6 +72,8 @@ class MainActivity : AppCompatActivity() {
 
         setupTabLayoutWithNavController()
 
+        askNotificationPermission()
+
         FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
             if (!task.isSuccessful) {
                 Log.w("FCM_TOKEN", "Fetching FCM registration token failed", task.exception)
@@ -72,6 +90,48 @@ class MainActivity : AppCompatActivity() {
         }
 
         jankStats = JankStats.createAndTrack(window, jankFrameListener)
+    }
+
+    private fun askNotificationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            when {
+                ContextCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.POST_NOTIFICATIONS
+                ) == PackageManager.PERMISSION_GRANTED -> {
+                    Log.d("Permission", "Notification permission already granted")
+                    subscribeToDefaultTopic()
+                }
+
+                shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS) -> {
+                    AlertDialog.Builder(this)
+                        .setTitle("Stay Updated!")
+                        .setMessage("Please allow notifications to get live match scores, breaking news, and video updates directly on your phone.")
+                        .setPositiveButton("Allow") { _, _ ->
+                            requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                        }
+                        .setNegativeButton("Later", null)
+                        .show()
+                }
+
+                else -> {
+                    requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                }
+            }
+        } else {
+            subscribeToDefaultTopic()
+        }
+    }
+
+    private fun subscribeToDefaultTopic() {
+        FirebaseMessaging.getInstance().subscribeToTopic("news")
+            .addOnCompleteListener { task ->
+                var msg = "Subscribed to 'news' topic"
+                if (!task.isSuccessful) {
+                    msg = "Subscription to 'news' topic failed"
+                }
+                Log.d("FCM_TOPIC", msg)
+            }
     }
 
     override fun onResume() {
@@ -139,5 +199,4 @@ class MainActivity : AppCompatActivity() {
         binding.appBarLayout.isVisible = false
         binding.tabLayout.isVisible = true
     }
-
 }

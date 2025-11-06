@@ -30,7 +30,7 @@ class MatchLineupsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val homeLineupAdapter = LineupAdapter()
-        val awayLineupAdapter = LineupAdapter()
+        val awayLineupAdapter = LineupAdapter() 
 
         binding.homeLineupRecyclerView.apply {
             adapter = homeLineupAdapter
