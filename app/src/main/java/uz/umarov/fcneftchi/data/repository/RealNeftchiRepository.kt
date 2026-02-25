@@ -217,27 +217,29 @@ class RealNeftchiRepository @Inject constructor(
         )
     }
 
-    override fun getNextMatch(): Flow<Match> = flow {
-        val allGames = getAllGamesFromCalendar()
-        val now = Date()
-        val nextFixture = allGames
-            .filter { parseDate(it.startDate)?.after(now) != false }
-            .minByOrNull { it.startDate }
-
-        if (nextFixture != null) {
-            emit(mapApiGameToMatch(nextFixture))
+    override fun getNextMatch(): Flow<Match?> = flow {
+        try {
+            val allGames = getAllGamesFromCalendar()
+            val now = Date()
+            val nextFixture = allGames
+                .filter { parseDate(it.startDate)?.after(now) != false }
+                .minByOrNull { it.startDate }
+            emit(nextFixture?.let { mapApiGameToMatch(it) })
+        } catch (e: Exception) {
+            emit(null)
         }
     }
 
-    override fun getLastMatch(): Flow<Match> = flow {
-        val allGames = getAllGamesFromCalendar()
-        val now = Date()
-        val lastResult = allGames
-            .filter { parseDate(it.startDate)?.before(now) == true }
-            .maxByOrNull { it.startDate }
-
-        if (lastResult != null) {
-            emit(mapApiGameToMatch(lastResult))
+    override fun getLastMatch(): Flow<Match?> = flow {
+        try {
+            val allGames = getAllGamesFromCalendar()
+            val now = Date()
+            val lastResult = allGames
+                .filter { parseDate(it.startDate)?.before(now) == true }
+                .maxByOrNull { it.startDate }
+            emit(lastResult?.let { mapApiGameToMatch(it) })
+        } catch (e: Exception) {
+            emit(null)
         }
     }
 
