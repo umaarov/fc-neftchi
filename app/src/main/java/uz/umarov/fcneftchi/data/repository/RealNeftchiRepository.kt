@@ -34,7 +34,7 @@ class RealNeftchiRepository @Inject constructor(
 
     private val neftchiClubId = 7
     private val superligaTournamentId = 1
-    private val currentSeasonId = 10
+    private val currentSeasonId = 11
     private val videoCategoryId = 13
 
     private suspend fun getAllGamesFromCalendar(): List<GameCalendarMatch> {

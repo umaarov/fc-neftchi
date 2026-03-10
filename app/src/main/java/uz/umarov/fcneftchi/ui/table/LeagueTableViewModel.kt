@@ -12,12 +12,13 @@ import uz.umarov.fcneftchi.data.repository.NeftchiRepository
 import javax.inject.Inject
 
 private val SEASONS_MAP = mapOf(
+    "2026" to 11,
     "2025" to 10,
     "2024" to 1,
     "2023" to 2,
     "2022" to 3
 )
-private const val DEFAULT_SEASON_NAME = "2025"
+private const val DEFAULT_SEASON_NAME = "2026"
 
 data class LeagueTableUiState(
     val standings: List<LeagueStanding> = emptyList(),
