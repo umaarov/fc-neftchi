@@ -14,7 +14,7 @@ import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
 import androidx.viewpager2.widget.ViewPager2
 import coil.load
-import com.bumptech.glide.Glide
+import coil.load
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
 import uz.umarov.fcneftchi.R
@@ -363,10 +363,11 @@ class HomeAdapter(
 
             if (videoId != null) {
                 val thumbnailUrl = "https://img.youtube.com/vi/$videoId/hqdefault.jpg"
-                Glide.with(binding.thumbnailImageView.context)
-                    .load(thumbnailUrl)
-                    .placeholder(R.color.placeholder_bg)
-                    .into(binding.thumbnailImageView)
+                binding.thumbnailImageView.load(thumbnailUrl) {
+                    placeholder(R.color.placeholder_bg)
+                    error(R.color.placeholder_bg)
+                    crossfade(true)
+                }
 
                 initializePlayer()
 
