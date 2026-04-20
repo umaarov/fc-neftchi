@@ -68,12 +68,16 @@ android {
         debug {
             isMinifyEnabled = false
             isShrinkResources = false
-            applicationIdSuffix = ".debug"
             versionNameSuffix = "-debug"
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            // NOTE: no applicationIdSuffix yet — google-services.json only
+            // registers the production package. To enable debug+release
+            // side-by-side, add a second Firebase Android app for
+            // uz.umarov.fcneftchi.debug, re-download google-services.json,
+            // then set `applicationIdSuffix = ".debug"` here.
         }
     }
     compileOptions {

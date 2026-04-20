@@ -30,8 +30,21 @@
 
     <string name="settings_appearance">Ko\'rinish</string>
     <string name="settings_dark_mode">Tungi rejim</string>
+    <string name="settings_theme">Mavzu</string>
+    <string name="settings_theme_light">Kunduzgi</string>
+    <string name="settings_theme_dark">Tungi</string>
+    <string name="settings_theme_system">Tizim bo\'yicha</string>
+    <string name="settings_theme_subtitle">Dasturning ko\'rinishini tanlang</string>
     <string name="settings_notifications">Bildirishnomalar</string>
     <string name="settings_match_reminders">O\'yin eslatmalari</string>
+    <string name="settings_match_reminders_subtitle">O\'yin boshlanishidan oldin eslatma oling</string>
     <string name="settings_news_alerts">Yangiliklar haqida xabar</string>
+    <string name="settings_news_alerts_subtitle">Eng so\'nggi yangiliklar haqida xabar oling</string>
+    <string name="notif_permission_granted">Bildirishnomalar yoqildi!</string>
+    <string name="notif_permission_denied">Bildirishnomalarga ruxsat berilmadi.</string>
+    <string name="notif_subscribe_success">Obuna muvaffaqiyatli!</string>
+    <string name="notif_subscribe_failed">Obuna bo\'lishda xatolik.</string>
+    <string name="notif_unsubscribe_success">Obuna bekor qilindi!</string>
+    <string name="notif_unsubscribe_failed">Bekor qilishda xatolik.</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

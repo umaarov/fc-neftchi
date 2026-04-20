@@ -4,7 +4,7 @@ import android.app.Application
 import coil.ImageLoader
 import coil.ImageLoaderFactory
 import dagger.hilt.android.HiltAndroidApp
-import uz.umarov.fcneftchi.util.NativeSecurity
+import uz.umarov.fcneftchi.util.ThemeManager
 import javax.inject.Inject
 import javax.inject.Provider
 
@@ -14,10 +14,15 @@ class NeftchiApp : Application(), ImageLoaderFactory {
     @Inject
     lateinit var imageLoaderProvider: Provider<ImageLoader.Builder>
 
-//    override fun onCreate() {
-//        super.onCreate()
-//        NativeSecurity.checkAndExit()
-//    }
+    @Inject
+    lateinit var themeManager: ThemeManager
+
+    override fun onCreate() {
+        super.onCreate()
+        // Apply user's persisted theme before any activity inflates to avoid
+        // a flash of the wrong light/dark mode on cold start.
+        themeManager.applyPersisted()
+    }
 
     override fun newImageLoader(): ImageLoader {
         return imageLoaderProvider.get()
