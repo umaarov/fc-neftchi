@@ -29,15 +29,28 @@ object AppModule {
     @Singleton
     fun provideHttpLoggingInterceptor(): HttpLoggingInterceptor {
         return HttpLoggingInterceptor().apply {
-            level = HttpLoggingInterceptor.Level.BODY
+            level = if (BuildConfig.DEBUG) {
+                HttpLoggingInterceptor.Level.BODY
+            } else {
+                HttpLoggingInterceptor.Level.NONE
+            }
         }
     }
 
     @Provides
     @Singleton
     fun provideOkHttpClient(loggingInterceptor: HttpLoggingInterceptor): OkHttpClient {
-        val builder = OkHttpClient.Builder()
-        return builder.build()
+        return OkHttpClient.Builder()
+            .connectTimeout(20, java.util.concurrent.TimeUnit.SECONDS)
+            .readTimeout(30, java.util.concurrent.TimeUnit.SECONDS)
+            .writeTimeout(30, java.util.concurrent.TimeUnit.SECONDS)
+            .retryOnConnectionFailure(true)
+            .apply {
+                if (BuildConfig.DEBUG) {
+                    addInterceptor(loggingInterceptor)
+                }
+            }
+            .build()
     }
 
     @Provides
