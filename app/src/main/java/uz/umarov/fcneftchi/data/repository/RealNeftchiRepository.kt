@@ -1,11 +1,11 @@
 package uz.umarov.fcneftchi.data.repository
 
-import android.util.Log
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
+import timber.log.Timber
 import uz.umarov.fcneftchi.R
 import uz.umarov.fcneftchi.data.ClubConfig
 import uz.umarov.fcneftchi.data.api.PflApiService
@@ -65,7 +65,7 @@ class RealNeftchiRepository @Inject constructor(
             val response = apiService.getNewsDetail(url)
             val detailData = response.data
 
-            Log.d("NewsRepo", "Fetched News Detail: $detailData")
+            Timber.tag("NewsRepo").d("Fetched News Detail: %s", detailData)
 
             val fullContentHtml = detailData.text.joinToString(separator = "") { textItem ->
                 textItem.value?.let { "<div>$it</div>" } ?: ""
@@ -84,7 +84,7 @@ class RealNeftchiRepository @Inject constructor(
             )
             emit(article)
         } catch (e: Exception) {
-            Log.e("NewsRepo", "Error fetching news article by URL: $url", e)
+            Timber.tag("NewsRepo").e(e, "Error fetching news article by URL: %s", url)
             emit(null)
         }
     }
@@ -272,7 +272,7 @@ class RealNeftchiRepository @Inject constructor(
         }
         emit(standings)
     }.catch { e ->
-        Log.e("NeftchiRepository", "API Error", e)
+        Timber.tag("NeftchiRepository").e(e, "API Error")
         emit(emptyList())
     }
 

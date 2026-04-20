@@ -5,6 +5,8 @@ import coil.ImageLoader
 import coil.ImageLoaderFactory
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import dagger.hilt.android.HiltAndroidApp
+import timber.log.Timber
+import uz.umarov.fcneftchi.logging.CrashlyticsTree
 import uz.umarov.fcneftchi.util.ThemeManager
 import javax.inject.Inject
 import javax.inject.Provider
@@ -26,6 +28,12 @@ class NeftchiApp : Application(), ImageLoaderFactory {
 
         FirebaseCrashlytics.getInstance()
             .isCrashlyticsCollectionEnabled = !BuildConfig.DEBUG
+
+        if (BuildConfig.DEBUG) {
+            Timber.plant(Timber.DebugTree())
+        } else {
+            Timber.plant(CrashlyticsTree())
+        }
     }
 
     override fun newImageLoader(): ImageLoader {

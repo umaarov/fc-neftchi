@@ -7,13 +7,12 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import androidx.core.app.NotificationCompat
-import uz.umarov.fcneftchi.BuildConfig
 import androidx.core.content.ContextCompat
 import androidx.navigation.NavDeepLinkBuilder
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import timber.log.Timber
 import uz.umarov.fcneftchi.R
 import uz.umarov.fcneftchi.ui.MainActivity
 import kotlin.random.Random
@@ -79,8 +78,6 @@ class NeftchiFirebaseMessagingService : FirebaseMessagingService() {
 
     override fun onNewToken(token: String) {
         super.onNewToken(token)
-        if (BuildConfig.DEBUG) {
-            Log.d("FCM_TOKEN", "New device token: $token")
-        }
+        Timber.tag("FCM_TOKEN").d("New device token: %s", token)
     }
 }

@@ -4,7 +4,6 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
@@ -20,6 +19,7 @@ import com.google.firebase.messaging.FirebaseMessaging
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
+import timber.log.Timber
 import uz.umarov.fcneftchi.BuildConfig
 import uz.umarov.fcneftchi.R
 import uz.umarov.fcneftchi.databinding.ActivityMainBinding
@@ -77,7 +77,7 @@ class MainActivity : AppCompatActivity() {
 
         val jankFrameListener = JankStats.OnFrameListener { frameData ->
             if (frameData.isJank) {
-                Log.w("JankStats", "Janky frame detected: $frameData")
+                Timber.tag("JankStats").w("Janky frame detected: %s", frameData)
             }
         }
 
@@ -88,8 +88,8 @@ class MainActivity : AppCompatActivity() {
         if (!BuildConfig.DEBUG) return
         lifecycleScope.launch {
             runCatching { FirebaseMessaging.getInstance().token.await() }
-                .onSuccess { token -> Log.d("FCM_TOKEN", token) }
-                .onFailure { e -> Log.w("FCM_TOKEN", "Failed to fetch FCM token", e) }
+                .onSuccess { token -> Timber.tag("FCM_TOKEN").d(token) }
+                .onFailure { e -> Timber.tag("FCM_TOKEN").w(e, "Failed to fetch FCM token") }
         }
     }
 
@@ -126,9 +126,7 @@ class MainActivity : AppCompatActivity() {
     private fun subscribeToDefaultTopic() {
         lifecycleScope.launch {
             runCatching { FirebaseMessaging.getInstance().subscribeToTopic("news").await() }
-                .onFailure { e ->
-                    if (BuildConfig.DEBUG) Log.w("FCM_TOPIC", "subscribe failed", e)
-                }
+                .onFailure { e -> Timber.tag("FCM_TOPIC").w(e, "subscribe failed") }
         }
     }
 

@@ -137,6 +137,7 @@ dependencies {
     implementation(libs.coil)
     implementation(libs.coil.svg)
     implementation(libs.shimmer)
+    implementation(libs.timber)
     implementation(libs.androidx.core.splashscreen)
     implementation(libs.androidx.profileinstaller)
     implementation(libs.androidx.security.crypto)
