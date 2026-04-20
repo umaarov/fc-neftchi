@@ -4,6 +4,7 @@ coilSvg = "2.7.0"
 converterMoshi = "3.0.0"
 core = "13.0.0"
 coreSplashscreen = "1.0.1"
+desugarJdkLibs = "2.1.5"
 hiltAndroidCompiler = "2.57.1"
 hiltAndroid = "2.57.1"
 hiltNavigationFragment = "1.2.0"
@@ -47,6 +48,7 @@ androidx-swiperefreshlayout = { module = "androidx.swiperefreshlayout:swiperefre
 coil = { module = "io.coil-kt:coil", version.ref = "coilSvg" }
 coil-svg = { module = "io.coil-kt:coil-svg", version.ref = "coilSvg" }
 converter-moshi = { module = "com.squareup.retrofit2:converter-moshi", version.ref = "converterMoshi" }
+desugar-jdk-libs = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugarJdkLibs" }
 core = { module = "com.pierfrancescosoffritti.androidyoutubeplayer:core", version.ref = "core" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltAndroid" }
 hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hiltAndroidCompiler" }

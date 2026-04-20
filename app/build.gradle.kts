@@ -7,13 +7,18 @@ plugins {
     alias(libs.plugins.kotlin.android)
 }
 
-val localProperties = Properties()
-val localPropertiesFile = rootProject.file("local.properties")
-if (localPropertiesFile.exists()) {
-    localPropertiesFile.reader(Charsets.UTF_8).use { reader ->
-        localProperties.load(reader)
-    }
+val localProperties = Properties().apply {
+    val f = rootProject.file("local.properties")
+    if (f.exists()) f.reader(Charsets.UTF_8).use { load(it) }
 }
+
+val keystoreProperties = Properties().apply {
+    val f = rootProject.file("keystore.properties")
+    if (f.exists()) f.reader(Charsets.UTF_8).use { load(it) }
+}
+
+val apiBaseUrl: String = localProperties.getProperty("API_BASE_URL")
+    ?: "https://api.pfl.uz/"
 
 android {
     namespace = "uz.umarov.fcneftchi"
@@ -27,40 +32,54 @@ android {
         versionName = "1.6"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("String", "API_URL", "\"$apiBaseUrl\"")
+    }
+
+    signingConfigs {
+        // Release signing is configured only when keystore.properties is present
+        // (kept out of version control). Otherwise release builds fall back to
+        // the debug signing config so local assembleRelease still works.
+        if (keystoreProperties.getProperty("storeFile") != null) {
+            create("release") {
+                storeFile = file(keystoreProperties.getProperty("storeFile"))
+                storePassword = keystoreProperties.getProperty("storePassword")
+                keyAlias = keystoreProperties.getProperty("keyAlias")
+                keyPassword = keystoreProperties.getProperty("keyPassword")
+                enableV3Signing = true
+                enableV4Signing = true
+            }
+        }
     }
 
     buildTypes {
         release {
-            isMinifyEnabled = false
-            isShrinkResources = false
+            isMinifyEnabled = true
+            isShrinkResources = true
+            isDebuggable = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            buildConfigField(
-                "String",
-                "API_URL",
-                "\"${localProperties.getProperty("API_BASE_URL")}\""
-            )
+            signingConfig = signingConfigs.findByName("release")
+                ?: signingConfigs.getByName("debug")
         }
 
         debug {
             isMinifyEnabled = false
             isShrinkResources = false
+            applicationIdSuffix = ".debug"
+            versionNameSuffix = "-debug"
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
-            )
-            buildConfigField(
-                "String",
-                "API_URL",
-                "\"${localProperties.getProperty("API_BASE_URL")}\""
             )
         }
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
+        isCoreLibraryDesugaringEnabled = true
     }
     kotlinOptions {
         jvmTarget = "17"
@@ -68,6 +87,17 @@ android {
     buildFeatures {
         viewBinding = true
         buildConfig = true
+    }
+    packaging {
+        resources {
+            excludes += setOf(
+                "/META-INF/{AL2.0,LGPL2.1}",
+                "/META-INF/DEPENDENCIES",
+                "/META-INF/LICENSE*",
+                "/META-INF/NOTICE*",
+                "/META-INF/*.kotlin_module"
+            )
+        }
     }
 }
 
@@ -104,6 +134,8 @@ dependencies {
     implementation(libs.androidx.security.crypto)
     implementation(libs.androidx.metrics.performance)
     implementation(libs.core)
+
+    coreLibraryDesugaring(libs.desugar.jdk.libs)
 }
 
 configurations.all {
