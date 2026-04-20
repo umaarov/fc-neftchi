@@ -12,12 +12,16 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import androidx.lifecycle.lifecycleScope
 import androidx.metrics.performance.JankStats
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.google.android.material.tabs.TabLayout
 import com.google.firebase.messaging.FirebaseMessaging
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
+import uz.umarov.fcneftchi.BuildConfig
 import uz.umarov.fcneftchi.R
 import uz.umarov.fcneftchi.databinding.ActivityMainBinding
 import uz.umarov.fcneftchi.util.applySystemBarPadding
@@ -35,10 +39,7 @@ class MainActivity : AppCompatActivity() {
         ActivityResultContracts.RequestPermission()
     ) { isGranted: Boolean ->
         if (isGranted) {
-            Log.d("Permission", "Notification permission granted")
             subscribeToDefaultTopic()
-        } else {
-            Log.w("Permission", "Notification permission denied")
         }
     }
 
@@ -74,14 +75,7 @@ class MainActivity : AppCompatActivity() {
 
         askNotificationPermission()
 
-        FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
-            if (!task.isSuccessful) {
-                Log.w("FCM_TOKEN", "Fetching FCM registration token failed", task.exception)
-                return@addOnCompleteListener
-            }
-            val token = task.result
-            Log.d("FCM_TOKEN", token)
-        }
+        fetchFcmTokenForDebug()
 
         val jankFrameListener = JankStats.OnFrameListener { frameData ->
             if (frameData.isJank) {
@@ -92,6 +86,15 @@ class MainActivity : AppCompatActivity() {
         jankStats = JankStats.createAndTrack(window, jankFrameListener)
     }
 
+    private fun fetchFcmTokenForDebug() {
+        if (!BuildConfig.DEBUG) return
+        lifecycleScope.launch {
+            runCatching { FirebaseMessaging.getInstance().token.await() }
+                .onSuccess { token -> Log.d("FCM_TOKEN", token) }
+                .onFailure { e -> Log.w("FCM_TOKEN", "Failed to fetch FCM token", e) }
+        }
+    }
+
     private fun askNotificationPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             when {
@@ -99,7 +102,6 @@ class MainActivity : AppCompatActivity() {
                     this,
                     Manifest.permission.POST_NOTIFICATIONS
                 ) == PackageManager.PERMISSION_GRANTED -> {
-                    Log.d("Permission", "Notification permission already granted")
                     subscribeToDefaultTopic()
                 }
 
@@ -124,14 +126,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun subscribeToDefaultTopic() {
-        FirebaseMessaging.getInstance().subscribeToTopic("news")
-            .addOnCompleteListener { task ->
-                var msg = "Subscribed to 'news' topic"
-                if (!task.isSuccessful) {
-                    msg = "Subscription to 'news' topic failed"
+        lifecycleScope.launch {
+            runCatching { FirebaseMessaging.getInstance().subscribeToTopic("news").await() }
+                .onFailure { e ->
+                    if (BuildConfig.DEBUG) Log.w("FCM_TOPIC", "subscribe failed", e)
                 }
-                Log.d("FCM_TOPIC", msg)
-            }
+        }
     }
 
     override fun onResume() {

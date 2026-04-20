@@ -9,6 +9,7 @@ import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.core.app.NotificationCompat
+import uz.umarov.fcneftchi.BuildConfig
 import androidx.core.content.ContextCompat
 import androidx.navigation.NavDeepLinkBuilder
 import com.google.firebase.messaging.FirebaseMessagingService
@@ -78,6 +79,8 @@ class NeftchiFirebaseMessagingService : FirebaseMessagingService() {
 
     override fun onNewToken(token: String) {
         super.onNewToken(token)
-        Log.d("FCM_TOKEN", "New device token: $token")
+        if (BuildConfig.DEBUG) {
+            Log.d("FCM_TOKEN", "New device token: $token")
+        }
     }
 }
