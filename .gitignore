@@ -1,15 +1,44 @@
+# Gradle / build
 *.iml
 .gradle
-/local.properties
 /.idea/caches
 /.idea/libraries
 /.idea/modules.xml
 /.idea/workspace.xml
 /.idea/navEditor.xml
 /.idea/assetWizardSettings.xml
+/.idea/deploymentTargetSelector.xml
+/.idea/deploymentTargetDropDown.xml
+/.idea/migrations.xml
 .DS_Store
 /build
+**/build/
 /captures
 .externalNativeBuild
 .cxx
+.kotlin/
+
+# Local config (may contain API URLs, SDK path, keystore paths)
 local.properties
+keystore.properties
+
+# Keystores & signing
+*.jks
+*.keystore
+
+# Build artifacts — never commit these
+**/release/*.apk
+**/release/*.aab
+**/debug/*.apk
+**/debug/*.aab
+*.apk
+*.aab
+
+# OS
+Thumbs.db
+
+# Logs
+*.log
+
+# Claude Code / agent working dirs
+.claude/
