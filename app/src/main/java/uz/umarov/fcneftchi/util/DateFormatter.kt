@@ -19,6 +19,9 @@ object DateFormatter {
     private val shortEnglish = DateTimeFormatter.ofPattern("dd MMM, HH:mm", Locale.ENGLISH)
 
     fun formatArticleDate(date: Date): String = date.format(articleDate)
+    fun formatArticleDateOrRaw(raw: String): String =
+        DateUtils.parseDate(raw)?.let { formatArticleDate(it) } ?: raw
+
     fun formatMatchListDate(date: Date): String = date.format(matchListDate)
     fun formatMatchListTime(date: Date): String = date.format(matchListTime)
     fun formatMatchDetailDate(date: Date): String = date.format(matchDetailDate)

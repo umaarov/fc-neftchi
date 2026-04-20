@@ -2,12 +2,12 @@ package uz.umarov.fcneftchi.domain.usecase
 
 import kotlinx.coroutines.flow.Flow
 import uz.umarov.fcneftchi.data.model.NewsArticle
-import uz.umarov.fcneftchi.data.repository.NeftchiRepository
+import uz.umarov.fcneftchi.data.repository.NewsRepository
 import javax.inject.Inject
 
 class GetNewsDetailUseCase @Inject constructor(
-    private val repository: NeftchiRepository
+    private val newsRepository: NewsRepository
 ) {
     operator fun invoke(url: String): Flow<NewsArticle?> =
-        repository.getNewsArticleByUrl(url)
+        newsRepository.getNewsArticleByUrl(url)
 }

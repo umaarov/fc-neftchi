@@ -16,8 +16,6 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import uz.umarov.fcneftchi.data.api.PflApiService
-import uz.umarov.fcneftchi.data.repository.NeftchiRepository
-import uz.umarov.fcneftchi.data.repository.RealNeftchiRepository
 import javax.inject.Singleton
 import uz.umarov.fcneftchi.BuildConfig
 
@@ -75,12 +73,6 @@ object AppModule {
     @Singleton
     fun providePflApiService(retrofit: Retrofit): PflApiService {
         return retrofit.create(PflApiService::class.java)
-    }
-
-    @Provides
-    @Singleton
-    fun provideNeftchiRepository(apiService: PflApiService): NeftchiRepository {
-        return RealNeftchiRepository(apiService)
     }
 
     @Provides
