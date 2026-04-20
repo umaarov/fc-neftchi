@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import uz.umarov.fcneftchi.data.model.NewsArticle
-import uz.umarov.fcneftchi.data.repository.NeftchiRepository
+import uz.umarov.fcneftchi.domain.usecase.GetNewsDetailUseCase
 import javax.inject.Inject
 
 data class NewsArticleState(
@@ -19,7 +19,7 @@ data class NewsArticleState(
 
 @HiltViewModel
 class NewsArticleViewModel @Inject constructor(
-    private val repository: NeftchiRepository,
+    private val getNewsDetail: GetNewsDetailUseCase,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
     private val articleUrl: String = savedStateHandle.get<String>("articleUrl")!!
@@ -33,7 +33,7 @@ class NewsArticleViewModel @Inject constructor(
 
     private fun loadArticle() {
         viewModelScope.launch {
-            repository.getNewsArticleByUrl(articleUrl).collect { article ->
+            getNewsDetail(articleUrl).collect { article ->
                 _uiState.update { it.copy(article = article, isLoading = false) }
             }
         }

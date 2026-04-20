@@ -7,12 +7,11 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import uz.umarov.fcneftchi.R
-import uz.umarov.fcneftchi.data.ClubConfig
-import uz.umarov.fcneftchi.data.repository.NeftchiRepository
+import uz.umarov.fcneftchi.domain.model.HomeFeed
+import uz.umarov.fcneftchi.domain.usecase.GetHomeFeedUseCase
 import javax.inject.Inject
 
 data class HomeUiState(
@@ -23,7 +22,7 @@ data class HomeUiState(
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val repository: NeftchiRepository
+    private val getHomeFeed: GetHomeFeedUseCase
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(HomeUiState())
@@ -39,47 +38,42 @@ class HomeViewModel @Inject constructor(
                 _uiState.update { it.copy(isLoading = true) }
             }
 
-            combine(
-                repository.getNextMatch(),
-                repository.getLastMatch(),
-                repository.getNews(),
-                repository.getLeagueTable(seasonId = ClubConfig.HOME_STANDINGS_SEASON_ID),
-                repository.getVideos()
-            ) { nextMatch, lastMatch, news, standings, videos ->
-
-                val homeItems = mutableListOf<HomeListItem>()
-
-                if (news.isNotEmpty()) {
-                    homeItems.add(HomeListItem.HeroCarouselItem(news.take(3)))
+            getHomeFeed()
+                .catch { e ->
+                    _uiState.update { it.copy(error = e.message, isLoading = false) }
                 }
-
-                nextMatch?.let { homeItems.add(HomeListItem.NextMatchItem(it)) }
-
-                lastMatch?.let { homeItems.add(HomeListItem.LastResultItem(it)) }
-
-                videos.firstOrNull()?.let {
-                    homeItems.add(HomeListItem.HeaderItem("Video", R.id.videosFragment))
-                    homeItems.add(HomeListItem.FeaturedVideoItem(it))
+                .collect { feed ->
+                    _uiState.value = HomeUiState(items = buildHomeItems(feed), isLoading = false)
                 }
-
-                val otherNews = news.drop(3)
-                if (otherNews.isNotEmpty()) {
-                    homeItems.add(HomeListItem.HeaderItem("So'nggi yangiliklar", R.id.newsFragment))
-                    homeItems.add(HomeListItem.NewsCarouselItem(otherNews.take(5)))
-                }
-
-                if (standings.isNotEmpty()) {
-                    homeItems.add(HomeListItem.HeaderItem("Turnir jadvali", R.id.matchesFragment))
-                    homeItems.add(HomeListItem.StandingsItem(standings.take(5)))
-                }
-
-                HomeUiState(items = homeItems, isLoading = false)
-
-            }.catch { e ->
-                _uiState.update { it.copy(error = e.message, isLoading = false) }
-            }.collect { combinedState ->
-                _uiState.value = combinedState
-            }
         }
+    }
+
+    private fun buildHomeItems(feed: HomeFeed): List<HomeListItem> {
+        val homeItems = mutableListOf<HomeListItem>()
+
+        if (feed.news.isNotEmpty()) {
+            homeItems.add(HomeListItem.HeroCarouselItem(feed.news.take(3)))
+        }
+
+        feed.nextMatch?.let { homeItems.add(HomeListItem.NextMatchItem(it)) }
+        feed.lastMatch?.let { homeItems.add(HomeListItem.LastResultItem(it)) }
+
+        feed.videos.firstOrNull()?.let {
+            homeItems.add(HomeListItem.HeaderItem("Video", R.id.videosFragment))
+            homeItems.add(HomeListItem.FeaturedVideoItem(it))
+        }
+
+        val otherNews = feed.news.drop(3)
+        if (otherNews.isNotEmpty()) {
+            homeItems.add(HomeListItem.HeaderItem("So'nggi yangiliklar", R.id.newsFragment))
+            homeItems.add(HomeListItem.NewsCarouselItem(otherNews.take(5)))
+        }
+
+        if (feed.standings.isNotEmpty()) {
+            homeItems.add(HomeListItem.HeaderItem("Turnir jadvali", R.id.matchesFragment))
+            homeItems.add(HomeListItem.StandingsItem(feed.standings.take(5)))
+        }
+
+        return homeItems
     }
 }

@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
-import uz.umarov.fcneftchi.data.repository.NeftchiRepository
+import uz.umarov.fcneftchi.domain.usecase.GetResultsUseCase
 import uz.umarov.fcneftchi.ui.matches.ResultListItem
 import uz.umarov.fcneftchi.util.DateFormatter
 import uz.umarov.fcneftchi.util.DateUtils
@@ -19,8 +19,10 @@ data class ResultsUiState(
 )
 
 @HiltViewModel
-class ResultsViewModel @Inject constructor(repository: NeftchiRepository) : ViewModel() {
-    val uiState: StateFlow<ResultsUiState> = repository.getAllResults()
+class ResultsViewModel @Inject constructor(
+    getResults: GetResultsUseCase
+) : ViewModel() {
+    val uiState: StateFlow<ResultsUiState> = getResults()
         .map { results ->
             val sortedMatches = results
                 .mapNotNull { match ->

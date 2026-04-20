@@ -11,7 +11,8 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import uz.umarov.fcneftchi.data.model.StatisticsData
 import uz.umarov.fcneftchi.data.model.TopPlayer
-import uz.umarov.fcneftchi.data.repository.NeftchiRepository
+import uz.umarov.fcneftchi.domain.usecase.GetClubStatisticsUseCase
+import uz.umarov.fcneftchi.domain.usecase.GetTopPlayersUseCase
 import javax.inject.Inject
 
 data class StatisticsUiState(
@@ -23,7 +24,8 @@ data class StatisticsUiState(
 
 @HiltViewModel
 class StatisticsViewModel @Inject constructor(
-    private val repository: NeftchiRepository
+    private val getClubStatistics: GetClubStatisticsUseCase,
+    private val getTopPlayers: GetTopPlayersUseCase
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(StatisticsUiState())
@@ -38,8 +40,8 @@ class StatisticsViewModel @Inject constructor(
             _uiState.update { it.copy(isLoading = true) }
 
             combine(
-                repository.getClubStatistics(),
-                repository.getTopPlayers()
+                getClubStatistics(),
+                getTopPlayers()
             ) { clubStats, topPlayers ->
                 val topScorers = topPlayers.sortedByDescending { it.goals }.take(10)
                 val topAssisters = topPlayers.sortedByDescending { it.assists }.take(10)

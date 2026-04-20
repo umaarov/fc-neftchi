@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import uz.umarov.fcneftchi.data.repository.NeftchiRepository
+import uz.umarov.fcneftchi.domain.usecase.GetSquadUseCase
 import java.util.Locale
 import javax.inject.Inject
 
@@ -19,7 +19,7 @@ data class TeamUiState(
 
 @HiltViewModel
 class TeamViewModel @Inject constructor(
-    private val repository: NeftchiRepository
+    private val getSquad: GetSquadUseCase
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(TeamUiState())
@@ -32,7 +32,7 @@ class TeamViewModel @Inject constructor(
     private fun loadTeam() {
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true) }
-            repository.getTeam().collect { players ->
+            getSquad().collect { players ->
                 val groupedItems = mutableListOf<TeamListItem>()
 
                 val positionOrder = listOf("darvozabon", "himoyachi", "yarim himoyachi", "hujumchi")

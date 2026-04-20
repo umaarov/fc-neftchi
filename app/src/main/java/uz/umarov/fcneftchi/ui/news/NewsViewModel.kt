@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import uz.umarov.fcneftchi.data.model.NewsArticle
-import uz.umarov.fcneftchi.data.repository.NeftchiRepository
+import uz.umarov.fcneftchi.domain.usecase.GetNewsFeedUseCase
 import javax.inject.Inject
 
 data class NewsUiState(
@@ -21,7 +21,7 @@ data class NewsUiState(
 
 @HiltViewModel
 class NewsViewModel @Inject constructor(
-    private val repository: NeftchiRepository
+    private val getNewsFeed: GetNewsFeedUseCase
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(NewsUiState())
@@ -35,7 +35,7 @@ class NewsViewModel @Inject constructor(
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true, error = null) }
 
-            repository.getNews()
+            getNewsFeed()
                 .catch { e ->
                     _uiState.update {
                         it.copy(

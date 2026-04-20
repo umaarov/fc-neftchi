@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import uz.umarov.fcneftchi.data.model.Video
-import uz.umarov.fcneftchi.data.repository.NeftchiRepository
+import uz.umarov.fcneftchi.domain.usecase.GetVideosUseCase
 import javax.inject.Inject
 
 data class VideosUiState(
@@ -18,7 +18,7 @@ data class VideosUiState(
 
 @HiltViewModel
 class VideosViewModel @Inject constructor(
-    private val repository: NeftchiRepository
+    private val getVideos: GetVideosUseCase
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(VideosUiState())
@@ -31,7 +31,7 @@ class VideosViewModel @Inject constructor(
     private fun loadVideos() {
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true) }
-            repository.getVideos().collect { videos ->
+            getVideos().collect { videos ->
                 _uiState.update { it.copy(videos = videos, isLoading = false) }
             }
         }

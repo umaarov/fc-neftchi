@@ -6,7 +6,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import uz.umarov.fcneftchi.data.model.Match
-import uz.umarov.fcneftchi.data.repository.NeftchiRepository
+import uz.umarov.fcneftchi.domain.usecase.GetFixturesUseCase
+import uz.umarov.fcneftchi.domain.usecase.GetResultsUseCase
 import javax.inject.Inject
 
 data class MatchesUiState(
@@ -18,7 +19,8 @@ data class MatchesUiState(
 
 @HiltViewModel
 class MatchesViewModel @Inject constructor(
-    private val repository: NeftchiRepository
+    private val getFixtures: GetFixturesUseCase,
+    private val getResults: GetResultsUseCase
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(MatchesUiState())
@@ -32,8 +34,8 @@ class MatchesViewModel @Inject constructor(
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true) }
             combine(
-                repository.getAllFixtures(),
-                repository.getAllResults()
+                getFixtures(),
+                getResults()
             ) { fixtures, results ->
                 MatchesUiState(fixtures = fixtures, results = results, isLoading = false)
             }.catch { e ->

@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import uz.umarov.fcneftchi.data.model.GameDetail
-import uz.umarov.fcneftchi.data.repository.NeftchiRepository
+import uz.umarov.fcneftchi.domain.usecase.GetGameDetailsUseCase
 import javax.inject.Inject
 
 data class MatchDetailUiState(
@@ -18,7 +18,7 @@ data class MatchDetailUiState(
 
 @HiltViewModel
 class MatchDetailViewModel @Inject constructor(
-    private val repository: NeftchiRepository,
+    private val getGameDetails: GetGameDetailsUseCase,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
     private val gameId: Int = savedStateHandle.get<Int>("gameId")!!
@@ -32,7 +32,7 @@ class MatchDetailViewModel @Inject constructor(
 
     private fun loadGameDetails() {
         viewModelScope.launch {
-            repository.getGameDetails(gameId).collect { details ->
+            getGameDetails(gameId).collect { details ->
                 _uiState.value = MatchDetailUiState(gameDetail = details, isLoading = false)
             }
         }

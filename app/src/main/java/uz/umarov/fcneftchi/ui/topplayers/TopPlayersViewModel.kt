@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
-import uz.umarov.fcneftchi.data.repository.NeftchiRepository
+import uz.umarov.fcneftchi.domain.usecase.GetTopPlayersUseCase
 import uz.umarov.fcneftchi.ui.topplayers.adapter.TopPlayerAdapter
 import javax.inject.Inject
 
@@ -17,8 +17,10 @@ data class TopPlayersUiState(
 )
 
 @HiltViewModel
-class TopPlayersViewModel @Inject constructor(repository: NeftchiRepository) : ViewModel() {
-    val uiState: StateFlow<TopPlayersUiState> = repository.getTopPlayers()
+class TopPlayersViewModel @Inject constructor(
+    getTopPlayers: GetTopPlayersUseCase
+) : ViewModel() {
+    val uiState: StateFlow<TopPlayersUiState> = getTopPlayers()
         .map { topPlayers ->
             val combinedList = mutableListOf<TopPlayerListItem>()
 

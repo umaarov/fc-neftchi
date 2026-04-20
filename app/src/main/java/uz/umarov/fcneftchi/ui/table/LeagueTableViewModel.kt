@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import uz.umarov.fcneftchi.data.ClubConfig
 import uz.umarov.fcneftchi.data.model.LeagueStanding
-import uz.umarov.fcneftchi.data.repository.NeftchiRepository
+import uz.umarov.fcneftchi.domain.usecase.GetLeagueTableUseCase
 import javax.inject.Inject
 
 data class LeagueTableUiState(
@@ -21,7 +21,7 @@ data class LeagueTableUiState(
 
 @HiltViewModel
 class LeagueTableViewModel @Inject constructor(
-    private val repository: NeftchiRepository
+    private val getLeagueTable: GetLeagueTableUseCase
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(LeagueTableUiState())
@@ -45,7 +45,7 @@ class LeagueTableViewModel @Inject constructor(
         val seasonId = _uiState.value.availableSeasons[seasonName] ?: return
 
         viewModelScope.launch {
-            repository.getLeagueTable(seasonId).collect { standings ->
+            getLeagueTable(seasonId).collect { standings ->
                 _uiState.update {
                     it.copy(standings = standings, isLoading = false)
                 }
