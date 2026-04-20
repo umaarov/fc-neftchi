@@ -3,6 +3,7 @@ package uz.umarov.fcneftchi
 import android.app.Application
 import coil.ImageLoader
 import coil.ImageLoaderFactory
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import dagger.hilt.android.HiltAndroidApp
 import uz.umarov.fcneftchi.util.ThemeManager
 import javax.inject.Inject
@@ -22,6 +23,9 @@ class NeftchiApp : Application(), ImageLoaderFactory {
         // Apply user's persisted theme before any activity inflates to avoid
         // a flash of the wrong light/dark mode on cold start.
         themeManager.applyPersisted()
+
+        FirebaseCrashlytics.getInstance()
+            .isCrashlyticsCollectionEnabled = !BuildConfig.DEBUG
     }
 
     override fun newImageLoader(): ImageLoader {
