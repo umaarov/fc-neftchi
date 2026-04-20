@@ -7,24 +7,16 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import uz.umarov.fcneftchi.data.ClubConfig
 import uz.umarov.fcneftchi.data.model.LeagueStanding
 import uz.umarov.fcneftchi.data.repository.NeftchiRepository
 import javax.inject.Inject
 
-private val SEASONS_MAP = mapOf(
-    "2026" to 11,
-    "2025" to 10,
-    "2024" to 1,
-    "2023" to 2,
-    "2022" to 3
-)
-private const val DEFAULT_SEASON_NAME = "2026"
-
 data class LeagueTableUiState(
     val standings: List<LeagueStanding> = emptyList(),
     val isLoading: Boolean = true,
-    val selectedSeasonName: String = DEFAULT_SEASON_NAME,
-    val availableSeasons: Map<String, Int> = SEASONS_MAP
+    val selectedSeasonName: String = ClubConfig.DEFAULT_SEASON_NAME,
+    val availableSeasons: Map<String, Int> = ClubConfig.SEASONS_BY_NAME
 )
 
 @HiltViewModel
@@ -36,7 +28,7 @@ class LeagueTableViewModel @Inject constructor(
     val uiState = _uiState.asStateFlow()
 
     init {
-        loadTableForSeason(DEFAULT_SEASON_NAME)
+        loadTableForSeason(ClubConfig.DEFAULT_SEASON_NAME)
     }
 
     fun changeSeason(seasonName: String) {

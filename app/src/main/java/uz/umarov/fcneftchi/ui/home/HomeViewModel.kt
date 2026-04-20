@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import uz.umarov.fcneftchi.R
+import uz.umarov.fcneftchi.data.ClubConfig
 import uz.umarov.fcneftchi.data.repository.NeftchiRepository
 import javax.inject.Inject
 
@@ -42,7 +43,7 @@ class HomeViewModel @Inject constructor(
                 repository.getNextMatch(),
                 repository.getLastMatch(),
                 repository.getNews(),
-                repository.getLeagueTable(seasonId = 10),
+                repository.getLeagueTable(seasonId = ClubConfig.HOME_STANDINGS_SEASON_ID),
                 repository.getVideos()
             ) { nextMatch, lastMatch, news, standings, videos ->
 

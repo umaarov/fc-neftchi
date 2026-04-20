@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import uz.umarov.fcneftchi.R
+import uz.umarov.fcneftchi.data.ClubConfig
 import uz.umarov.fcneftchi.data.api.PflApiService
 import uz.umarov.fcneftchi.data.model.ApiPlayer
 import uz.umarov.fcneftchi.data.model.GameCalendarMatch
@@ -32,19 +33,17 @@ class RealNeftchiRepository @Inject constructor(
     private val apiService: PflApiService
 ) : NeftchiRepository {
 
-    private val neftchiClubId = 7
-    private val superligaTournamentId = 1
-    private val currentSeasonId = 11
-    private val videoCategoryId = 13
-
     private suspend fun getAllGamesFromCalendar(): List<GameCalendarMatch> {
-        val response =
-            apiService.getGameCalendar(superligaTournamentId, currentSeasonId, neftchiClubId)
+        val response = apiService.getGameCalendar(
+            tournamentId = ClubConfig.TOURNAMENT_ID,
+            seasonId = ClubConfig.CURRENT_SEASON_ID,
+            clubId = ClubConfig.CLUB_ID
+        )
         return response.data.table.flatMap { it.matches }
     }
 
     override fun getNews(): Flow<List<NewsArticle>> = flow {
-        val response = apiService.getNews(neftchiClubId)
+        val response = apiService.getNews(ClubConfig.CLUB_ID)
         val articles = response.data.list.map { newsItem ->
             NewsArticle(
                 id = newsItem.id.toString(),
@@ -104,7 +103,7 @@ class RealNeftchiRepository @Inject constructor(
 
     override fun getClubStatistics(): Flow<StatisticsData?> = flow {
         try {
-            val response = apiService.getClubStatistics(neftchiClubId)
+            val response = apiService.getClubStatistics(ClubConfig.CLUB_ID)
             emit(response.data)
         } catch (e: Exception) {
             emit(null)
@@ -113,7 +112,7 @@ class RealNeftchiRepository @Inject constructor(
 
     override fun getTeam(): Flow<List<Player>> = flow {
         try {
-            val apiPlayers = apiService.getClubPlayers(neftchiClubId).data.players
+            val apiPlayers = apiService.getClubPlayers(ClubConfig.CLUB_ID).data.players
             val uiPlayers = apiPlayers
                 .distinctBy { it.id }
                 .map { apiPlayer ->
@@ -297,8 +296,8 @@ class RealNeftchiRepository @Inject constructor(
 
     override fun getVideos(): Flow<List<Video>> = flow {
         coroutineScope {
-            val newsResponse = apiService.getNews(neftchiClubId)
-            val videoNewsItems = newsResponse.data.list.filter { it.category.id == videoCategoryId }
+            val newsResponse = apiService.getNews(ClubConfig.CLUB_ID)
+            val videoNewsItems = newsResponse.data.list.filter { it.category.id == ClubConfig.VIDEO_CATEGORY_ID }
             val videoDetails = videoNewsItems.map { newsItem ->
                 async {
                     try {
