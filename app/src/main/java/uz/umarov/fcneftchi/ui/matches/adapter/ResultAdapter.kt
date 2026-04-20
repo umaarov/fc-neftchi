@@ -12,9 +12,8 @@ import uz.umarov.fcneftchi.data.model.Match
 import uz.umarov.fcneftchi.databinding.ItemMonthHeaderBinding
 import uz.umarov.fcneftchi.databinding.ItemResultBinding
 import uz.umarov.fcneftchi.ui.matches.ResultListItem
+import uz.umarov.fcneftchi.util.DateFormatter
 import uz.umarov.fcneftchi.util.DateUtils
-import java.text.SimpleDateFormat
-import java.util.Locale
 
 private const val VIEW_TYPE_HEADER = 0
 private const val VIEW_TYPE_RESULT = 1
@@ -56,7 +55,6 @@ class ResultAdapter(
         private val binding: ItemResultBinding,
         private val onItemClick: (Match) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
-        private val dateFormatter = SimpleDateFormat("E d MMM yyyy", Locale.getDefault())
 
         fun bind(match: Match) {
             binding.root.setOnClickListener {
@@ -71,8 +69,8 @@ class ResultAdapter(
             binding.matchCompetition.text = match.competition.uppercase()
 
             val date = DateUtils.parseDate(match.matchDate)
-            binding.matchDate.text =
-                if (date != null) dateFormatter.format(date).uppercase() else "DATE UNAVAILABLE"
+            binding.matchDate.text = date?.let { DateFormatter.formatMatchListDate(it).uppercase() }
+                ?: "DATE UNAVAILABLE"
 
             binding.homeTeamLogo.load(match.homeTeam.logoUrl) { crossfade(true) }
             binding.awayTeamLogo.load(match.awayTeam.logoUrl) { crossfade(true) }

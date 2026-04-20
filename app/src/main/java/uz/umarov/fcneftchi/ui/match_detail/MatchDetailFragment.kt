@@ -19,10 +19,9 @@ import kotlinx.coroutines.launch
 import uz.umarov.fcneftchi.data.model.GameDetail
 import uz.umarov.fcneftchi.databinding.FragmentMatchDetailBinding
 import uz.umarov.fcneftchi.ui.MainActivity
+import uz.umarov.fcneftchi.util.DateFormatter
+import uz.umarov.fcneftchi.util.DateUtils
 import uz.umarov.fcneftchi.util.applySystemBarPadding
-import java.text.SimpleDateFormat
-import java.util.Locale
-import java.util.TimeZone
 
 @AndroidEntryPoint
 class MatchDetailFragment : Fragment() {
@@ -135,18 +134,8 @@ class MatchDetailFragment : Fragment() {
     }
 
     private fun formatMatchDate(dateString: String?): String {
-        if (dateString == null) return "N/A"
-        return try {
-            val parser = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
-            parser.timeZone = TimeZone.getTimeZone("UTC")
-            val date = parser.parse(dateString)
-            val formatter = SimpleDateFormat("dd MMMM yyyy, HH:mm", Locale.getDefault()).apply {
-                timeZone = TimeZone.getDefault()
-            }
-            date?.let { formatter.format(it) } ?: "N/A"
-        } catch (e: Exception) {
-            "N/A"
-        }
+        val date = DateUtils.parseDate(dateString) ?: return "N/A"
+        return DateFormatter.formatMatchDetailDate(date)
     }
 
     override fun onDestroyView() {

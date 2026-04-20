@@ -9,9 +9,8 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import uz.umarov.fcneftchi.data.repository.NeftchiRepository
 import uz.umarov.fcneftchi.ui.matches.ResultListItem
+import uz.umarov.fcneftchi.util.DateFormatter
 import uz.umarov.fcneftchi.util.DateUtils
-import java.text.SimpleDateFormat
-import java.util.Locale
 import javax.inject.Inject
 
 data class ResultsUiState(
@@ -31,10 +30,7 @@ class ResultsViewModel @Inject constructor(repository: NeftchiRepository) : View
                 .sortedByDescending { it.second }
 
             val groupedByMonth = sortedMatches.groupBy(
-                keySelector = {
-                    val formatter = SimpleDateFormat("MMMM yyyy", Locale.getDefault())
-                    formatter.format(it.second)
-                },
+                keySelector = { DateFormatter.formatMonthHeader(it.second) },
                 valueTransform = { it.first }
             )
 

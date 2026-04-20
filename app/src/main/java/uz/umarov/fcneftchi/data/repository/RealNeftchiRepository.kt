@@ -22,10 +22,9 @@ import uz.umarov.fcneftchi.data.model.StatisticsData
 import uz.umarov.fcneftchi.data.model.Team
 import uz.umarov.fcneftchi.data.model.TopPlayer
 import uz.umarov.fcneftchi.data.model.Video
-import java.text.SimpleDateFormat
+import uz.umarov.fcneftchi.util.DateFormatter
+import uz.umarov.fcneftchi.util.DateUtils
 import java.util.Date
-import java.util.Locale
-import java.util.TimeZone
 import java.util.regex.Pattern
 import javax.inject.Inject
 
@@ -90,15 +89,8 @@ class RealNeftchiRepository @Inject constructor(
     }
 
     private fun formatApiDate(dateString: String): String {
-        return try {
-            val parser = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
-            parser.timeZone = TimeZone.getTimeZone("UTC")
-            val date = parser.parse(dateString)
-            val formatter = SimpleDateFormat("dd MMMM yyyy", Locale.getDefault())
-            date?.let { formatter.format(it) } ?: dateString
-        } catch (e: Exception) {
-            dateString
-        }
+        val date = DateUtils.parseDate(dateString) ?: return dateString
+        return DateFormatter.formatArticleDate(date)
     }
 
     override fun getClubStatistics(): Flow<StatisticsData?> = flow {
@@ -242,15 +234,7 @@ class RealNeftchiRepository @Inject constructor(
         }
     }
 
-    private fun parseDate(dateString: String): Date? {
-        return try {
-            val parser = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
-            parser.timeZone = TimeZone.getTimeZone("UTC")
-            parser.parse(dateString)
-        } catch (e: Exception) {
-            null
-        }
-    }
+    private fun parseDate(dateString: String): Date? = DateUtils.parseDate(dateString)
 
     override fun getLeagueTable(seasonId: Int): Flow<List<LeagueStanding>> = flow {
         val response = apiService.getLeagueTable(seasonId)

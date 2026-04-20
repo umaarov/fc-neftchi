@@ -10,9 +10,8 @@ import uz.umarov.fcneftchi.data.model.Match
 import uz.umarov.fcneftchi.databinding.ItemMatchBinding
 import uz.umarov.fcneftchi.databinding.ItemMonthHeaderBinding
 import uz.umarov.fcneftchi.ui.matches.FixtureListItem
+import uz.umarov.fcneftchi.util.DateFormatter
 import uz.umarov.fcneftchi.util.DateUtils
-import java.text.SimpleDateFormat
-import java.util.Locale
 
 private const val ITEM_VIEW_TYPE_HEADER = 0
 private const val ITEM_VIEW_TYPE_ITEM = 1
@@ -54,9 +53,6 @@ class MatchAdapter(private val onItemClick: (Match) -> Unit) :
         private val onItemClick: (Match) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        private val dateFormatter = SimpleDateFormat("E d MMM yyyy", Locale.getDefault())
-        private val timeFormatter = SimpleDateFormat("HH:mm", Locale.getDefault())
-
         fun bind(match: Match) {
             binding.root.setOnClickListener {
                 onItemClick(match)
@@ -68,8 +64,8 @@ class MatchAdapter(private val onItemClick: (Match) -> Unit) :
             val date = DateUtils.parseDate(match.matchDate)
 
             if (date != null) {
-                binding.matchDate.text = dateFormatter.format(date).uppercase()
-                binding.timeBackground.text = timeFormatter.format(date)
+                binding.matchDate.text = DateFormatter.formatMatchListDate(date).uppercase()
+                binding.timeBackground.text = DateFormatter.formatMatchListTime(date)
             } else {
                 binding.matchDate.text = "DATE UNAVAILABLE"
                 binding.timeBackground.text = "N/A"

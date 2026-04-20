@@ -32,10 +32,9 @@ import uz.umarov.fcneftchi.databinding.ItemHomeNextMatchBinding
 import uz.umarov.fcneftchi.databinding.ItemHomeStandingsBinding
 import uz.umarov.fcneftchi.databinding.ItemVideoBinding
 import uz.umarov.fcneftchi.ui.home.HomeListItem
+import uz.umarov.fcneftchi.util.DateFormatter
 import uz.umarov.fcneftchi.util.DateUtils
 import uz.umarov.fcneftchi.util.YouTubeUrlParser
-import java.text.SimpleDateFormat
-import java.util.Locale
 import kotlin.math.abs
 
 private const val VIEW_TYPE_HERO_CAROUSEL = 0
@@ -242,8 +241,7 @@ class HomeAdapter(
 
         private fun formatHomeMatchDate(dateString: String?): String {
             val date = DateUtils.parseDate(dateString) ?: return "N/A"
-            val formatter = SimpleDateFormat("dd MMM, HH:mm", Locale.ENGLISH)
-            return formatter.format(date).uppercase(Locale.ROOT)
+            return DateFormatter.formatHomeShort(date)
         }
     }
 
@@ -262,12 +260,7 @@ class HomeAdapter(
             binding.matchCompetition.text = match.competition
 
             val date = DateUtils.parseDate(match.matchDate)
-            binding.matchDate.text = if (date != null) {
-                SimpleDateFormat("dd MMM, HH:mm", Locale.ENGLISH).format(date)
-                    .uppercase(Locale.ROOT)
-            } else {
-                "N/A"
-            }
+            binding.matchDate.text = date?.let { DateFormatter.formatHomeShort(it) } ?: "N/A"
         }
     }
 
