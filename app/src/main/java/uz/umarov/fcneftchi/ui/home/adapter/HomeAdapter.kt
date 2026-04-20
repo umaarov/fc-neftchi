@@ -1,8 +1,6 @@
 package uz.umarov.fcneftchi.ui.home.adapter
 
 import android.annotation.SuppressLint
-import android.os.Handler
-import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,15 +12,18 @@ import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
 import androidx.viewpager2.widget.ViewPager2
 import coil.load
-import coil.load
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
+import kotlinx.coroutines.launch
 import uz.umarov.fcneftchi.R
 import uz.umarov.fcneftchi.data.model.LeagueStanding
 import uz.umarov.fcneftchi.data.model.Match
 import uz.umarov.fcneftchi.data.model.NewsArticle
 import uz.umarov.fcneftchi.data.model.Video
-import uz.umarov.fcneftchi.databinding.ItemFeaturedVideoBinding
 import uz.umarov.fcneftchi.databinding.ItemHomeHeaderBinding
 import uz.umarov.fcneftchi.databinding.ItemHomeHeroCarouselBinding
 import uz.umarov.fcneftchi.databinding.ItemHomeLastResultBinding
@@ -31,7 +32,6 @@ import uz.umarov.fcneftchi.databinding.ItemHomeNextMatchBinding
 import uz.umarov.fcneftchi.databinding.ItemHomeStandingsBinding
 import uz.umarov.fcneftchi.databinding.ItemVideoBinding
 import uz.umarov.fcneftchi.ui.home.HomeListItem
-import uz.umarov.fcneftchi.ui.videos.adapter.VideoAdapter.VideoViewHolder
 import uz.umarov.fcneftchi.util.DateUtils
 import uz.umarov.fcneftchi.util.YouTubeUrlParser
 import java.text.SimpleDateFormat
@@ -46,15 +46,16 @@ private const val VIEW_TYPE_HEADER = 4
 private const val VIEW_TYPE_NEWS_CAROUSEL = 5
 private const val VIEW_TYPE_STANDINGS = 6
 
+private const val HERO_AUTO_SCROLL_DELAY_MS = 5000L
+private const val COUNTDOWN_TICK_MS = 1000L
+
 class HomeAdapter(
+    private val lifecycleScope: CoroutineScope,
     private val onNavigate: (Int) -> Unit,
     private val onArticleClick: (NewsArticle) -> Unit,
     private val onMatchClick: (Match) -> Unit,
     private val onVideoClick: (Video) -> Unit
 ) : ListAdapter<HomeListItem, RecyclerView.ViewHolder>(HomeDiffCallback) {
-
-    private val countdownHandlers = mutableMapOf<Int, Handler>()
-    private val heroCarouselHandlers = mutableMapOf<Int, Handler>()
 
     override fun getItemViewType(position: Int): Int {
         return when (getItem(position)) {
@@ -72,59 +73,39 @@ class HomeAdapter(
         val inflater = LayoutInflater.from(parent.context)
         return when (viewType) {
             VIEW_TYPE_HERO_CAROUSEL -> HeroCarouselViewHolder(
-                ItemHomeHeroCarouselBinding.inflate(
-                    inflater,
-                    parent,
-                    false
-                ), onArticleClick
+                ItemHomeHeroCarouselBinding.inflate(inflater, parent, false),
+                lifecycleScope,
+                onArticleClick
             )
 
             VIEW_TYPE_NEXT_MATCH -> NextMatchViewHolder(
-                ItemHomeNextMatchBinding.inflate(
-                    inflater,
-                    parent,
-                    false
-                ), onMatchClick
+                ItemHomeNextMatchBinding.inflate(inflater, parent, false),
+                lifecycleScope,
+                onMatchClick
             )
 
             VIEW_TYPE_LAST_RESULT -> LastResultViewHolder(
-                ItemHomeLastResultBinding.inflate(
-                    inflater,
-                    parent,
-                    false
-                ), onMatchClick
+                ItemHomeLastResultBinding.inflate(inflater, parent, false),
+                onMatchClick
             )
 
             VIEW_TYPE_FEATURED_VIDEO -> FeaturedVideoViewHolder(
-                ItemVideoBinding.inflate(
-                    inflater,
-                    parent,
-                    false
-                ), onVideoClick
+                ItemVideoBinding.inflate(inflater, parent, false),
+                onVideoClick
             )
 
             VIEW_TYPE_HEADER -> HeaderViewHolder(
-                ItemHomeHeaderBinding.inflate(
-                    inflater,
-                    parent,
-                    false
-                ), onNavigate
+                ItemHomeHeaderBinding.inflate(inflater, parent, false),
+                onNavigate
             )
 
             VIEW_TYPE_NEWS_CAROUSEL -> NewsCarouselViewHolder(
-                ItemHomeNewsCarouselBinding.inflate(
-                    inflater,
-                    parent,
-                    false
-                ), onArticleClick
+                ItemHomeNewsCarouselBinding.inflate(inflater, parent, false),
+                onArticleClick
             )
 
             VIEW_TYPE_STANDINGS -> StandingsViewHolder(
-                ItemHomeStandingsBinding.inflate(
-                    inflater,
-                    parent,
-                    false
-                )
+                ItemHomeStandingsBinding.inflate(inflater, parent, false)
             )
 
             else -> throw IllegalArgumentException("Unknown view type")
@@ -133,10 +114,7 @@ class HomeAdapter(
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (val item = getItem(position)) {
-            is HomeListItem.HeroCarouselItem -> (holder as HeroCarouselViewHolder).bind(
-                item.articles,
-                heroCarouselHandlers.getOrPut(position) { Handler(Looper.getMainLooper()) })
-
+            is HomeListItem.HeroCarouselItem -> (holder as HeroCarouselViewHolder).bind(item.articles)
             is HomeListItem.NextMatchItem -> (holder as NextMatchViewHolder).bind(item.match)
             is HomeListItem.LastResultItem -> (holder as LastResultViewHolder).bind(item.match)
             is HomeListItem.FeaturedVideoItem -> (holder as FeaturedVideoViewHolder).bind(item.video)
@@ -151,33 +129,18 @@ class HomeAdapter(
         when (holder) {
             is NextMatchViewHolder -> holder.clearCountdown()
             is HeroCarouselViewHolder -> holder.clearCarouselTimer()
-//            is FeaturedVideoViewHolder -> holder.releasePlayer()
         }
-    }
-
-
-    override fun onDetachedFromRecyclerView(recyclerView: RecyclerView) {
-        super.onDetachedFromRecyclerView(recyclerView)
-        release()
-    }
-
-    fun release() {
-        countdownHandlers.values.forEach { it.removeCallbacksAndMessages(null) }
-        countdownHandlers.clear()
     }
 
     class HeroCarouselViewHolder(
         private val binding: ItemHomeHeroCarouselBinding,
+        private val scope: CoroutineScope,
         private val onArticleClick: (NewsArticle) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        private lateinit var autoScrollHandler: Handler
-        private var autoScrollRunnable: Runnable? = null
-        private val AUTO_SCROLL_DELAY = 5000L
+        private var autoScrollJob: Job? = null
 
-        fun bind(articles: List<NewsArticle>, handler: Handler) {
-            autoScrollHandler = handler
-
+        fun bind(articles: List<NewsArticle>) {
             val pagerAdapter = HeroNewsPagerAdapter(onArticleClick)
             binding.heroNewsViewPager.adapter = pagerAdapter
             pagerAdapter.submitList(articles)
@@ -209,28 +172,28 @@ class HomeAdapter(
             clearCarouselTimer()
             if (itemCount <= 1) return
 
-            autoScrollRunnable = object : Runnable {
-                override fun run() {
+            autoScrollJob = scope.launch {
+                while (isActive) {
+                    delay(HERO_AUTO_SCROLL_DELAY_MS)
                     val currentItem = binding.heroNewsViewPager.currentItem
                     val nextItem = (currentItem + 1) % itemCount
                     binding.heroNewsViewPager.setCurrentItem(nextItem, true)
-                    autoScrollHandler.postDelayed(this, AUTO_SCROLL_DELAY)
                 }
             }
-            autoScrollHandler.postDelayed(autoScrollRunnable!!, AUTO_SCROLL_DELAY)
         }
 
         fun clearCarouselTimer() {
-            autoScrollRunnable?.let { autoScrollHandler.removeCallbacks(it) }
+            autoScrollJob?.cancel()
+            autoScrollJob = null
         }
     }
 
     class NextMatchViewHolder(
         private val binding: ItemHomeNextMatchBinding,
+        private val scope: CoroutineScope,
         private val onMatchClick: (Match) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
-        private val countdownHandler = Handler(Looper.getMainLooper())
-        private var countdownRunnable: Runnable? = null
+        private var countdownJob: Job? = null
 
         fun bind(match: Match) {
             binding.root.setOnClickListener { onMatchClick(match) }
@@ -244,37 +207,37 @@ class HomeAdapter(
         }
 
         fun clearCountdown() {
-            countdownRunnable?.let { countdownHandler.removeCallbacks(it) }
+            countdownJob?.cancel()
+            countdownJob = null
         }
 
+        @SuppressLint("DefaultLocale")
         private fun startCountdown(matchDateString: String?) {
             clearCountdown()
             if (matchDateString == null) return
 
             val matchDate = DateUtils.parseDate(matchDateString) ?: return
 
-            countdownRunnable = object : Runnable {
-                @SuppressLint("DefaultLocale")
-                override fun run() {
+            countdownJob = scope.launch {
+                while (isActive) {
                     val diff = matchDate.time - System.currentTimeMillis()
-                    if (diff > 0) {
-                        val days = diff / (1000 * 60 * 60 * 24)
-                        val hours = (diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-                        val minutes = (diff % (1000 * 60 * 60)) / (1000 * 60)
-                        val seconds = (diff % (1000 * 60)) / 1000
-
-                        binding.daysText.text = String.format("%02d", days)
-                        binding.hoursText.text = String.format("%02d", hours)
-                        binding.minutesText.text = String.format("%02d", minutes)
-                        binding.secondsText.text = String.format("%02d", seconds)
-
-                        countdownHandler.postDelayed(this, 1000)
-                    } else {
+                    if (diff <= 0) {
                         binding.countdownContainer.visibility = View.GONE
+                        break
                     }
+                    val days = diff / (1000 * 60 * 60 * 24)
+                    val hours = (diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+                    val minutes = (diff % (1000 * 60 * 60)) / (1000 * 60)
+                    val seconds = (diff % (1000 * 60)) / 1000
+
+                    binding.daysText.text = String.format("%02d", days)
+                    binding.hoursText.text = String.format("%02d", hours)
+                    binding.minutesText.text = String.format("%02d", minutes)
+                    binding.secondsText.text = String.format("%02d", seconds)
+
+                    delay(COUNTDOWN_TICK_MS)
                 }
             }
-            countdownHandler.post(countdownRunnable!!)
         }
 
         private fun formatHomeMatchDate(dateString: String?): String {
@@ -301,7 +264,7 @@ class HomeAdapter(
             val date = DateUtils.parseDate(match.matchDate)
             binding.matchDate.text = if (date != null) {
                 SimpleDateFormat("dd MMM, HH:mm", Locale.ENGLISH).format(date)
-                    .toUpperCase(Locale.ROOT)
+                    .uppercase(Locale.ROOT)
             } else {
                 "N/A"
             }

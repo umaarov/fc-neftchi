@@ -54,6 +54,7 @@ class HomeFragment : Fragment() {
 
     private fun setupRecyclerView() {
         homeAdapter = HomeAdapter(
+            lifecycleScope = viewLifecycleOwner.lifecycleScope,
             onNavigate = { destinationId -> findNavController().navigate(destinationId) },
             onArticleClick = { article ->
                 val action =
@@ -118,7 +119,7 @@ class HomeFragment : Fragment() {
     }
 
     override fun onDestroyView() {
-        (binding.homeRecyclerView.adapter as? HomeAdapter)?.release()
+        binding.homeRecyclerView.adapter = null
         super.onDestroyView()
         _binding = null
     }

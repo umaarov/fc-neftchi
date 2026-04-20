@@ -1,8 +1,6 @@
 package uz.umarov.fcneftchi.ui.stadium
 
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
@@ -14,9 +12,14 @@ import androidx.core.view.WindowCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
 import androidx.viewpager2.widget.ViewPager2
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
+import kotlinx.coroutines.launch
 import uz.umarov.fcneftchi.R
 import uz.umarov.fcneftchi.databinding.FragmentStadiumBinding
 import uz.umarov.fcneftchi.ui.MainActivity
@@ -29,11 +32,7 @@ class StadiumFragment : Fragment() {
     private var _binding: FragmentStadiumBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var autoScrollHandler: Handler
-    private var autoScrollRunnable: Runnable? = null
-    private val AUTO_SCROLL_DELAY = 5000L
-
-    private val contentRevealHandler = Handler(Looper.getMainLooper())
+    private var autoScrollJob: Job? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,7 +40,6 @@ class StadiumFragment : Fragment() {
     ): View {
         _binding = FragmentStadiumBinding.inflate(inflater, container, false)
         WindowCompat.setDecorFitsSystemWindows(requireActivity().window, false)
-        autoScrollHandler = Handler(Looper.getMainLooper())
         return binding.root
     }
 
@@ -51,12 +49,14 @@ class StadiumFragment : Fragment() {
         binding.shimmerContainer.startShimmer()
         binding.shimmerContainer.isVisible = true
 
-        contentRevealHandler.postDelayed({
+        viewLifecycleOwner.lifecycleScope.launch {
+            delay(CONTENT_REVEAL_DELAY_MS)
+            if (_binding == null) return@launch
             setupToolbar()
             setupImageCarousel()
             setupContent()
             animateContentIn()
-        }, 500)
+        }
     }
 
     private fun animateContentIn() {
@@ -159,19 +159,19 @@ class StadiumFragment : Fragment() {
         clearCarouselTimer()
         if (itemCount <= 1) return
 
-        autoScrollRunnable = object : Runnable {
-            override fun run() {
-                val currentItem = binding.stadiumImagePager.currentItem
-                val nextItem = (currentItem + 1) % itemCount
-                binding.stadiumImagePager.setCurrentItem(nextItem, true)
-                autoScrollHandler.postDelayed(this, AUTO_SCROLL_DELAY)
+        autoScrollJob = viewLifecycleOwner.lifecycleScope.launch {
+            while (isActive) {
+                delay(AUTO_SCROLL_DELAY_MS)
+                val pager = _binding?.stadiumImagePager ?: return@launch
+                val nextItem = (pager.currentItem + 1) % itemCount
+                pager.setCurrentItem(nextItem, true)
             }
         }
-        autoScrollHandler.postDelayed(autoScrollRunnable!!, AUTO_SCROLL_DELAY)
     }
 
     private fun clearCarouselTimer() {
-        autoScrollRunnable?.let { autoScrollHandler.removeCallbacks(it) }
+        autoScrollJob?.cancel()
+        autoScrollJob = null
     }
 
     override fun onPause() {
@@ -182,7 +182,7 @@ class StadiumFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        if (!binding.shimmerContainer.isVisible) {
+        if (_binding != null && !binding.shimmerContainer.isVisible) {
             binding.stadiumImagePager.adapter?.itemCount?.let {
                 startAutoScroll(it)
             }
@@ -193,9 +193,13 @@ class StadiumFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         clearCarouselTimer()
-        contentRevealHandler.removeCallbacksAndMessages(null)
         binding.stadiumImagePager.adapter = null
         _binding = null
         WindowCompat.setDecorFitsSystemWindows(requireActivity().window, true)
+    }
+
+    companion object {
+        private const val CONTENT_REVEAL_DELAY_MS = 500L
+        private const val AUTO_SCROLL_DELAY_MS = 5000L
     }
 }
