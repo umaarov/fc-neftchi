@@ -3,12 +3,11 @@ package uz.umarov.fcneftchi.ui.news
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import uz.umarov.fcneftchi.data.model.NewsArticle
 import uz.umarov.fcneftchi.domain.usecase.GetNewsFeedUseCase
 import javax.inject.Inject
@@ -21,38 +20,13 @@ data class NewsUiState(
 
 @HiltViewModel
 class NewsViewModel @Inject constructor(
-    private val getNewsFeed: GetNewsFeedUseCase
+    getNewsFeed: GetNewsFeedUseCase
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(NewsUiState())
-    val uiState: StateFlow<NewsUiState> = _uiState.asStateFlow()
-
-    init {
-        loadNews()
-    }
-
-    private fun loadNews() {
-        viewModelScope.launch {
-            _uiState.update { it.copy(isLoading = true, error = null) }
-
-            getNewsFeed()
-                .catch { e ->
-                    _uiState.update {
-                        it.copy(
-                            error = e.message ?: "Failed to load news",
-                            isLoading = false
-                        )
-                    }
-                }
-                .collect { articles ->
-                    _uiState.update {
-                        it.copy(
-                            articles = articles,
-                            isLoading = false,
-                            error = null
-                        )
-                    }
-                }
+    val uiState: StateFlow<NewsUiState> = getNewsFeed()
+        .map { articles -> NewsUiState(articles = articles, isLoading = false) }
+        .catch { e ->
+            emit(NewsUiState(isLoading = false, error = e.message ?: "Failed to load news"))
         }
-    }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), NewsUiState())
 }

@@ -3,12 +3,14 @@ package uz.umarov.fcneftchi.ui.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import uz.umarov.fcneftchi.R
 import uz.umarov.fcneftchi.domain.model.HomeFeed
 import uz.umarov.fcneftchi.domain.usecase.GetHomeFeedUseCase
@@ -20,32 +22,22 @@ data class HomeUiState(
     val error: String? = null
 )
 
+@OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val getHomeFeed: GetHomeFeedUseCase
+    getHomeFeed: GetHomeFeedUseCase
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(HomeUiState())
-    val uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()
+    private val refreshTrigger = MutableStateFlow(0L)
 
-    init {
-        loadHomeData()
-    }
+    val uiState: StateFlow<HomeUiState> = refreshTrigger
+        .flatMapLatest { getHomeFeed() }
+        .map { feed -> HomeUiState(items = buildHomeItems(feed), isLoading = false) }
+        .catch { e -> emit(HomeUiState(isLoading = false, error = e.message)) }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), HomeUiState())
 
     fun loadHomeData() {
-        viewModelScope.launch {
-            if (_uiState.value.items.isEmpty()) {
-                _uiState.update { it.copy(isLoading = true) }
-            }
-
-            getHomeFeed()
-                .catch { e ->
-                    _uiState.update { it.copy(error = e.message, isLoading = false) }
-                }
-                .collect { feed ->
-                    _uiState.value = HomeUiState(items = buildHomeItems(feed), isLoading = false)
-                }
-        }
+        refreshTrigger.value = System.currentTimeMillis()
     }
 
     private fun buildHomeItems(feed: HomeFeed): List<HomeListItem> {

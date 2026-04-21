@@ -3,12 +3,11 @@ package uz.umarov.fcneftchi.ui.stats
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.stateIn
 import uz.umarov.fcneftchi.data.model.StatisticsData
 import uz.umarov.fcneftchi.data.model.TopPlayer
 import uz.umarov.fcneftchi.domain.usecase.GetClubStatisticsUseCase
@@ -24,39 +23,21 @@ data class StatisticsUiState(
 
 @HiltViewModel
 class StatisticsViewModel @Inject constructor(
-    private val getClubStatistics: GetClubStatisticsUseCase,
-    private val getTopPlayers: GetTopPlayersUseCase
+    getClubStatistics: GetClubStatisticsUseCase,
+    getTopPlayers: GetTopPlayersUseCase
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(StatisticsUiState())
-    val uiState = _uiState.asStateFlow()
-
-    init {
-        loadStatistics()
+    val uiState: StateFlow<StatisticsUiState> = combine(
+        getClubStatistics(),
+        getTopPlayers()
+    ) { clubStats, topPlayers ->
+        StatisticsUiState(
+            statsData = clubStats,
+            topScorers = topPlayers.sortedByDescending { it.goals }.take(10),
+            topAssisters = topPlayers.sortedByDescending { it.assists }.take(10),
+            isLoading = false
+        )
     }
-
-    private fun loadStatistics() {
-        viewModelScope.launch {
-            _uiState.update { it.copy(isLoading = true) }
-
-            combine(
-                getClubStatistics(),
-                getTopPlayers()
-            ) { clubStats, topPlayers ->
-                val topScorers = topPlayers.sortedByDescending { it.goals }.take(10)
-                val topAssisters = topPlayers.sortedByDescending { it.assists }.take(10)
-
-                StatisticsUiState(
-                    statsData = clubStats,
-                    topScorers = topScorers,
-                    topAssisters = topAssisters,
-                    isLoading = false
-                )
-            }.catch {
-                _uiState.update { it.copy(isLoading = false) }
-            }.collect { combinedState ->
-                _uiState.value = combinedState
-            }
-        }
-    }
+        .catch { emit(StatisticsUiState(isLoading = false)) }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), StatisticsUiState())
 }

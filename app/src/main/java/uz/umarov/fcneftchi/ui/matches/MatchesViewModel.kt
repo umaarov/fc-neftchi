@@ -3,8 +3,11 @@ package uz.umarov.fcneftchi.ui.matches
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.stateIn
 import uz.umarov.fcneftchi.data.model.Match
 import uz.umarov.fcneftchi.domain.usecase.GetFixturesUseCase
 import uz.umarov.fcneftchi.domain.usecase.GetResultsUseCase
@@ -19,30 +22,16 @@ data class MatchesUiState(
 
 @HiltViewModel
 class MatchesViewModel @Inject constructor(
-    private val getFixtures: GetFixturesUseCase,
-    private val getResults: GetResultsUseCase
+    getFixtures: GetFixturesUseCase,
+    getResults: GetResultsUseCase
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(MatchesUiState())
-    val uiState: StateFlow<MatchesUiState> = _uiState.asStateFlow()
-
-    init {
-        loadMatches()
+    val uiState: StateFlow<MatchesUiState> = combine(
+        getFixtures(),
+        getResults()
+    ) { fixtures, results ->
+        MatchesUiState(fixtures = fixtures, results = results, isLoading = false)
     }
-
-    private fun loadMatches() {
-        viewModelScope.launch {
-            _uiState.update { it.copy(isLoading = true) }
-            combine(
-                getFixtures(),
-                getResults()
-            ) { fixtures, results ->
-                MatchesUiState(fixtures = fixtures, results = results, isLoading = false)
-            }.catch { e ->
-                _uiState.update { it.copy(error = e.message, isLoading = false) }
-            }.collect { combinedState ->
-                _uiState.value = combinedState
-            }
-        }
-    }
+        .catch { e -> emit(MatchesUiState(isLoading = false, error = e.message)) }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), MatchesUiState())
 }

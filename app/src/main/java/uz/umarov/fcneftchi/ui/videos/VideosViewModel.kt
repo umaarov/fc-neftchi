@@ -3,10 +3,10 @@ package uz.umarov.fcneftchi.ui.videos
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import uz.umarov.fcneftchi.data.model.Video
 import uz.umarov.fcneftchi.domain.usecase.GetVideosUseCase
 import javax.inject.Inject
@@ -18,22 +18,10 @@ data class VideosUiState(
 
 @HiltViewModel
 class VideosViewModel @Inject constructor(
-    private val getVideos: GetVideosUseCase
+    getVideos: GetVideosUseCase
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(VideosUiState())
-    val uiState = _uiState.asStateFlow()
-
-    init {
-        loadVideos()
-    }
-
-    private fun loadVideos() {
-        viewModelScope.launch {
-            _uiState.update { it.copy(isLoading = true) }
-            getVideos().collect { videos ->
-                _uiState.update { it.copy(videos = videos, isLoading = false) }
-            }
-        }
-    }
+    val uiState: StateFlow<VideosUiState> = getVideos()
+        .map { videos -> VideosUiState(videos = videos, isLoading = false) }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), VideosUiState())
 }

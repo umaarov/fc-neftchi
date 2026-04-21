@@ -3,10 +3,14 @@ package uz.umarov.fcneftchi.ui.table
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import uz.umarov.fcneftchi.data.ClubConfig
 import uz.umarov.fcneftchi.data.model.LeagueStanding
 import uz.umarov.fcneftchi.domain.usecase.GetLeagueTableUseCase
@@ -19,37 +23,34 @@ data class LeagueTableUiState(
     val availableSeasons: Map<String, Int> = ClubConfig.SEASONS_BY_NAME
 )
 
+@OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
 class LeagueTableViewModel @Inject constructor(
-    private val getLeagueTable: GetLeagueTableUseCase
+    getLeagueTable: GetLeagueTableUseCase
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(LeagueTableUiState())
-    val uiState = _uiState.asStateFlow()
+    private val selectedSeason = MutableStateFlow(ClubConfig.DEFAULT_SEASON_NAME)
 
-    init {
-        loadTableForSeason(ClubConfig.DEFAULT_SEASON_NAME)
-    }
-
-    fun changeSeason(seasonName: String) {
-        val seasonId = _uiState.value.availableSeasons[seasonName]
-        if (seasonId != null) {
-            _uiState.update {
-                it.copy(isLoading = true, selectedSeasonName = seasonName)
-            }
-            loadTableForSeason(seasonName)
-        }
-    }
-
-    private fun loadTableForSeason(seasonName: String) {
-        val seasonId = _uiState.value.availableSeasons[seasonName] ?: return
-
-        viewModelScope.launch {
-            getLeagueTable(seasonId).collect { standings ->
-                _uiState.update {
-                    it.copy(standings = standings, isLoading = false)
+    val uiState: StateFlow<LeagueTableUiState> = selectedSeason
+        .flatMapLatest { seasonName ->
+            val seasonId = ClubConfig.SEASONS_BY_NAME[seasonName]
+            if (seasonId == null) {
+                flowOf(LeagueTableUiState(selectedSeasonName = seasonName, isLoading = false))
+            } else {
+                getLeagueTable(seasonId).map { standings ->
+                    LeagueTableUiState(
+                        standings = standings,
+                        isLoading = false,
+                        selectedSeasonName = seasonName
+                    )
                 }
             }
+        }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), LeagueTableUiState())
+
+    fun changeSeason(seasonName: String) {
+        if (ClubConfig.SEASONS_BY_NAME.containsKey(seasonName)) {
+            selectedSeason.value = seasonName
         }
     }
 }
