@@ -16,6 +16,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import uz.umarov.fcneftchi.data.api.PflApiService
+import uz.umarov.fcneftchi.data.api.RetryInterceptor
 import javax.inject.Singleton
 import uz.umarov.fcneftchi.BuildConfig
 
@@ -37,12 +38,20 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideOkHttpClient(loggingInterceptor: HttpLoggingInterceptor): OkHttpClient {
+    fun provideRetryInterceptor(): RetryInterceptor = RetryInterceptor()
+
+    @Provides
+    @Singleton
+    fun provideOkHttpClient(
+        loggingInterceptor: HttpLoggingInterceptor,
+        retryInterceptor: RetryInterceptor
+    ): OkHttpClient {
         return OkHttpClient.Builder()
             .connectTimeout(20, java.util.concurrent.TimeUnit.SECONDS)
             .readTimeout(30, java.util.concurrent.TimeUnit.SECONDS)
             .writeTimeout(30, java.util.concurrent.TimeUnit.SECONDS)
             .retryOnConnectionFailure(true)
+            .addInterceptor(retryInterceptor)
             .apply {
                 if (BuildConfig.DEBUG) {
                     addInterceptor(loggingInterceptor)
