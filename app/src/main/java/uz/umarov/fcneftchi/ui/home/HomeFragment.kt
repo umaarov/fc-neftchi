@@ -15,6 +15,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import uz.umarov.fcneftchi.R
 import uz.umarov.fcneftchi.databinding.FragmentHomeBinding
 import uz.umarov.fcneftchi.ui.MainActivity
 import uz.umarov.fcneftchi.ui.home.adapter.HomeAdapter
@@ -71,7 +72,7 @@ class HomeFragment : Fragment() {
                     val intent = Intent(Intent.ACTION_VIEW, video.videoUrl.toUri())
                     startActivity(intent)
                 } catch (e: Exception) {
-                    Toast.makeText(context, "Could not open video", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, R.string.could_not_open_video, Toast.LENGTH_SHORT).show()
                 }
             }
         )

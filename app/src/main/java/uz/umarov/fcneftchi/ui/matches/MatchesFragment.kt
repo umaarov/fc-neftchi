@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.google.android.material.tabs.TabLayoutMediator
+import uz.umarov.fcneftchi.R
 import uz.umarov.fcneftchi.databinding.FragmentMatchesBinding
 import uz.umarov.fcneftchi.ui.MainActivity
 
@@ -36,13 +37,14 @@ class MatchesFragment : Fragment() {
     }
 
     private fun getTabTitle(position: Int): String? {
-        return when (position) {
-            FIXTURES_PAGE_INDEX -> "Taqvim"
-            RESULTS_PAGE_INDEX -> "Natijalar"
-            TABLE_PAGE_INDEX -> "Jadval"
-            TOP_PLAYERS_PAGE_INDEX -> "To'purarlar"
-            else -> null
+        val resId = when (position) {
+            FIXTURES_PAGE_INDEX -> R.string.match_tab_fixtures
+            RESULTS_PAGE_INDEX -> R.string.match_tab_results
+            TABLE_PAGE_INDEX -> R.string.match_tab_table
+            TOP_PLAYERS_PAGE_INDEX -> R.string.match_tab_top_players
+            else -> return null
         }
+        return getString(resId)
     }
 
     override fun onResume() {

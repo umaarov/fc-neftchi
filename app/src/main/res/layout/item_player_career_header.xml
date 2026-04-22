@@ -14,23 +14,23 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:gravity="start"
-        android:text="Klub" />
+        android:text="@string/player_career_header_club" />
 
     <TextView
         style="@style/TextAppearance.App.Table.Header"
         android:layout_width="70dp"
         android:layout_height="wrap_content"
-        android:text="Mavsum" />
+        android:text="@string/player_career_header_season" />
 
     <TextView
         style="@style/TextAppearance.App.Table.Header"
         android:layout_width="50dp"
         android:layout_height="wrap_content"
-        android:text="Match" />
+        android:text="@string/player_career_header_matches" />
 
     <TextView
         style="@style/TextAppearance.App.Table.Header"
         android:layout_width="40dp"
         android:layout_height="wrap_content"
-        android:text="Gol" />
+        android:text="@string/player_career_header_goals" />
 </LinearLayout>

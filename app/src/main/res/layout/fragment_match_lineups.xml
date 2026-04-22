@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="Starting Lineups"
+        android:text="@string/match_section_starting_lineups"
         android:textAppearance="?attr/textAppearanceHeadline6"
         android:fontFamily="@font/montserrat_bold"
         android:layout_marginBottom="8dp"/>

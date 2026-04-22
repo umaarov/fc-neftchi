@@ -136,7 +136,7 @@ class NewsArticleFragment : Fragment() {
             binding.articleContent.text = styledText
             // binding.articleContent.movementMethod = LinkMovementMethod.getInstance()
         } else {
-            binding.articleContent.text = "Ma'lumot topilmadi."
+            binding.articleContent.text = getString(R.string.news_article_empty)
         }
     }
 
@@ -173,10 +173,10 @@ class NewsArticleFragment : Fragment() {
                 putExtra(Intent.EXTRA_SUBJECT, article.title)
                 putExtra(
                     Intent.EXTRA_TEXT,
-                    "Check out this article from the FC Neftchi app: ${article.url}"
+                    getString(R.string.news_share_message, article.url)
                 )
             }
-            startActivity(Intent.createChooser(intent, "Share Article"))
+            startActivity(Intent.createChooser(intent, getString(R.string.news_share_title)))
         }
     }
 

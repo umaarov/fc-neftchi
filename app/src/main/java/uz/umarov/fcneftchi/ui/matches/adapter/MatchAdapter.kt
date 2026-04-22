@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load // <-- Import Coil
+import uz.umarov.fcneftchi.R
 import uz.umarov.fcneftchi.data.model.Match
 import uz.umarov.fcneftchi.databinding.ItemMatchBinding
 import uz.umarov.fcneftchi.databinding.ItemMonthHeaderBinding
@@ -54,12 +55,13 @@ class MatchAdapter(private val onItemClick: (Match) -> Unit) :
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(match: Match) {
+            val context = binding.root.context
             binding.root.setOnClickListener {
                 onItemClick(match)
             }
             binding.homeTeamName.text = match.homeTeam.name
             binding.awayTeamName.text = match.awayTeam.name
-            binding.matchCompetition.text = match.competition.uppercase()
+            binding.matchCompetition.text = competitionLabel(match, context).uppercase()
 
             val date = DateUtils.parseDate(match.matchDate)
 
@@ -67,13 +69,17 @@ class MatchAdapter(private val onItemClick: (Match) -> Unit) :
                 binding.matchDate.text = DateFormatter.formatMatchListDate(date).uppercase()
                 binding.timeBackground.text = DateFormatter.formatMatchListTime(date)
             } else {
-                binding.matchDate.text = "DATE UNAVAILABLE"
-                binding.timeBackground.text = "N/A"
+                binding.matchDate.text = context.getString(R.string.date_unavailable)
+                binding.timeBackground.text = context.getString(R.string.value_unavailable)
             }
 
             binding.homeTeamLogo.load(match.homeTeam.logoUrl) { crossfade(true) }
             binding.awayTeamLogo.load(match.awayTeam.logoUrl) { crossfade(true) }
         }
+
+        private fun competitionLabel(match: Match, context: android.content.Context): String =
+            match.competition.takeIf { it.isNotBlank() }
+                ?: context.getString(R.string.competition_superliga)
 
         companion object {
             fun from(parent: ViewGroup, onItemClick: (Match) -> Unit): MatchViewHolder {

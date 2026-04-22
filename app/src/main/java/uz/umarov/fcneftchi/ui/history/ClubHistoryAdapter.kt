@@ -1,8 +1,8 @@
 package uz.umarov.fcneftchi.ui.history
 
-import android.text.Html
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.text.HtmlCompat
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import uz.umarov.fcneftchi.databinding.ItemHistoryHeaderBinding
@@ -52,22 +52,29 @@ class ClubHistoryAdapter(private val items: List<HistoryListItem>) :
     class HistoryViewHolder(private val binding: ViewBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: HistoryListItem) {
+            val context = binding.root.context
             when (binding) {
-                is ItemHistoryHeaderBinding -> binding.headerText.text =
-                    (item as HistoryListItem.Header).title
-
-                is ItemHistorySubheaderBinding -> binding.subheaderText.text =
-                    (item as HistoryListItem.SubHeader).title
-
-                is ItemHistoryParagraphBinding -> binding.paragraphText.text = Html.fromHtml(
-                    (item as HistoryListItem.Paragraph).text,
-                    Html.FROM_HTML_MODE_COMPACT
+                is ItemHistoryHeaderBinding -> binding.headerText.setText(
+                    (item as HistoryListItem.Header).titleRes
                 )
 
-                is ItemHistoryTrophyBinding -> binding.trophyText.text =
-                    (item as HistoryListItem.Trophy).description
+                is ItemHistorySubheaderBinding -> binding.subheaderText.setText(
+                    (item as HistoryListItem.SubHeader).titleRes
+                )
 
-                is ItemHistoryImageBinding -> binding.historyImage.setImageResource((item as HistoryListItem.HistoryImage).imageResId)
+                is ItemHistoryParagraphBinding -> binding.paragraphText.text =
+                    HtmlCompat.fromHtml(
+                        context.getString((item as HistoryListItem.Paragraph).textRes),
+                        HtmlCompat.FROM_HTML_MODE_COMPACT
+                    )
+
+                is ItemHistoryTrophyBinding -> binding.trophyText.setText(
+                    (item as HistoryListItem.Trophy).descriptionRes
+                )
+
+                is ItemHistoryImageBinding -> binding.historyImage.setImageResource(
+                    (item as HistoryListItem.HistoryImage).imageResId
+                )
             }
         }
     }

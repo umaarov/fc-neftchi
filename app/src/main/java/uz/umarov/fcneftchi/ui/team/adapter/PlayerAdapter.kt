@@ -7,11 +7,14 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
+import uz.umarov.fcneftchi.R
 import uz.umarov.fcneftchi.data.model.Player
+import uz.umarov.fcneftchi.data.model.PlayerPosition
 import uz.umarov.fcneftchi.databinding.ItemPlayerBinding
 import uz.umarov.fcneftchi.databinding.ItemPlayerHeaderBinding
 import uz.umarov.fcneftchi.ui.team.TeamFragmentDirections
 import uz.umarov.fcneftchi.ui.team.TeamListItem
+import java.util.Locale
 
 private const val VIEW_TYPE_HEADER = 0
 private const val VIEW_TYPE_PLAYER = 1
@@ -69,14 +72,24 @@ class PlayerAdapter : ListAdapter<TeamListItem, RecyclerView.ViewHolder>(PlayerD
     class HeaderViewHolder(private val binding: ItemPlayerHeaderBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(header: TeamListItem.HeaderItem) {
-            binding.headerTitle.text = header.title
+            val context = binding.root.context
+            val baseRes = when (header.position) {
+                PlayerPosition.GOALKEEPER -> R.string.position_goalkeeper
+                PlayerPosition.DEFENDER -> R.string.position_defender
+                PlayerPosition.MIDFIELDER -> R.string.position_midfielder
+                PlayerPosition.ATTACKER -> R.string.position_attacker
+                PlayerPosition.UNKNOWN -> R.string.position_unknown
+            }
+            val title = context.getString(baseRes) +
+                context.getString(R.string.position_group_suffix)
+            binding.headerTitle.text = title.uppercase(Locale.ROOT)
         }
     }
 
     object PlayerDiffCallback : DiffUtil.ItemCallback<TeamListItem>() {
         override fun areItemsTheSame(oldItem: TeamListItem, newItem: TeamListItem): Boolean {
             return (oldItem is TeamListItem.PlayerItem && newItem is TeamListItem.PlayerItem && oldItem.player.id == newItem.player.id) ||
-                    (oldItem is TeamListItem.HeaderItem && newItem is TeamListItem.HeaderItem && oldItem.title == newItem.title)
+                    (oldItem is TeamListItem.HeaderItem && newItem is TeamListItem.HeaderItem && oldItem.position == newItem.position)
         }
 
         override fun areContentsTheSame(oldItem: TeamListItem, newItem: TeamListItem): Boolean =

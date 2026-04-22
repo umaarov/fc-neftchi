@@ -15,41 +15,41 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:gravity="start"
-        android:text="Player" />
+        android:text="@string/player_stats_header_player" />
 
     <TextView
         style="@style/TextAppearance.App.Table.Header"
         android:layout_width="32dp"
         android:layout_height="wrap_content"
-        android:text="P"
+        android:text="@string/player_stats_header_played"
         android:tooltipText="O'yinlar" />
 
     <TextView
         style="@style/TextAppearance.App.Table.Header"
         android:layout_width="32dp"
         android:layout_height="wrap_content"
-        android:text="G"
+        android:text="@string/player_stats_header_goals"
         android:tooltipText="Goals" />
 
     <TextView
         style="@style/TextAppearance.App.Table.Header"
         android:layout_width="32dp"
         android:layout_height="wrap_content"
-        android:text="A"
+        android:text="@string/player_stats_header_assists"
         android:tooltipText="Assists" />
 
     <TextView
         style="@style/TextAppearance.App.Table.Header"
         android:layout_width="32dp"
         android:layout_height="wrap_content"
-        android:text="Y"
+        android:text="@string/player_stats_header_yellow"
         android:tooltipText="Yellow Cards" />
 
     <TextView
         style="@style/TextAppearance.App.Table.Header"
         android:layout_width="32dp"
         android:layout_height="wrap_content"
-        android:text="R"
+        android:text="@string/player_stats_header_red"
         android:tooltipText="Red Cards" />
 
 </LinearLayout>

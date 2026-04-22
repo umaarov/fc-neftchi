@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="16dp"
-        android:text="Telegram"
+        android:text="@string/social_telegram"
         app:icon="@drawable/ic_telegram"
         app:iconGravity="textStart"
         app:iconPadding="16dp" />
@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:padding="16dp"
-        android:text="Instagram"
+        android:text="@string/social_instagram"
         app:icon="@drawable/ic_instagram"
         app:iconGravity="textStart"
         app:iconPadding="16dp" />
@@ -38,7 +38,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:padding="16dp"
-        android:text="YouTube"
+        android:text="@string/social_youtube"
         app:icon="@drawable/ic_youtube"
         app:iconGravity="textStart"
         app:iconPadding="16dp" />
@@ -50,7 +50,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:padding="16dp"
-        android:text="Facebook"
+        android:text="@string/social_facebook"
         app:icon="@drawable/ic_facebook"
         app:iconGravity="textStart"
         app:iconPadding="16dp" />

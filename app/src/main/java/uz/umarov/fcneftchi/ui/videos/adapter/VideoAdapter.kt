@@ -38,10 +38,11 @@ class VideoAdapter(private val lifecycle: Lifecycle) :
         fun bind(video: Video) {
             resetToThumbnail()
 
+            val context = binding.root.context
             binding.videoTitle.text = video.title
-            binding.categoryTextView.text = "Asosiy Jamoa"
+            binding.categoryTextView.text = context.getString(R.string.video_category_main_team)
             binding.dateTextView.text = video.date
-            binding.durationTextView.text = "00:00:00"
+            binding.durationTextView.text = context.getString(R.string.placeholder_duration)
 
             val videoId = YouTubeUrlParser.extractVideoId(video.videoUrl)
             currentVideoId = videoId

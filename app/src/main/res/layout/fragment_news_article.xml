@@ -102,7 +102,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
                 android:fontFamily="@font/montserrat_bold"
-                android:text="by FC Neftchi"
+                android:text="@string/news_default_author"
                 android:textAppearance="?attr/textAppearanceBody2"
                 android:textColor="@color/text_primary" />
 

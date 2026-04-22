@@ -66,11 +66,13 @@ class ResultAdapter(
             binding.awayTeamName.text = match.awayTeam.name
             binding.homeScoreText.text = match.homeScore.toString()
             binding.awayScoreText.text = match.awayScore.toString()
-            binding.matchCompetition.text = match.competition.uppercase()
+            val competitionLabel = match.competition.takeIf { it.isNotBlank() }
+                ?: context.getString(R.string.competition_superliga)
+            binding.matchCompetition.text = competitionLabel.uppercase()
 
             val date = DateUtils.parseDate(match.matchDate)
             binding.matchDate.text = date?.let { DateFormatter.formatMatchListDate(it).uppercase() }
-                ?: "DATE UNAVAILABLE"
+                ?: context.getString(R.string.date_unavailable)
 
             binding.homeTeamLogo.load(match.homeTeam.logoUrl) { crossfade(true) }
             binding.awayTeamLogo.load(match.awayTeam.logoUrl) { crossfade(true) }
@@ -78,7 +80,7 @@ class ResultAdapter(
             val homeScore = match.homeScore ?: -1
             val awayScore = match.awayScore ?: -1
 
-            val myTeamName = "Neftchi"
+            val myTeamName = context.getString(R.string.my_team_name)
 
             val backgroundColor = when {
                 homeScore == -1 || awayScore == -1 -> R.color.result_draw

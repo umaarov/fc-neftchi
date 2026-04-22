@@ -195,13 +195,15 @@ class HomeAdapter(
         private var countdownJob: Job? = null
 
         fun bind(match: Match) {
+            val context = binding.root.context
             binding.root.setOnClickListener { onMatchClick(match) }
             binding.homeTeamLogo.load(match.homeTeam.logoUrl)
             binding.awayTeamLogo.load(match.awayTeam.logoUrl)
             binding.homeTeamName.text = match.homeTeam.name
             binding.awayTeamName.text = match.awayTeam.name
             binding.matchDate.text = formatHomeMatchDate(match.matchDate)
-            binding.matchCompetition.text = match.competition
+            binding.matchCompetition.text = match.competition.takeIf { it.isNotBlank() }
+                ?: context.getString(R.string.competition_superliga)
             startCountdown(match.matchDate)
         }
 
@@ -240,7 +242,9 @@ class HomeAdapter(
         }
 
         private fun formatHomeMatchDate(dateString: String?): String {
-            val date = DateUtils.parseDate(dateString) ?: return "N/A"
+            val context = binding.root.context
+            val date = DateUtils.parseDate(dateString)
+                ?: return context.getString(R.string.value_unavailable)
             return DateFormatter.formatHomeShort(date)
         }
     }
@@ -250,17 +254,24 @@ class HomeAdapter(
         private val onMatchClick: (Match) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(match: Match) {
+            val context = binding.root.context
             binding.root.setOnClickListener { onMatchClick(match) }
 
             binding.homeTeamName.text = match.homeTeam.name
             binding.awayTeamName.text = match.awayTeam.name
             binding.homeTeamLogo.load(match.homeTeam.logoUrl)
             binding.awayTeamLogo.load(match.awayTeam.logoUrl)
-            binding.score.text = "${match.homeScore} - ${match.awayScore}"
-            binding.matchCompetition.text = match.competition
+            binding.score.text = context.getString(
+                R.string.score_format,
+                match.homeScore.toString(),
+                match.awayScore.toString()
+            )
+            binding.matchCompetition.text = match.competition.takeIf { it.isNotBlank() }
+                ?: context.getString(R.string.competition_superliga)
 
             val date = DateUtils.parseDate(match.matchDate)
-            binding.matchDate.text = date?.let { DateFormatter.formatHomeShort(it) } ?: "N/A"
+            binding.matchDate.text = date?.let { DateFormatter.formatHomeShort(it) }
+                ?: context.getString(R.string.value_unavailable)
         }
     }
 
@@ -270,7 +281,7 @@ class HomeAdapter(
         private val onNavigate: (Int) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: HomeListItem.HeaderItem) {
-            binding.headerTitle.text = item.title
+            binding.headerTitle.setText(item.titleRes)
             binding.viewAllButton.setOnClickListener { onNavigate(item.destinationId) }
         }
     }
@@ -309,8 +320,9 @@ class HomeAdapter(
 
             binding.root.setOnClickListener { onVideoClick(video) }
 
+            val context = binding.root.context
             binding.videoTitle.text = video.title
-            binding.categoryTextView.text = "Asosiy Jamoa"
+            binding.categoryTextView.text = context.getString(R.string.video_category_main_team)
             binding.dateTextView.text = video.date
             binding.durationTextView.text = video.duration
 

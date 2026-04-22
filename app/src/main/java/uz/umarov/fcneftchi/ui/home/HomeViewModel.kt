@@ -51,18 +51,22 @@ class HomeViewModel @Inject constructor(
         feed.lastMatch?.let { homeItems.add(HomeListItem.LastResultItem(it)) }
 
         feed.videos.firstOrNull()?.let {
-            homeItems.add(HomeListItem.HeaderItem("Video", R.id.videosFragment))
+            homeItems.add(HomeListItem.HeaderItem(R.string.home_section_video, R.id.videosFragment))
             homeItems.add(HomeListItem.FeaturedVideoItem(it))
         }
 
         val otherNews = feed.news.drop(3)
         if (otherNews.isNotEmpty()) {
-            homeItems.add(HomeListItem.HeaderItem("So'nggi yangiliklar", R.id.newsFragment))
+            homeItems.add(
+                HomeListItem.HeaderItem(R.string.home_section_recent_news, R.id.newsFragment)
+            )
             homeItems.add(HomeListItem.NewsCarouselItem(otherNews.take(5)))
         }
 
         if (feed.standings.isNotEmpty()) {
-            homeItems.add(HomeListItem.HeaderItem("Turnir jadvali", R.id.matchesFragment))
+            homeItems.add(
+                HomeListItem.HeaderItem(R.string.home_section_table, R.id.matchesFragment)
+            )
             homeItems.add(HomeListItem.StandingsItem(feed.standings.take(5)))
         }
 

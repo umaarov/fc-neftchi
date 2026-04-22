@@ -39,7 +39,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:fontFamily="@font/montserrat_semibold"
-            android:text="OXIRGI NATIJA"
+            android:text="@string/home_label_last_result"
             android:textAppearance="?attr/textAppearanceCaption"
             android:textColor="@color/white"
             app:layout_constraintEnd_toEndOf="parent"

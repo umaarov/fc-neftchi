@@ -32,6 +32,6 @@ fun GameCalendarMatch.toMatch(): Match {
         awayScore = awayGoal,
         matchDate = startDate,
         status = status,
-        competition = "Superliga"
+        competition = ""
     )
 }

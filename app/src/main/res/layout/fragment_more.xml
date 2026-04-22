@@ -26,25 +26,25 @@
             android:id="@+id/team_button"
             style="@style/Widget.App.MoreMenuItem"
             android:paddingHorizontal="24dp"
-            android:text="Jamoa va xodimlar" />
+            android:text="@string/more_team_staff" />
 
         <TextView
             android:id="@+id/statistics_button"
             style="@style/Widget.App.MoreMenuItem"
             android:paddingHorizontal="24dp"
-            android:text="Statistika" />
+            android:text="@string/more_statistics" />
 
         <TextView
             android:id="@+id/club_history_button"
             style="@style/Widget.App.MoreMenuItem"
             android:paddingHorizontal="24dp"
-            android:text="Klub tarixi" />
+            android:text="@string/more_history" />
 
         <TextView
             android:id="@+id/stadium_button"
             style="@style/Widget.App.MoreMenuItem"
             android:paddingHorizontal="24dp"
-            android:text="Stadion" />
+            android:text="@string/more_stadium_label" />
 
         <View
             android:layout_width="match_parent"
@@ -57,7 +57,7 @@
             android:id="@+id/settings_button"
             style="@style/Widget.App.MoreMenuItem.Secondary"
             android:paddingHorizontal="24dp"
-            android:text="Sozlamalar" />
+            android:text="@string/more_settings_label" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -65,7 +65,7 @@
             android:layout_marginTop="32dp"
             android:fontFamily="@font/montserrat_regular"
             android:paddingHorizontal="24dp"
-            android:text="Ijtimoiy tarmoqlar"
+            android:text="@string/more_socials"
             android:textColor="#B3FFFFFF" />
 
         <LinearLayout

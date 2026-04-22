@@ -105,12 +105,12 @@ class MainActivity : AppCompatActivity() {
 
                 shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS) -> {
                     AlertDialog.Builder(this)
-                        .setTitle("Stay Updated!")
-                        .setMessage("Please allow notifications to get live match scores, breaking news, and video updates directly on your phone.")
-                        .setPositiveButton("Allow") { _, _ ->
+                        .setTitle(R.string.notif_permission_dialog_title)
+                        .setMessage(R.string.notif_permission_dialog_message)
+                        .setPositiveButton(R.string.permission_allow) { _, _ ->
                             requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
                         }
-                        .setNegativeButton("Later", null)
+                        .setNegativeButton(R.string.permission_later, null)
                         .show()
                 }
 
@@ -142,16 +142,16 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupTabLayoutWithNavController() {
         val destinations = listOf(
-            Triple(R.id.homeFragment, "Home", R.drawable.ic_home),
-            Triple(R.id.newsFragment, "News", R.drawable.ic_news),
-            Triple(R.id.matchesFragment, "Matches", R.drawable.ic_matches),
-            Triple(R.id.videosFragment, "Videos", R.drawable.ic_videos),
-            Triple(R.id.moreFragment, "More", R.drawable.ic_more)
+            Triple(R.id.homeFragment, R.string.title_home, R.drawable.ic_home),
+            Triple(R.id.newsFragment, R.string.title_news, R.drawable.ic_news),
+            Triple(R.id.matchesFragment, R.string.title_matches, R.drawable.ic_matches),
+            Triple(R.id.videosFragment, R.string.title_videos, R.drawable.ic_videos),
+            Triple(R.id.moreFragment, R.string.title_more, R.drawable.ic_more)
         )
 
-        destinations.forEach { (destinationId, label, iconId) ->
+        destinations.forEach { (destinationId, labelRes, iconId) ->
             val tab = binding.tabLayout.newTab().apply {
-                text = label
+                text = getString(labelRes)
                 setIcon(iconId)
                 tag = destinationId
             }

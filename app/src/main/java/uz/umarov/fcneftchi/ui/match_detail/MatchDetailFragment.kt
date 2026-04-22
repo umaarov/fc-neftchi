@@ -16,6 +16,7 @@ import coil.load
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import uz.umarov.fcneftchi.R
 import uz.umarov.fcneftchi.data.model.GameDetail
 import uz.umarov.fcneftchi.databinding.FragmentMatchDetailBinding
 import uz.umarov.fcneftchi.ui.MainActivity
@@ -91,7 +92,8 @@ class MatchDetailFragment : Fragment() {
         binding.header.awayTeamLogo.load(game.awayTeam.club.logo)
         binding.header.homeTeamName.text = game.homeTeam.club.title
         binding.header.awayTeamName.text = game.awayTeam.club.title
-        binding.header.score.text = "${game.homeGoal} - ${game.awayGoal}"
+        binding.header.score.text =
+            getString(R.string.score_format, game.homeGoal.toString(), game.awayGoal.toString())
         binding.header.matchDate.text = formatMatchDate(game.startDate)
     }
 
@@ -106,9 +108,9 @@ class MatchDetailFragment : Fragment() {
             binding.viewPager.adapter = MatchDetailViewPagerAdapter(this)
             TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
                 tab.text = when (position) {
-                    0 -> "Events"
-                    1 -> "Stats"
-                    2 -> "Lineups"
+                    0 -> getString(R.string.match_detail_tab_events)
+                    1 -> getString(R.string.match_detail_tab_stats)
+                    2 -> getString(R.string.match_detail_tab_lineups)
                     else -> null
                 }
             }.attach()
@@ -134,7 +136,7 @@ class MatchDetailFragment : Fragment() {
     }
 
     private fun formatMatchDate(dateString: String?): String {
-        val date = DateUtils.parseDate(dateString) ?: return "N/A"
+        val date = DateUtils.parseDate(dateString) ?: return getString(R.string.value_unavailable)
         return DateFormatter.formatMatchDetailDate(date)
     }
 

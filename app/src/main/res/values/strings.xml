@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">FC Neftchi</string>
+    <string name="my_team_name">Neftchi</string>
+
+    <!-- Bottom navigation -->
     <string name="title_home">Home</string>
     <string name="title_matches">Matches</string>
     <string name="title_news">News</string>
@@ -12,22 +15,163 @@
     <string name="title_club_history">Club History</string>
     <string name="title_socials">Ijtimoiy tarmoqlar</string>
     <string name="title_settings">Sozlamalar</string>
+
+    <!-- Home -->
     <string name="home_latest_news">Latest News</string>
     <string name="home_league_table">League Table</string>
+    <string name="home_view_all">Barchasi</string>
+    <string name="home_section_video">Video</string>
+    <string name="home_section_recent_news">So\'nggi yangiliklar</string>
+    <string name="home_section_table">Turnir jadvali</string>
+    <string name="home_label_next_match">KEYINGI O\'YIN</string>
+    <string name="home_label_last_result">OXIRGI NATIJA</string>
+    <string name="countdown_days">KUN</string>
+    <string name="countdown_hours">ST</string>
+    <string name="countdown_minutes">MIN</string>
+    <string name="countdown_seconds">SEK</string>
+    <string name="could_not_open_video">Could not open video</string>
+
+    <!-- Matches -->
     <string name="matches_fixtures">Fixtures</string>
     <string name="matches_results">Results</string>
+    <string name="match_tab_fixtures">Taqvim</string>
+    <string name="match_tab_results">Natijalar</string>
+    <string name="match_tab_table">Jadval</string>
+    <string name="match_tab_top_players">To\'purarlar</string>
+    <string name="match_detail_tab_events">Events</string>
+    <string name="match_detail_tab_stats">Stats</string>
+    <string name="match_detail_tab_lineups">Lineups</string>
+    <string name="match_section_starting_lineups">Starting Lineups</string>
+    <string name="match_section_statistics">Match Statistics</string>
+    <string name="match_stat_shots">Zarbalar</string>
+    <string name="match_stat_shots_on_target">Aniq zarbalar</string>
+    <string name="match_stat_corners">Burchak zarbalari</string>
+    <string name="match_stat_offsides">Offsayd</string>
+    <string name="match_stat_fouls">Follar</string>
+    <string name="match_stat_yellow_cards">Ogohlantirish</string>
+    <string name="match_stat_red_cards">Chetlatish</string>
+    <string name="date_unavailable">DATE UNAVAILABLE</string>
+    <string name="competition_superliga">Superliga</string>
+
+    <!-- Top players -->
+    <string name="top_scorers">Eng yaxshi to\'purarlar</string>
+    <string name="top_assisters">Eng yaxshi assistentlar</string>
+
+    <!-- Club statistics -->
+    <string name="club_stats_section">Klub statistikasi</string>
+    <string name="club_stats_wins">G\'ALABA</string>
+    <string name="club_stats_draws">DURANG</string>
+    <string name="club_stats_losses">MAG\'LUBIYAT</string>
+    <string name="club_stats_matches">Matchlar</string>
+    <string name="club_stats_goals_for">Urilgan gollar</string>
+    <string name="club_stats_goals_against">O\'tkazilgan gollar</string>
+
+    <!-- More menu -->
     <string name="more_options">More Options</string>
     <string name="more_league_table">League Table</string>
     <string name="more_club_history">Club History</string>
     <string name="more_stadium_info">Stadium Info</string>
     <string name="more_tickets">Tickets</string>
     <string name="more_settings">Settings</string>
+    <string name="more_team_staff">Jamoa va xodimlar</string>
+    <string name="more_statistics">Statistika</string>
+    <string name="more_history">Klub tarixi</string>
+    <string name="more_stadium_label">Stadion</string>
+    <string name="more_settings_label">Sozlamalar</string>
+    <string name="more_socials">Ijtimoiy tarmoqlar</string>
+
+    <!-- Player profile -->
+    <string name="player_label_position">POZITSIYA</string>
+    <string name="player_label_country">MAMLAKAT</string>
+    <string name="player_label_age">YOSH</string>
+    <string name="player_label_matches">MATCH</string>
+    <string name="player_label_goals">GOL</string>
+    <string name="player_label_assists">ASSIST</string>
+    <string name="player_label_minutes">MINUT</string>
+    <string name="player_label_yellow_cards">SARIQ K</string>
+    <string name="player_label_red_cards">QIZIL K</string>
+    <string name="player_section_current_season">Joriy mavsum statistikasi</string>
+    <string name="player_unknown_value">N/A</string>
+
+    <!-- Player career -->
+    <string name="player_career_header_club">Klub</string>
+    <string name="player_career_header_season">Mavsum</string>
+    <string name="player_career_header_matches">Match</string>
+    <string name="player_career_header_goals">Gol</string>
+
+    <!-- Player stats / League table headers -->
+    <string name="player_stats_header_player">Player</string>
+    <string name="player_stats_header_played">P</string>
+    <string name="player_stats_header_goals">G</string>
+    <string name="player_stats_header_assists">A</string>
+    <string name="player_stats_header_yellow">Y</string>
+    <string name="player_stats_header_red">R</string>
+    <string name="league_table_header_club">Club</string>
+    <string name="league_table_header_played">P</string>
+    <string name="league_table_header_wins">W</string>
+    <string name="league_table_header_draws">D</string>
+    <string name="league_table_header_losses">L</string>
+    <string name="league_table_header_goal_difference">GD</string>
+    <string name="league_table_header_points">PTS</string>
+
+    <!-- Position labels -->
+    <string name="position_goalkeeper">Darvozabon</string>
+    <string name="position_defender">Himoyachi</string>
+    <string name="position_midfielder">Yarim himoyachi</string>
+    <string name="position_midfielder_short">Yarim H.</string>
+    <string name="position_attacker">Hujumchi</string>
+    <string name="position_unknown">Noma\'lum</string>
+    <string name="position_group_suffix">LAR</string>
+
+    <!-- Stadium -->
     <string name="title_stadium">Stadion</string>
     <string name="stadium_address">Farg\'ona shahri, Marg\'ilon ko\'chasi 1</string>
+    <string name="stadium_label_capacity">CAPACITY</string>
+    <string name="stadium_label_opened">OPENED</string>
+    <string name="stadium_about_section">About The Stadium</string>
+    <string name="stadium_full_name">Istiqlol Stadium</string>
+    <string name="stadium_capacity_value">20,000</string>
+    <string name="stadium_opened_year">2015</string>
     <string name="stadium_description">
         "Istiqlol" sport majmuasi Farg\'onada joylashgan bo\'lib, 20 mingdan ortiq muxlisni qabul qila oladi. Zamonaviy va barcha zarur narsalar bilan jihozlangan chiroyli stadion 2015-yilda ochilgan.\n\nU xalqaro futbol o\'yinlari uchun ideal maydonga aylandi. "Istiqlol" — "Neftchi" futbol klubining uy arenasi hisoblanadi. Tomoshabinlar uchun o\'rindiqlar yuqori va pastki qavatlarga bo\'lingan. Kuzatuvchilar xonasi videotablo va musobaqani jonli translyatsiya qilish imkonini beruvchi uskunalar bilan jihozlangan.
     </string>
 
+    <!-- News article -->
+    <string name="news_default_author">by FC Neftchi</string>
+    <string name="news_share_title">Share Article</string>
+    <string name="news_share_message">Check out this article from the FC Neftchi app: %1$s</string>
+    <string name="news_load_failed">Failed to load news</string>
+    <string name="news_article_empty">Ma\'lumot topilmadi.</string>
+
+    <!-- Socials -->
+    <string name="social_telegram">Telegram</string>
+    <string name="social_instagram">Instagram</string>
+    <string name="social_youtube">YouTube</string>
+    <string name="social_facebook">Facebook</string>
+
+    <!-- Video category -->
+    <string name="video_category_main_team">Asosiy Jamoa</string>
+
+    <!-- Decorative separators -->
+    <string name="separator_bullet">|</string>
+    <string name="separator_dash">-</string>
+
+    <!-- Permission dialog -->
+    <string name="permission_allow">Allow</string>
+    <string name="permission_later">Later</string>
+    <string name="notif_permission_dialog_title">Stay Updated!</string>
+    <string name="notif_permission_dialog_message">Please allow notifications to get live match scores, breaking news, and video updates directly on your phone.</string>
+    <string name="notif_default_title">FC Neftchi</string>
+
+    <!-- Generic placeholders -->
+    <string name="value_unavailable">N/A</string>
+    <string name="score_format" translatable="false">%1$s - %2$s</string>
+    <string name="placeholder_duration" translatable="false">00:00:00</string>
+
+    <!-- Notifications -->
+    <string name="notif_default_body">Yangi xabar</string>
+    <string name="notif_channel_name">Neftchi Notifications</string>
+    <string name="notif_channel_description">Yangi yangiliklar va o\'yin eslatmalari</string>
     <string name="settings_appearance">Ko\'rinish</string>
     <string name="settings_dark_mode">Tungi rejim</string>
     <string name="settings_theme">Mavzu</string>
@@ -46,5 +190,22 @@
     <string name="notif_subscribe_failed">Obuna bo\'lishda xatolik.</string>
     <string name="notif_unsubscribe_success">Obuna bekor qilindi!</string>
     <string name="notif_unsubscribe_failed">Bekor qilishda xatolik.</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- Club history (long-form content) -->
+    <string name="history_section_overview">Neftchi\'ning shonli tarixi</string>
+    <string name="history_subsection_soviet_era">Dastlabki sovet davri</string>
+    <string name="history_paragraph_soviet_era">"Neftchi" futbol klubiga &lt;b&gt;1962-yilda&lt;/b&gt; Farg\'ona shahrida "Neftyanik" nomi bilan asos solingan. 1962-yildan 1991-yilgacha jamoa Sovet Ittifoqining Ikkinchi ligasida (O\'rta Osiyo divizioni) ishtirok etgan. 1990-yilda klub Ikkinchi liganing "Sharq" konferensiyasida g\'olib chiqib, Sovet Birinchi ligasiga yo\'l oladi. 1991-yilgi mavsumda Birinchi ligada 7-o\'rinni egallashi klubning sovet futboli tarixidagi eng yuqori yutug\'i bo\'lib qoldi.</string>
+    <string name="history_subsection_independence_era">Mustaqillik davri (Oltin davr)</string>
+    <string name="history_paragraph_independence_era">&lt;b&gt;1992-yildan&lt;/b&gt; boshlab klub O\'zbekiston Oliy Ligasida ishtirok etib kelmoqda. "Paxtakor" va "Navbahor" bilan bir qatorda, "Neftchi" Oliy Liganing barcha mavsumlarida tanaffussiz qatnashgan uch klubdan biridir. 1992-yildan 2001-yilgacha bo\'lgan davr klub tarixidagi "oltin davr" hisoblanadi. Yuriy Sarkisyan boshchiligidagi jamoa bu yillarda mamlakatning eng kuchli klubiga aylanib, ketma-ket chempionliklarni qo\'lga kiritdi.</string>
+    <string name="history_section_trophies">Asosiy sovrinlar</string>
+    <string name="history_trophy_super_league">O\'zbekiston Superligasi Chempioni (5 marta): 1992, 1993, 1994, 1995, 2001</string>
+    <string name="history_trophy_cup">O\'zbekiston Kubogi sohibi (2 marta): 1994, 1996</string>
+    <string name="history_trophy_cis_cup">MDH Hamdo\'stlik Kubogi finalchisi: 1994</string>
+    <string name="history_section_stadium">Stadion</string>
+    <string name="history_paragraph_stadium">"Neftchi" dastlab o\'z uy uchrashuvlarini 1932-yilda qurilgan "Farg\'ona" stadionida o\'tkazgan. 2012-yilda yangi arena qurilishi boshlandi va 2015-yilda &lt;b&gt;20,000&lt;/b&gt; tomoshabinga mo\'ljallangan zamonaviy "Istiqlol" stadioni ochildi. Stadionning ochilish o\'yini 2015-yil 3-aprel kuni O\'zbekiston U-20 va Yangi Zelandiya U-20 jamoalari o\'rtasida bo\'lib o\'tgan.</string>
+    <string name="history_section_rivalries">Raqobatlar</string>
+    <string name="history_subsection_classico">O\'zbek Klassikosi</string>
+    <string name="history_paragraph_classico">O\'zbek futbolida an\'anaviy raqobat "Neftchi" va poytaxtning "Paxtakor" klubi o\'rtasida kechadi. Bu qarama-qarshilik Ispaniyadagi "El Klasiko"ga qiyosan "O\'zbek Klassikosi" nomini olgan.</string>
+    <string name="history_subsection_valley_derby">Vodiy derbisi</string>
+    <string name="history_paragraph_valley_derby">"Neftchi"ning mahalliy va eng ashaddiy raqiblaridan biri Namanganning "Navbahor" klubidir. Shuningdek, "Andijon" klubi bilan o\'yinlar ham "Vodiy derbisi" maqomiga ega bo\'lib, muxlislar uchun doimo katta qiziqish uyg\'otadi.</string>
 </resources>

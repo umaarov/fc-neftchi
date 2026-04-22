@@ -39,7 +39,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:fontFamily="@font/montserrat_semibold"
-            android:text="KEYINGI O'YIN"
+            android:text="@string/home_label_next_match"
             android:textAppearance="?attr/textAppearanceCaption"
             android:textColor="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
@@ -126,7 +126,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/montserrat_regular"
-                    android:text="KUN"
+                    android:text="@string/countdown_days"
                     android:textAppearance="?attr/textAppearanceCaption"
                     android:textColor="#B3FFFFFF" />
             </LinearLayout>
@@ -151,7 +151,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/montserrat_regular"
-                    android:text="ST"
+                    android:text="@string/countdown_hours"
                     android:textAppearance="?attr/textAppearanceCaption"
                     android:textColor="#B3FFFFFF" />
             </LinearLayout>
@@ -176,7 +176,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/montserrat_regular"
-                    android:text="MIN"
+                    android:text="@string/countdown_minutes"
                     android:textAppearance="?attr/textAppearanceCaption"
                     android:textColor="#B3FFFFFF" />
             </LinearLayout>
@@ -201,7 +201,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/montserrat_regular"
-                    android:text="SEK"
+                    android:text="@string/countdown_seconds"
                     android:textAppearance="?attr/textAppearanceCaption"
                     android:textColor="#B3FFFFFF" />
             </LinearLayout>

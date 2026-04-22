@@ -69,7 +69,7 @@ class TopPlayerAdapter :
     class HeaderViewHolder(private val binding: ItemTopPlayerHeaderBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(headerItem: TopPlayerListItem.HeaderItem) {
-            binding.headerTitle.text = headerItem.title
+            binding.headerTitle.setText(headerItem.titleRes)
         }
 
         companion object {
@@ -87,7 +87,7 @@ class TopPlayerAdapter :
             newItem: TopPlayerListItem
         ): Boolean {
             return (oldItem is TopPlayerListItem.PlayerItem && newItem is TopPlayerListItem.PlayerItem && oldItem.player.playerId == newItem.player.playerId) ||
-                    (oldItem is TopPlayerListItem.HeaderItem && newItem is TopPlayerListItem.HeaderItem && oldItem.title == newItem.title)
+                    (oldItem is TopPlayerListItem.HeaderItem && newItem is TopPlayerListItem.HeaderItem && oldItem.titleRes == newItem.titleRes)
         }
 
         override fun areContentsTheSame(

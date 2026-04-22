@@ -39,7 +39,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="G'ALABA" />
+                android:text="@string/club_stats_wins" />
         </LinearLayout>
 
 
@@ -67,7 +67,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="DURANG" />
+                android:text="@string/club_stats_draws" />
         </LinearLayout>
 
         <LinearLayout
@@ -94,7 +94,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="MAG'LUBIYAT" />
+                android:text="@string/club_stats_losses" />
         </LinearLayout>
 
         <View
@@ -115,7 +115,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:fontFamily="@font/montserrat_regular"
-            android:text="Matchlar"
+            android:text="@string/club_stats_matches"
             android:textAppearance="?attr/textAppearanceBody2"
             android:textColor="@color/text_secondary"
             app:layout_constraintStart_toStartOf="parent"
@@ -140,7 +140,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="12dp"
             android:fontFamily="@font/montserrat_regular"
-            android:text="Urilgan gollar"
+            android:text="@string/club_stats_goals_for"
             android:textAppearance="?attr/textAppearanceBody2"
             android:textColor="@color/text_secondary"
             app:layout_constraintStart_toStartOf="parent"
@@ -165,7 +165,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="12dp"
             android:fontFamily="@font/montserrat_regular"
-            android:text="O'tkazilgan gollar"
+            android:text="@string/club_stats_goals_against"
             android:textAppearance="?attr/textAppearanceBody2"
             android:textColor="@color/text_secondary"
             app:layout_constraintStart_toStartOf="parent"

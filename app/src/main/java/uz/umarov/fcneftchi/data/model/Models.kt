@@ -25,10 +25,23 @@ data class Player(
     val id: Int,
     val name: String,
     val number: Int,
-    val position: String,
+    val position: PlayerPosition,
     val imageUrl: Any,
     val nationality: String
 )
+
+enum class PlayerPosition(val positionId: Int) {
+    GOALKEEPER(1),
+    DEFENDER(2),
+    MIDFIELDER(3),
+    ATTACKER(4),
+    UNKNOWN(0);
+
+    companion object {
+        fun fromId(id: Int): PlayerPosition =
+            entries.firstOrNull { it.positionId == id } ?: UNKNOWN
+    }
+}
 
 data class LeagueStanding(
     val position: Int,

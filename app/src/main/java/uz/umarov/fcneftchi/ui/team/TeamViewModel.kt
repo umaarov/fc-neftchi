@@ -8,8 +8,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import uz.umarov.fcneftchi.data.model.Player
+import uz.umarov.fcneftchi.data.model.PlayerPosition
 import uz.umarov.fcneftchi.domain.usecase.GetSquadUseCase
-import java.util.Locale
 import javax.inject.Inject
 
 data class TeamUiState(
@@ -27,8 +27,13 @@ class TeamViewModel @Inject constructor(
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), TeamUiState())
 
     private fun groupByPosition(players: List<Player>): List<TeamListItem> {
-        val positionOrder = listOf("darvozabon", "himoyachi", "yarim himoyachi", "hujumchi")
-        val playersByPosition = players.groupBy { it.position.trim().lowercase(Locale.ROOT) }
+        val positionOrder = listOf(
+            PlayerPosition.GOALKEEPER,
+            PlayerPosition.DEFENDER,
+            PlayerPosition.MIDFIELDER,
+            PlayerPosition.ATTACKER
+        )
+        val playersByPosition = players.groupBy { it.position }
         val sortedPositions = playersByPosition.keys.sortedWith(compareBy { position ->
             val index = positionOrder.indexOf(position)
             if (index == -1) Int.MAX_VALUE else index
@@ -37,9 +42,7 @@ class TeamViewModel @Inject constructor(
         val grouped = mutableListOf<TeamListItem>()
         sortedPositions.forEach { position ->
             playersByPosition[position]?.let { playerGroup ->
-                val headerTitle =
-                    position.replaceFirstChar { it.titlecase(Locale.ROOT) } + "LAR"
-                grouped.add(TeamListItem.HeaderItem(headerTitle.uppercase()))
+                grouped.add(TeamListItem.HeaderItem(position))
                 playerGroup.sortedBy { it.number }.forEach { player ->
                     grouped.add(TeamListItem.PlayerItem(player))
                 }

@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:gravity="center"
-        android:text="Match Statistics"
+        android:text="@string/match_section_statistics"
         android:textAppearance="?attr/textAppearanceHeadline6"
         android:textStyle="bold" />
 
@@ -18,7 +18,7 @@
 
         <TextView
             style="@style/StatLabel"
-            android:text="Shots" />
+            android:text="@string/match_stat_shots" />
 
         <TextView
             android:id="@+id/stat_shots"
@@ -30,7 +30,7 @@
 
         <TextView
             style="@style/StatLabel"
-            android:text="Shots on Target" />
+            android:text="@string/match_stat_shots_on_target" />
 
         <TextView
             android:id="@+id/stat_shots_on_target"
@@ -42,7 +42,7 @@
 
         <TextView
             style="@style/StatLabel"
-            android:text="Corners" />
+            android:text="@string/match_stat_corners" />
 
         <TextView
             android:id="@+id/stat_corners"
@@ -54,7 +54,7 @@
 
         <TextView
             style="@style/StatLabel"
-            android:text="Offsides" />
+            android:text="@string/match_stat_offsides" />
 
         <TextView
             android:id="@+id/stat_offsides"
@@ -66,7 +66,7 @@
 
         <TextView
             style="@style/StatLabel"
-            android:text="Fouls" />
+            android:text="@string/match_stat_fouls" />
 
         <TextView
             android:id="@+id/stat_fouls"
@@ -78,7 +78,7 @@
 
         <TextView
             style="@style/StatLabel"
-            android:text="Yellow Cards" />
+            android:text="@string/match_stat_yellow_cards" />
 
         <TextView
             android:id="@+id/stat_yellow_cards"

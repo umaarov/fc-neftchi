@@ -79,7 +79,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="8dp"
             android:fontFamily="@font/montserrat_bold"
-            android:text="-"
+            android:text="@string/separator_dash"
             android:textAppearance="?attr/textAppearanceHeadline6"
             android:textColor="?attr/colorOnPrimary" />
 

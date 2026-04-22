@@ -10,6 +10,7 @@ import uz.umarov.fcneftchi.data.model.Match
 import uz.umarov.fcneftchi.data.model.MatchStatus
 import uz.umarov.fcneftchi.data.model.NewsArticle
 import uz.umarov.fcneftchi.data.model.Player
+import uz.umarov.fcneftchi.data.model.PlayerPosition
 import uz.umarov.fcneftchi.data.model.Team
 import uz.umarov.fcneftchi.util.DateUtils
 import java.util.Date
@@ -102,7 +103,7 @@ fun Player.toEntity(cachedAt: Long): PlayerEntity = PlayerEntity(
     id = id,
     name = name,
     number = number,
-    position = position,
+    position = position.name,
     photoUrl = (imageUrl as? String),
     nationality = nationality,
     cachedAt = cachedAt
@@ -112,7 +113,8 @@ fun PlayerEntity.toPlayer(): Player = Player(
     id = id,
     name = name,
     number = number,
-    position = position,
+    position = runCatching { PlayerPosition.valueOf(position) }
+        .getOrDefault(PlayerPosition.UNKNOWN),
     imageUrl = photoUrl ?: R.drawable.player_placeholder_inset,
     nationality = nationality
 )

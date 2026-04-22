@@ -138,12 +138,12 @@ class StadiumFragment : Fragment() {
     }
 
     private fun setupContent() {
-        val stadiumName = "Istiqlol Stadium"
+        val stadiumName = getString(R.string.stadium_full_name)
         binding.collapsingToolbar.title = stadiumName
         binding.stadiumName.text = stadiumName
         binding.stadiumAddress.text = getString(R.string.stadium_address)
-        binding.stadiumCapacity.text = "20,000"
-        binding.stadiumOpenedYear.text = "2015"
+        binding.stadiumCapacity.text = getString(R.string.stadium_capacity_value)
+        binding.stadiumOpenedYear.text = getString(R.string.stadium_opened_year)
         binding.stadiumDescription.text = getString(R.string.stadium_description)
 
         val locationIcon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_location_on)

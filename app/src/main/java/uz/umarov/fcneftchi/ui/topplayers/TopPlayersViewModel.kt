@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import uz.umarov.fcneftchi.R
 import uz.umarov.fcneftchi.domain.usecase.GetTopPlayersUseCase
 import uz.umarov.fcneftchi.ui.topplayers.adapter.TopPlayerAdapter
 import javax.inject.Inject
@@ -26,7 +27,7 @@ class TopPlayersViewModel @Inject constructor(
 
             val topScorers = topPlayers.sortedByDescending { it.goals }.take(10)
             if (topScorers.isNotEmpty()) {
-                combinedList.add(TopPlayerListItem.HeaderItem("Eng yaxshi to'purarlar"))
+                combinedList.add(TopPlayerListItem.HeaderItem(R.string.top_scorers))
                 topScorers.forEach { player ->
                     combinedList.add(
                         TopPlayerListItem.PlayerItem(
@@ -39,7 +40,7 @@ class TopPlayersViewModel @Inject constructor(
 
             val topAssisters = topPlayers.sortedByDescending { it.assists }.take(10)
             if (topAssisters.isNotEmpty()) {
-                combinedList.add(TopPlayerListItem.HeaderItem("Eng yaxshi assistentlar"))
+                combinedList.add(TopPlayerListItem.HeaderItem(R.string.top_assisters))
                 topAssisters.forEach { player ->
                     combinedList.add(
                         TopPlayerListItem.PlayerItem(

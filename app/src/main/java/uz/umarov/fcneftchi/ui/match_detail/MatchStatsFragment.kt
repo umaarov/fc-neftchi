@@ -9,6 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import uz.umarov.fcneftchi.R
 import uz.umarov.fcneftchi.data.model.GameStatistics
 import uz.umarov.fcneftchi.databinding.FragmentMatchStatsBinding
 import uz.umarov.fcneftchi.databinding.ItemMatchStatBinding
@@ -33,13 +34,13 @@ class MatchStatsFragment : Fragment() {
             viewModel.uiState.collect { state ->
                 state.gameDetail?.statistics?.let { stats ->
                     binding.statsContainer.removeAllViews()
-                    addStatView("Zarbalar", stats.shotsHome, stats.shotsAway)
-                    addStatView("Aniq zarbalar", stats.shotsOnTargetHome, stats.shotsOnTargetAway)
-                    addStatView("Burchak zarbalari", stats.cornersHome, stats.cornersAway)
-                    addStatView("Offsayd", stats.offsideHome, stats.offsideAway)
-                    addStatView("Follar", stats.foulsHome, stats.foulsAway)
-                    addStatView("Ogohlantirish", stats.yellowCardsHome, stats.yellowCardsAway)
-                    addStatView("Chetlatish", stats.redCardsHome, stats.redCardsAway)
+                    addStatView(getString(R.string.match_stat_shots), stats.shotsHome, stats.shotsAway)
+                    addStatView(getString(R.string.match_stat_shots_on_target), stats.shotsOnTargetHome, stats.shotsOnTargetAway)
+                    addStatView(getString(R.string.match_stat_corners), stats.cornersHome, stats.cornersAway)
+                    addStatView(getString(R.string.match_stat_offsides), stats.offsideHome, stats.offsideAway)
+                    addStatView(getString(R.string.match_stat_fouls), stats.foulsHome, stats.foulsAway)
+                    addStatView(getString(R.string.match_stat_yellow_cards), stats.yellowCardsHome, stats.yellowCardsAway)
+                    addStatView(getString(R.string.match_stat_red_cards), stats.redCardsHome, stats.redCardsAway)
                 }
             }
         }

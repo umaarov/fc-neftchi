@@ -89,31 +89,31 @@ class PlayerProfileFragment : Fragment() {
         }
         binding.playerName.text = fullName
         binding.playerNumber.text = "#${profile.details.number}"
-        binding.bioPosition.statLabel.text = "POZITSIYA"
+        binding.bioPosition.statLabel.text = getString(R.string.player_label_position)
         binding.bioPosition.statValue.text = mapPosition(profile.details.position)
 
-        binding.bioCountry.statLabel.text = "MAMLAKAT"
+        binding.bioCountry.statLabel.text = getString(R.string.player_label_country)
         binding.bioCountry.statValue.text = profile.details.country.title
 
-        binding.bioAge.statLabel.text = "YOSH"
+        binding.bioAge.statLabel.text = getString(R.string.player_label_age)
         binding.bioAge.statValue.text = calculateAge(profile.details.birthday)
         val stats = binding.playerStatsCard
-        stats.statGames.statLabel.text = "MATCH"
+        stats.statGames.statLabel.text = getString(R.string.player_label_matches)
         stats.statGames.statValue.text = profile.stats.games.toString()
 
-        stats.statGoals.statLabel.text = "GOL"
+        stats.statGoals.statLabel.text = getString(R.string.player_label_goals)
         stats.statGoals.statValue.text = profile.stats.goals.toString()
 
-        stats.statAssists.statLabel.text = "ASSIST"
+        stats.statAssists.statLabel.text = getString(R.string.player_label_assists)
         stats.statAssists.statValue.text = profile.stats.assists.toString()
 
-        stats.statMinutes.statLabel.text = "MINUT"
+        stats.statMinutes.statLabel.text = getString(R.string.player_label_minutes)
         stats.statMinutes.statValue.text = profile.stats.minutes.toString()
 
-        stats.statYellow.statLabel.text = "SARIQ K"
+        stats.statYellow.statLabel.text = getString(R.string.player_label_yellow_cards)
         stats.statYellow.statValue.text = profile.stats.yellowCards.toString()
 
-        stats.statRed.statLabel.text = "QIZIL K"
+        stats.statRed.statLabel.text = getString(R.string.player_label_red_cards)
         stats.statRed.statValue.text = profile.stats.redCards.toString()
 
         careerAdapter.submitList(profile.career)
@@ -134,22 +134,23 @@ class PlayerProfileFragment : Fragment() {
     }
 
     private fun mapPosition(positionId: Int): String {
-        return when (positionId) {
-            1 -> "Darvozabon"
-            2 -> "Himoyachi"
-            3 -> "Yarim H."
-            4 -> "Hujumchi"
-            else -> "Unknown"
+        val resId = when (positionId) {
+            1 -> R.string.position_goalkeeper
+            2 -> R.string.position_defender
+            3 -> R.string.position_midfielder_short
+            4 -> R.string.position_attacker
+            else -> R.string.position_unknown
         }
+        return getString(resId)
     }
 
     private fun calculateAge(birthdayString: String?): String {
-        if (birthdayString == null) return "N/A"
+        if (birthdayString == null) return getString(R.string.value_unavailable)
         return try {
             val birthDate = LocalDate.parse(birthdayString, DateTimeFormatter.ISO_OFFSET_DATE_TIME)
             Period.between(birthDate, LocalDate.now()).years.toString()
         } catch (e: Exception) {
-            "N/A"
+            getString(R.string.value_unavailable)
         }
     }
 

@@ -136,7 +136,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
-                        android:text="CAPACITY" />
+                        android:text="@string/stadium_label_capacity" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -160,7 +160,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
-                        android:text="OPENED" />
+                        android:text="@string/stadium_label_opened" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -177,7 +177,7 @@
                 android:layout_marginHorizontal="16dp"
                 android:layout_marginTop="24dp"
                 android:fontFamily="@font/montserrat_bold"
-                android:text="About The Stadium"
+                android:text="@string/stadium_about_section"
                 android:textAppearance="?attr/textAppearanceHeadline6"
                 android:textColor="@color/text_primary" />
 

@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import uz.umarov.fcneftchi.R
 import uz.umarov.fcneftchi.databinding.FragmentClubHistoryBinding
 import uz.umarov.fcneftchi.ui.MainActivity
 import uz.umarov.fcneftchi.util.applySystemBarPadding
@@ -40,33 +41,22 @@ class ClubHistoryFragment : Fragment() {
 
     private fun getHistoryData(): List<HistoryListItem> {
         return listOf(
-            HistoryListItem.Header("Neftchi'ning shonli tarixi"),
-            HistoryListItem.SubHeader("Dastlabki sovet davri"),
-            HistoryListItem.Paragraph(
-                "\"Neftchi\" futbol klubiga <b>1962-yilda</b> Farg'ona shahrida \"Neftyanik\" nomi bilan asos solingan. 1962-yildan 1991-yilgacha jamoa Sovet Ittifoqining Ikkinchi ligasida (O'rta Osiyo divizioni) ishtirok etgan. 1990-yilda klub Ikkinchi liganing \"Sharq\" konferensiyasida g'olib chiqib, Sovet Birinchi ligasiga yo'l oladi. 1991-yilgi mavsumda Birinchi ligada 7-o'rinni egallashi klubning sovet futboli tarixidagi eng yuqori yutug'i bo'lib qoldi."
-            ),
-            HistoryListItem.SubHeader("Mustaqillik davri (Oltin davr)"),
-            HistoryListItem.Paragraph(
-                "<b>1992-yildan</b> boshlab klub O'zbekiston Oliy Ligasida ishtirok etib kelmoqda. \"Paxtakor\" va \"Navbahor\" bilan bir qatorda, \"Neftchi\" Oliy Liganing barcha mavsumlarida tanaffussiz qatnashgan uch klubdan biridir. 1992-yildan 2001-yilgacha bo'lgan davr klub tarixidagi \"oltin davr\" hisoblanadi. Yuriy Sarkisyan boshchiligidagi jamoa bu yillarda mamlakatning eng kuchli klubiga aylanib, ketma-ket chempionliklarni qo'lga kiritdi."
-            ),
-            HistoryListItem.Header("Asosiy sovrinlar"),
-//            HistoryListItem.HistoryImage(R.drawable.img_trophies),
-            HistoryListItem.Trophy("O'zbekiston Superligasi Chempioni (5 marta): 1992, 1993, 1994, 1995, 2001"),
-            HistoryListItem.Trophy("O'zbekiston Kubogi sohibi (2 marta): 1994, 1996"),
-            HistoryListItem.Trophy("MDH Hamdo'stlik Kubogi finalchisi: 1994"),
-            HistoryListItem.Header("Stadion"),
-            HistoryListItem.Paragraph(
-                "\"Neftchi\" dastlab o'z uy uchrashuvlarini 1932-yilda qurilgan \"Farg'ona\" stadionida o'tkazgan. 2012-yilda yangi arena qurilishi boshlandi va 2015-yilda <b>20,000</b> tomoshabinga mo'ljallangan zamonaviy \"Istiqlol\" stadioni ochildi. Stadionning ochilish o'yini 2015-yil 3-aprel kuni O'zbekiston U-20 va Yangi Zelandiya U-20 jamoalari o'rtasida bo'lib o'tgan."
-            ),
-            HistoryListItem.Header("Raqobatlar"),
-            HistoryListItem.SubHeader("O'zbek Klassikosi"),
-            HistoryListItem.Paragraph(
-                "O'zbek futbolida an'anaviy raqobat \"Neftchi\" va poytaxtning \"Paxtakor\" klubi o'rtasida kechadi. Bu qarama-qarshilik Ispaniyadagi \"El Klasiko\"ga qiyosan \"O'zbek Klassikosi\" nomini olgan."
-            ),
-            HistoryListItem.SubHeader("Vodiy derbisi"),
-            HistoryListItem.Paragraph(
-                "\"Neftchi\"ning mahalliy va eng ashaddiy raqiblaridan biri Namanganning \"Navbahor\" klubidir. Shuningdek, \"Andijon\" klubi bilan o'yinlar ham \"Vodiy derbisi\" maqomiga ega bo'lib, muxlislar uchun doimo katta qiziqish uyg'otadi."
-            )
+            HistoryListItem.Header(R.string.history_section_overview),
+            HistoryListItem.SubHeader(R.string.history_subsection_soviet_era),
+            HistoryListItem.Paragraph(R.string.history_paragraph_soviet_era),
+            HistoryListItem.SubHeader(R.string.history_subsection_independence_era),
+            HistoryListItem.Paragraph(R.string.history_paragraph_independence_era),
+            HistoryListItem.Header(R.string.history_section_trophies),
+            HistoryListItem.Trophy(R.string.history_trophy_super_league),
+            HistoryListItem.Trophy(R.string.history_trophy_cup),
+            HistoryListItem.Trophy(R.string.history_trophy_cis_cup),
+            HistoryListItem.Header(R.string.history_section_stadium),
+            HistoryListItem.Paragraph(R.string.history_paragraph_stadium),
+            HistoryListItem.Header(R.string.history_section_rivalries),
+            HistoryListItem.SubHeader(R.string.history_subsection_classico),
+            HistoryListItem.Paragraph(R.string.history_paragraph_classico),
+            HistoryListItem.SubHeader(R.string.history_subsection_valley_derby),
+            HistoryListItem.Paragraph(R.string.history_paragraph_valley_derby)
         )
     }
 

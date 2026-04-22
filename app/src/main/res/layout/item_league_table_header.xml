@@ -15,42 +15,42 @@
         android:layout_weight="1"
         android:gravity="start"
         android:paddingStart="40dp"
-        android:text="Club" />
+        android:text="@string/league_table_header_club" />
 
     <TextView
         style="@style/TextAppearance.App.Table.Header"
         android:layout_width="32dp"
         android:layout_height="wrap_content"
-        android:text="P" />
+        android:text="@string/league_table_header_played" />
 
     <TextView
         style="@style/TextAppearance.App.Table.Header"
         android:layout_width="32dp"
         android:layout_height="wrap_content"
-        android:text="W" />
+        android:text="@string/league_table_header_wins" />
 
     <TextView
         style="@style/TextAppearance.App.Table.Header"
         android:layout_width="32dp"
         android:layout_height="wrap_content"
-        android:text="D" />
+        android:text="@string/league_table_header_draws" />
 
     <TextView
         style="@style/TextAppearance.App.Table.Header"
         android:layout_width="32dp"
         android:layout_height="wrap_content"
-        android:text="L" />
+        android:text="@string/league_table_header_losses" />
 
     <TextView
         style="@style/TextAppearance.App.Table.Header"
         android:layout_width="32dp"
         android:layout_height="wrap_content"
-        android:text="GD" />
+        android:text="@string/league_table_header_goal_difference" />
 
     <TextView
         style="@style/TextAppearance.App.Table.Header"
         android:layout_width="32dp"
         android:layout_height="wrap_content"
-        android:text="PTS"
+        android:text="@string/league_table_header_points"
         android:textStyle="bold" />
 </LinearLayout>
