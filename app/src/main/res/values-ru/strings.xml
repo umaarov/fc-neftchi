@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ФК Нефтчи</string>
+    <string name="my_team_name">Нефтчи</string>
+
+    <!-- Bottom navigation -->
+    <string name="title_home">Главная</string>
+    <string name="title_matches">Матчи</string>
+    <string name="title_news">Новости</string>
+    <string name="title_team">Команда</string>
+    <string name="title_videos">Видео</string>
+    <string name="title_more">Ещё</string>
+    <string name="title_statistics">Статистика</string>
+    <string name="title_league_table">Турнирная таблица</string>
+    <string name="title_club_history">История клуба</string>
+    <string name="title_socials">Соцсети</string>
+    <string name="title_settings">Настройки</string>
+
+    <!-- Home -->
+    <string name="home_latest_news">Последние новости</string>
+    <string name="home_league_table">Турнирная таблица</string>
+    <string name="home_view_all">Все</string>
+    <string name="home_section_video">Видео</string>
+    <string name="home_section_recent_news">Последние новости</string>
+    <string name="home_section_table">Турнирная таблица</string>
+    <string name="home_label_next_match">СЛЕДУЮЩИЙ МАТЧ</string>
+    <string name="home_label_last_result">ПОСЛЕДНИЙ РЕЗУЛЬТАТ</string>
+    <string name="countdown_days">ДН</string>
+    <string name="countdown_hours">Ч</string>
+    <string name="countdown_minutes">МИН</string>
+    <string name="countdown_seconds">СЕК</string>
+    <string name="could_not_open_video">Не удалось открыть видео</string>
+
+    <!-- Matches -->
+    <string name="matches_fixtures">Календарь</string>
+    <string name="matches_results">Результаты</string>
+    <string name="match_tab_fixtures">Календарь</string>
+    <string name="match_tab_results">Результаты</string>
+    <string name="match_tab_table">Таблица</string>
+    <string name="match_tab_top_players">Бомбардиры</string>
+    <string name="match_detail_tab_events">События</string>
+    <string name="match_detail_tab_stats">Статистика</string>
+    <string name="match_detail_tab_lineups">Составы</string>
+    <string name="match_section_starting_lineups">Стартовые составы</string>
+    <string name="match_section_statistics">Статистика матча</string>
+    <string name="match_stat_shots">Удары</string>
+    <string name="match_stat_shots_on_target">Удары в створ</string>
+    <string name="match_stat_corners">Угловые</string>
+    <string name="match_stat_offsides">Офсайды</string>
+    <string name="match_stat_fouls">Фолы</string>
+    <string name="match_stat_yellow_cards">Жёлтые карточки</string>
+    <string name="match_stat_red_cards">Красные карточки</string>
+    <string name="date_unavailable">ДАТА НЕДОСТУПНА</string>
+    <string name="competition_superliga">Суперлига</string>
+
+    <!-- Top players -->
+    <string name="top_scorers">Лучшие бомбардиры</string>
+    <string name="top_assisters">Лучшие ассистенты</string>
+
+    <!-- Club statistics -->
+    <string name="club_stats_section">Статистика клуба</string>
+    <string name="club_stats_wins">ПОБЕДЫ</string>
+    <string name="club_stats_draws">НИЧЬИ</string>
+    <string name="club_stats_losses">ПОРАЖЕНИЯ</string>
+    <string name="club_stats_matches">Матчи</string>
+    <string name="club_stats_goals_for">Забитые голы</string>
+    <string name="club_stats_goals_against">Пропущенные голы</string>
+
+    <!-- More menu -->
+    <string name="more_options">Дополнительно</string>
+    <string name="more_league_table">Турнирная таблица</string>
+    <string name="more_club_history">История клуба</string>
+    <string name="more_stadium_info">О стадионе</string>
+    <string name="more_tickets">Билеты</string>
+    <string name="more_settings">Настройки</string>
+    <string name="more_team_staff">Команда и персонал</string>
+    <string name="more_statistics">Статистика</string>
+    <string name="more_history">История клуба</string>
+    <string name="more_stadium_label">Стадион</string>
+    <string name="more_settings_label">Настройки</string>
+    <string name="more_socials">Соцсети</string>
+
+    <!-- Player profile -->
+    <string name="player_label_position">ПОЗИЦИЯ</string>
+    <string name="player_label_country">СТРАНА</string>
+    <string name="player_label_age">ВОЗРАСТ</string>
+    <string name="player_label_matches">МАТЧИ</string>
+    <string name="player_label_goals">ГОЛЫ</string>
+    <string name="player_label_assists">АССИСТЫ</string>
+    <string name="player_label_minutes">МИНУТЫ</string>
+    <string name="player_label_yellow_cards">ЖЁЛТЫЕ</string>
+    <string name="player_label_red_cards">КРАСНЫЕ</string>
+    <string name="player_section_current_season">Статистика текущего сезона</string>
+    <string name="player_unknown_value">Н/Д</string>
+
+    <!-- Player career -->
+    <string name="player_career_header_club">Клуб</string>
+    <string name="player_career_header_season">Сезон</string>
+    <string name="player_career_header_matches">Матчи</string>
+    <string name="player_career_header_goals">Голы</string>
+
+    <!-- Player stats / League table headers -->
+    <string name="player_stats_header_player">Игрок</string>
+    <string name="player_stats_header_played">М</string>
+    <string name="player_stats_header_goals">Г</string>
+    <string name="player_stats_header_assists">А</string>
+    <string name="player_stats_header_yellow">Ж</string>
+    <string name="player_stats_header_red">К</string>
+    <string name="league_table_header_club">Клуб</string>
+    <string name="league_table_header_played">И</string>
+    <string name="league_table_header_wins">В</string>
+    <string name="league_table_header_draws">Н</string>
+    <string name="league_table_header_losses">П</string>
+    <string name="league_table_header_goal_difference">РМ</string>
+    <string name="league_table_header_points">О</string>
+
+    <!-- Position labels -->
+    <string name="position_goalkeeper">Вратарь</string>
+    <string name="position_defender">Защитник</string>
+    <string name="position_midfielder">Полузащитник</string>
+    <string name="position_midfielder_short">Полузащ.</string>
+    <string name="position_attacker">Нападающий</string>
+    <string name="position_unknown">Неизвестно</string>
+    <string name="position_group_suffix">И</string>
+
+    <!-- Stadium -->
+    <string name="title_stadium">Стадион</string>
+    <string name="stadium_address">г. Фергана, ул. Маргилон 1</string>
+    <string name="stadium_label_capacity">ВМЕСТИМОСТЬ</string>
+    <string name="stadium_label_opened">ОТКРЫТ</string>
+    <string name="stadium_about_section">О стадионе</string>
+    <string name="stadium_full_name">Стадион «Истиклол»</string>
+    <string name="stadium_capacity_value">20 000</string>
+    <string name="stadium_opened_year">2015</string>
+    <string name="stadium_description">
+        Спортивный комплекс «Истиклол» расположен в Фергане и вмещает более 20 000 болельщиков. Современный стадион, оборудованный всем необходимым, был открыт в 2015 году.\n\nОн стал идеальной площадкой для международных футбольных матчей. «Истиклол» — домашняя арена ФК «Нефтчи». Места для зрителей разделены на верхний и нижний ярусы. Контрольная комната оснащена видеотабло и оборудованием для прямых трансляций матчей.
+    </string>
+
+    <!-- News article -->
+    <string name="news_default_author">от ФК Нефтчи</string>
+    <string name="news_share_title">Поделиться статьёй</string>
+    <string name="news_share_message">Посмотрите эту статью в приложении ФК Нефтчи: %1$s</string>
+    <string name="news_load_failed">Не удалось загрузить новости</string>
+    <string name="news_article_empty">Содержимое недоступно.</string>
+
+    <!-- Socials -->
+    <string name="social_telegram">Telegram</string>
+    <string name="social_instagram">Instagram</string>
+    <string name="social_youtube">YouTube</string>
+    <string name="social_facebook">Facebook</string>
+
+    <!-- Video category -->
+    <string name="video_category_main_team">Основная команда</string>
+
+    <!-- Decorative separators -->
+    <string name="separator_bullet">|</string>
+    <string name="separator_dash">-</string>
+
+    <!-- Permission dialog -->
+    <string name="permission_allow">Разрешить</string>
+    <string name="permission_later">Позже</string>
+    <string name="notif_permission_dialog_title">Будьте в курсе!</string>
+    <string name="notif_permission_dialog_message">Разрешите уведомления, чтобы получать прямые трансляции счёта матчей, последние новости и видеообновления прямо на телефон.</string>
+    <string name="notif_default_title">ФК Нефтчи</string>
+
+    <!-- Generic placeholders -->
+    <string name="value_unavailable">Н/Д</string>
+
+    <!-- Notifications -->
+    <string name="notif_default_body">Новое сообщение</string>
+    <string name="notif_channel_name">Уведомления Нефтчи</string>
+    <string name="notif_channel_description">Последние новости и напоминания о матчах</string>
+    <string name="settings_appearance">Внешний вид</string>
+    <string name="settings_dark_mode">Тёмная тема</string>
+    <string name="settings_theme">Тема</string>
+    <string name="settings_theme_light">Светлая</string>
+    <string name="settings_theme_dark">Тёмная</string>
+    <string name="settings_theme_system">Как в системе</string>
+    <string name="settings_theme_subtitle">Выберите оформление приложения</string>
+    <string name="settings_notifications">Уведомления</string>
+    <string name="settings_match_reminders">Напоминания о матчах</string>
+    <string name="settings_match_reminders_subtitle">Получайте напоминание перед стартом матча</string>
+    <string name="settings_news_alerts">Новостные оповещения</string>
+    <string name="settings_news_alerts_subtitle">Получайте свежие новости как только они появляются</string>
+    <string name="notif_permission_granted">Уведомления включены!</string>
+    <string name="notif_permission_denied">В разрешении на уведомления отказано.</string>
+    <string name="notif_subscribe_success">Подписка оформлена!</string>
+    <string name="notif_subscribe_failed">Не удалось оформить подписку.</string>
+    <string name="notif_unsubscribe_success">Подписка отменена!</string>
+    <string name="notif_unsubscribe_failed">Не удалось отменить подписку.</string>
+
+    <!-- Club history (long-form content) -->
+    <string name="history_section_overview">Славная история «Нефтчи»</string>
+    <string name="history_subsection_soviet_era">Ранний советский период</string>
+    <string name="history_paragraph_soviet_era">Футбольный клуб «Нефтчи» был основан в &lt;b&gt;1962 году&lt;/b&gt; в городе Фергане под названием «Нефтяник». С 1962 по 1991 год команда выступала во Второй лиге СССР (среднеазиатская зона). В 1990 году клуб выиграл конференцию «Восток» Второй лиги и вышел в Первую лигу СССР. 7-е место в Первой лиге сезона 1991 года остаётся высшим достижением клуба в советской истории.</string>
+    <string name="history_subsection_independence_era">Период независимости (Золотая эпоха)</string>
+    <string name="history_paragraph_independence_era">С &lt;b&gt;1992 года&lt;/b&gt; клуб выступает в Высшей лиге Узбекистана. Наряду с «Пахтакором» и «Навбахором», «Нефтчи» — один из трёх клубов, не пропустивших ни одного сезона Высшей лиги. Период с 1992 по 2001 год считается «золотым» в истории клуба. Под руководством Юрия Саркисяна команда стала сильнейшим клубом страны и завоевала несколько чемпионских титулов подряд.</string>
+    <string name="history_section_trophies">Главные трофеи</string>
+    <string name="history_trophy_super_league">Чемпион Суперлиги Узбекистана (5 раз): 1992, 1993, 1994, 1995, 2001</string>
+    <string name="history_trophy_cup">Обладатель Кубка Узбекистана (2 раза): 1994, 1996</string>
+    <string name="history_trophy_cis_cup">Финалист Кубка Содружества СНГ: 1994</string>
+    <string name="history_section_stadium">Стадион</string>
+    <string name="history_paragraph_stadium">Изначально «Нефтчи» проводил домашние матчи на стадионе «Фергана», построенном в 1932 году. В 2012 году началось строительство новой арены, и в 2015 году был открыт современный стадион «Истиклол» вместимостью &lt;b&gt;20 000&lt;/b&gt; зрителей. Матч-открытие состоялся 3 апреля 2015 года между молодёжными сборными Узбекистана и Новой Зеландии (U-20).</string>
+    <string name="history_section_rivalries">Соперничество</string>
+    <string name="history_subsection_classico">Узбекское Класико</string>
+    <string name="history_paragraph_classico">Традиционное соперничество в узбекском футболе складывается между «Нефтчи» и столичным «Пахтакором». По аналогии с испанским «Эль Класико» это противостояние называют «Узбекским Класико».</string>
+    <string name="history_subsection_valley_derby">Дерби долины</string>
+    <string name="history_paragraph_valley_derby">Один из самых принципиальных местных соперников «Нефтчи» — «Навбахор» из Намангана. Матчи с «Андижаном» также имеют статус «Дерби долины» и неизменно вызывают большой интерес у болельщиков.</string>
+</resources>
