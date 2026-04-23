@@ -1,6 +1,8 @@
 package uz.umarov.fcneftchi
 
 import android.app.Application
+import androidx.hilt.work.HiltWorkerFactory
+import androidx.work.Configuration
 import coil.ImageLoader
 import coil.ImageLoaderFactory
 import com.google.firebase.crashlytics.FirebaseCrashlytics
@@ -9,11 +11,12 @@ import timber.log.Timber
 import uz.umarov.fcneftchi.logging.CrashlyticsTree
 import uz.umarov.fcneftchi.notifications.NotificationChannelRegistrar
 import uz.umarov.fcneftchi.util.ThemeManager
+import uz.umarov.fcneftchi.widget.NextMatchWidgetProvider
 import javax.inject.Inject
 import javax.inject.Provider
 
 @HiltAndroidApp
-class NeftchiApp : Application(), ImageLoaderFactory {
+class NeftchiApp : Application(), ImageLoaderFactory, Configuration.Provider {
 
     @Inject
     lateinit var imageLoaderProvider: Provider<ImageLoader.Builder>
@@ -23,6 +26,9 @@ class NeftchiApp : Application(), ImageLoaderFactory {
 
     @Inject
     lateinit var notificationChannelRegistrar: NotificationChannelRegistrar
+
+    @Inject
+    lateinit var workerFactory: HiltWorkerFactory
 
     override fun onCreate() {
         super.onCreate()
@@ -40,10 +46,18 @@ class NeftchiApp : Application(), ImageLoaderFactory {
         } else {
             Timber.plant(CrashlyticsTree())
         }
+
+        NextMatchWidgetProvider.schedulePeriodicRefresh(this)
     }
 
     override fun newImageLoader(): ImageLoader {
         return imageLoaderProvider.get()
             .build()
     }
+
+    override val workManagerConfiguration: Configuration
+        get() = Configuration.Builder()
+            .setWorkerFactory(workerFactory)
+            .setMinimumLoggingLevel(if (BuildConfig.DEBUG) android.util.Log.INFO else android.util.Log.ERROR)
+            .build()
 }

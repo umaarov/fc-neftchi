@@ -254,4 +254,15 @@
 
     <!-- Player stats chart -->
     <string name="player_chart_goals_by_season">Goals by season</string>
+
+    <!-- Home-screen widget -->
+    <string name="widget_description">Next match and last result</string>
+    <string name="widget_next_match_label">NEXT MATCH</string>
+    <string name="widget_last_result_label">LAST RESULT</string>
+    <string name="widget_next_match_none">No upcoming match</string>
+    <string name="widget_last_result_none">No results yet</string>
+    <string name="widget_kickoff_now">Kick-off now</string>
+    <string name="widget_countdown_days_format">%1$dd %2$dh %3$dm</string>
+    <string name="widget_countdown_hours_format">%1$dh %2$dm</string>
+    <string name="widget_countdown_minutes_format">%1$dm</string>
 </resources>

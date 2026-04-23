@@ -254,4 +254,15 @@
 
     <!-- Player stats chart -->
     <string name="player_chart_goals_by_season">Голы по сезонам</string>
+
+    <!-- Home-screen widget -->
+    <string name="widget_description">Следующий матч и последний результат</string>
+    <string name="widget_next_match_label">СЛЕДУЮЩИЙ МАТЧ</string>
+    <string name="widget_last_result_label">ПОСЛЕДНИЙ РЕЗУЛЬТАТ</string>
+    <string name="widget_next_match_none">Нет предстоящих матчей</string>
+    <string name="widget_last_result_none">Результатов пока нет</string>
+    <string name="widget_kickoff_now">Начинается</string>
+    <string name="widget_countdown_days_format">%1$dд %2$dч %3$dм</string>
+    <string name="widget_countdown_hours_format">%1$dч %2$dм</string>
+    <string name="widget_countdown_minutes_format">%1$dм</string>
 </resources>

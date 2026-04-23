@@ -258,4 +258,17 @@
 
     <!-- Player stats chart -->
     <string name="player_chart_goals_by_season">Mavsumlar bo\'yicha gollar</string>
+
+    <!-- Home-screen widget -->
+    <string name="widget_description">Keyingi o\'yin va oxirgi natija</string>
+    <string name="widget_next_match_label">KEYINGI O\'YIN</string>
+    <string name="widget_last_result_label">OXIRGI NATIJA</string>
+    <string name="widget_next_match_none">Keyingi o\'yin rejalashtirilmagan</string>
+    <string name="widget_last_result_none">Natija mavjud emas</string>
+    <string name="widget_kickoff_now">Hozir boshlanmoqda</string>
+    <string name="widget_matchup_format" translatable="false">%1$s vs %2$s</string>
+    <string name="widget_countdown_days_format">%1$dk %2$ds %3$dm</string>
+    <string name="widget_countdown_hours_format">%1$ds %2$dm</string>
+    <string name="widget_countdown_minutes_format">%1$dm</string>
+    <string name="widget_last_result_format" translatable="false">%1$s %2$d - %3$d %4$s</string>
 </resources>
