@@ -259,6 +259,14 @@
     <!-- Player stats chart -->
     <string name="player_chart_goals_by_season">Mavsumlar bo\'yicha gollar</string>
 
+    <!-- App shortcuts -->
+    <string name="shortcut_matches_short">O\'yinlar</string>
+    <string name="shortcut_matches_long">Keyingi o\'yin</string>
+    <string name="shortcut_table_short">Jadval</string>
+    <string name="shortcut_table_long">Turnir jadvali</string>
+    <string name="shortcut_news_short">Yangiliklar</string>
+    <string name="shortcut_news_long">So\'nggi yangiliklar</string>
+
     <!-- Home-screen widget -->
     <string name="widget_description">Keyingi o\'yin va oxirgi natija</string>
     <string name="widget_next_match_label">KEYINGI O\'YIN</string>

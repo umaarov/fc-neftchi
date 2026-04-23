@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <shortcut
+        android:shortcutId="next_match"
+        android:enabled="true"
+        android:icon="@drawable/ic_matches"
+        android:shortcutShortLabel="@string/shortcut_matches_short"
+        android:shortcutLongLabel="@string/shortcut_matches_long">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:data="fcneftchi://matches"
+            android:targetPackage="uz.umarov.fcneftchi"
+            android:targetClass="uz.umarov.fcneftchi.ui.MainActivity" />
+    </shortcut>
+
+    <shortcut
+        android:shortcutId="league_table"
+        android:enabled="true"
+        android:icon="@drawable/ic_table"
+        android:shortcutShortLabel="@string/shortcut_table_short"
+        android:shortcutLongLabel="@string/shortcut_table_long">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:data="fcneftchi://table"
+            android:targetPackage="uz.umarov.fcneftchi"
+            android:targetClass="uz.umarov.fcneftchi.ui.MainActivity" />
+    </shortcut>
+
+    <shortcut
+        android:shortcutId="news"
+        android:enabled="true"
+        android:icon="@drawable/ic_news"
+        android:shortcutShortLabel="@string/shortcut_news_short"
+        android:shortcutLongLabel="@string/shortcut_news_long">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:data="fcneftchi://news"
+            android:targetPackage="uz.umarov.fcneftchi"
+            android:targetClass="uz.umarov.fcneftchi.ui.MainActivity" />
+    </shortcut>
+
+</shortcuts>

@@ -255,6 +255,14 @@
     <!-- Player stats chart -->
     <string name="player_chart_goals_by_season">Goals by season</string>
 
+    <!-- App shortcuts -->
+    <string name="shortcut_matches_short">Matches</string>
+    <string name="shortcut_matches_long">Next match</string>
+    <string name="shortcut_table_short">Table</string>
+    <string name="shortcut_table_long">League table</string>
+    <string name="shortcut_news_short">News</string>
+    <string name="shortcut_news_long">Latest news</string>
+
     <!-- Home-screen widget -->
     <string name="widget_description">Next match and last result</string>
     <string name="widget_next_match_label">NEXT MATCH</string>

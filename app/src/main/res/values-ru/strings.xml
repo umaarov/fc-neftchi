@@ -255,6 +255,14 @@
     <!-- Player stats chart -->
     <string name="player_chart_goals_by_season">Голы по сезонам</string>
 
+    <!-- App shortcuts -->
+    <string name="shortcut_matches_short">Матчи</string>
+    <string name="shortcut_matches_long">Следующий матч</string>
+    <string name="shortcut_table_short">Таблица</string>
+    <string name="shortcut_table_long">Турнирная таблица</string>
+    <string name="shortcut_news_short">Новости</string>
+    <string name="shortcut_news_long">Последние новости</string>
+
     <!-- Home-screen widget -->
     <string name="widget_description">Следующий матч и последний результат</string>
     <string name="widget_next_match_label">СЛЕДУЮЩИЙ МАТЧ</string>

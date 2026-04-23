@@ -28,6 +28,7 @@
         <action
             android:id="@+id/action_matchesFragment_to_matchDetailFragment"
             app:destination="@id/matchDetailFragment" />
+        <deepLink app:uri="fcneftchi://matches" />
     </fragment>
     <fragment
         android:id="@+id/matchDetailFragment"
@@ -47,6 +48,7 @@
         <action
             android:id="@+id/action_newsFragment_to_newsArticleFragment"
             app:destination="@id/newsArticleFragment" />
+        <deepLink app:uri="fcneftchi://news" />
     </fragment>
 
     <fragment
@@ -146,7 +148,9 @@
         android:id="@+id/leagueTableFragment"
         android:name="uz.umarov.fcneftchi.ui.table.LeagueTableFragment"
         android:label="@string/title_league_table"
-        tools:layout="@layout/fragment_league_table" />
+        tools:layout="@layout/fragment_league_table">
+        <deepLink app:uri="fcneftchi://table" />
+    </fragment>
 
     <fragment
         android:id="@+id/videosFragment"
