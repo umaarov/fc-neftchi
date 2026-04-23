@@ -7,6 +7,9 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import uz.umarov.fcneftchi.data.local.NeftchiDatabase
+import uz.umarov.fcneftchi.data.local.dao.BookmarkArticleDao
+import uz.umarov.fcneftchi.data.local.dao.BookmarkPlayerDao
+import uz.umarov.fcneftchi.data.local.dao.BookmarkVideoDao
 import uz.umarov.fcneftchi.data.local.dao.LeagueStandingDao
 import uz.umarov.fcneftchi.data.local.dao.MatchDao
 import uz.umarov.fcneftchi.data.local.dao.NewsArticleDao
@@ -35,4 +38,13 @@ object DatabaseModule {
 
     @Provides
     fun providePlayerDao(db: NeftchiDatabase): PlayerDao = db.playerDao()
+
+    @Provides
+    fun provideBookmarkArticleDao(db: NeftchiDatabase): BookmarkArticleDao = db.bookmarkArticleDao()
+
+    @Provides
+    fun provideBookmarkVideoDao(db: NeftchiDatabase): BookmarkVideoDao = db.bookmarkVideoDao()
+
+    @Provides
+    fun provideBookmarkPlayerDao(db: NeftchiDatabase): BookmarkPlayerDao = db.bookmarkPlayerDao()
 }

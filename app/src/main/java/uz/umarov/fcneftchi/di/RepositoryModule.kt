@@ -4,6 +4,8 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import uz.umarov.fcneftchi.data.repository.BookmarkRepository
+import uz.umarov.fcneftchi.data.repository.BookmarkRepositoryImpl
 import uz.umarov.fcneftchi.data.repository.MatchRepository
 import uz.umarov.fcneftchi.data.repository.MatchRepositoryImpl
 import uz.umarov.fcneftchi.data.repository.NewsRepository
@@ -45,4 +47,8 @@ abstract class RepositoryModule {
     @Binds
     @Singleton
     abstract fun bindStatisticsRepository(impl: StatisticsRepositoryImpl): StatisticsRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindBookmarkRepository(impl: BookmarkRepositoryImpl): BookmarkRepository
 }
