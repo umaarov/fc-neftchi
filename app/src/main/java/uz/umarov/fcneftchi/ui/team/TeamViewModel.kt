@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
@@ -21,6 +22,14 @@ data class TeamUiState(
     val items: List<TeamListItem> = emptyList(),
     val isLoading: Boolean = true,
     val error: String? = null,
+    val searchQuery: String = "",
+    val isFiltered: Boolean = false,
+)
+
+private data class SquadLoad(
+    val players: List<Player> = emptyList(),
+    val isLoading: Boolean = true,
+    val error: String? = null,
 )
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -30,21 +39,45 @@ class TeamViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val retryTrigger = MutableStateFlow(0)
+    private val searchQuery = MutableStateFlow("")
 
-    val uiState: StateFlow<TeamUiState> = retryTrigger
+    private val squadLoad: StateFlow<SquadLoad> = retryTrigger
         .flatMapLatest {
             getSquad()
-                .map { players -> TeamUiState(items = groupByPosition(players), isLoading = false) }
-                .onStart { emit(TeamUiState(isLoading = true)) }
-                .catch { e -> emit(TeamUiState(isLoading = false, error = e.message)) }
+                .map { players -> SquadLoad(players = players, isLoading = false) }
+                .onStart { emit(SquadLoad(isLoading = true)) }
+                .catch { e -> emit(SquadLoad(isLoading = false, error = e.message)) }
         }
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), TeamUiState())
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), SquadLoad())
+
+    val uiState: StateFlow<TeamUiState> =
+        combine(squadLoad, searchQuery) { load, query ->
+            val trimmed = query.trim()
+            val filtered = if (trimmed.isBlank()) load.players else load.players.filter { it.matches(trimmed) }
+            TeamUiState(
+                items = groupByPosition(filtered),
+                isLoading = load.isLoading,
+                error = load.error,
+                searchQuery = query,
+                isFiltered = trimmed.isNotBlank(),
+            )
+        }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), TeamUiState())
 
     fun retry() {
         retryTrigger.value += 1
     }
 
+    fun setSearchQuery(query: String) {
+        searchQuery.value = query
+    }
+
+    private fun Player.matches(query: String): Boolean {
+        return name.contains(query, ignoreCase = true) ||
+            number.toString() == query.trim()
+    }
+
     private fun groupByPosition(players: List<Player>): List<TeamListItem> {
+        if (players.isEmpty()) return emptyList()
         val positionOrder = listOf(
             PlayerPosition.GOALKEEPER,
             PlayerPosition.DEFENDER,

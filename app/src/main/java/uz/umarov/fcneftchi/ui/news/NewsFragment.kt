@@ -6,11 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.core.view.isVisible
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.chip.Chip
+import com.google.android.material.chip.ChipGroup
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import uz.umarov.fcneftchi.R
@@ -26,6 +29,9 @@ class NewsFragment : Fragment() {
     private val viewModel: NewsViewModel by viewModels()
     private lateinit var newsAdapter: NewsAdapter
 
+    private var renderedCategories: List<String> = emptyList()
+    private var suppressChipListener = false
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -38,6 +44,8 @@ class NewsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupRecyclerView()
+        setupSearch()
+        setupChipListener()
 
         binding.swipeRefreshLayout.setOnRefreshListener { viewModel.retry() }
 
@@ -60,10 +68,75 @@ class NewsFragment : Fragment() {
         }
     }
 
+    private fun setupSearch() {
+        binding.newsSearchInput.doAfterTextChanged { text ->
+            viewModel.setSearchQuery(text?.toString().orEmpty())
+        }
+    }
+
+    private fun setupChipListener() {
+        binding.categoryChipGroup.setOnCheckedStateChangeListener { group, checkedIds ->
+            if (suppressChipListener) return@setOnCheckedStateChangeListener
+            val checkedId = checkedIds.firstOrNull()
+            if (checkedId == null || checkedId == R.id.chip_all) {
+                viewModel.setCategory(null)
+            } else {
+                val chip = group.findViewById<Chip>(checkedId)
+                viewModel.setCategory(chip?.text?.toString())
+            }
+        }
+    }
+
+    private fun renderCategories(categories: List<String>, selected: String?) {
+        if (categories == renderedCategories) {
+            syncChipSelection(selected)
+            return
+        }
+        renderedCategories = categories
+        suppressChipListener = true
+        val group = binding.categoryChipGroup
+        // Clear all except the "All" chip (id chip_all).
+        for (i in group.childCount - 1 downTo 0) {
+            val child = group.getChildAt(i)
+            if (child.id != R.id.chip_all) group.removeViewAt(i)
+        }
+        val inflater = LayoutInflater.from(group.context)
+        categories.forEach { category ->
+            val chip = inflater.inflate(R.layout.item_filter_chip, group, false) as Chip
+            chip.text = category
+            group.addView(chip)
+        }
+        binding.categoryScroll.isVisible = categories.isNotEmpty()
+        suppressChipListener = false
+        syncChipSelection(selected)
+    }
+
+    private fun syncChipSelection(selected: String?) {
+        suppressChipListener = true
+        val group = binding.categoryChipGroup
+        var matched = false
+        for (i in 0 until group.childCount) {
+            val chip = group.getChildAt(i) as? Chip ?: continue
+            if (chip.id == R.id.chip_all) continue
+            val match = selected != null && chip.text?.toString().equals(selected, ignoreCase = true)
+            if (match && !matched) {
+                chip.isChecked = true
+                matched = true
+            } else {
+                chip.isChecked = false
+            }
+        }
+        val allChip = group.findViewById<Chip>(R.id.chip_all)
+        allChip?.isChecked = !matched
+        suppressChipListener = false
+    }
+
     private fun updateUI(state: NewsUiState) {
         if (!state.isLoading) {
             binding.swipeRefreshLayout.isRefreshing = false
         }
+
+        renderCategories(state.categories, state.selectedCategory)
 
         val hasContent = newsAdapter.currentList.isNotEmpty()
         val showShimmerForInitialLoad = state.isLoading && !hasContent
@@ -89,7 +162,7 @@ class NewsFragment : Fragment() {
                 binding.shimmerContainer.startShimmer()
             }
             state.isLoading -> {
-                // Pull-to-refresh in progress; keep current content visible.
+                // Pull-to-refresh; keep current content visible.
             }
             state.error != null -> {
                 if (hasContent) {
@@ -101,7 +174,11 @@ class NewsFragment : Fragment() {
             }
             state.articles.isEmpty() -> {
                 binding.newsRecyclerView.isVisible = false
-                binding.stateView.showEmpty(messageRes = R.string.state_empty_news)
+                if (state.isFiltered) {
+                    binding.stateView.showEmpty(messageRes = R.string.state_empty_news_filtered)
+                } else {
+                    binding.stateView.showEmpty(messageRes = R.string.state_empty_news)
+                }
             }
             else -> {
                 binding.stateView.hide()

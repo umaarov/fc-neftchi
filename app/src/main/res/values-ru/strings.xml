@@ -225,4 +225,11 @@
     <string name="state_empty_match_events">Событий нет</string>
     <string name="state_empty_match_lineups">Составы ещё не объявлены</string>
     <string name="cd_state_icon">Иконка состояния</string>
+    <string name="state_empty_news_filtered">По выбранному фильтру новостей нет</string>
+    <string name="state_empty_squad_filtered">По вашему запросу игроки не найдены</string>
+
+    <!-- Search & filter -->
+    <string name="search_news_hint">Поиск новостей</string>
+    <string name="search_squad_hint">Поиск игрока</string>
+    <string name="filter_all">Все</string>
 </resources>

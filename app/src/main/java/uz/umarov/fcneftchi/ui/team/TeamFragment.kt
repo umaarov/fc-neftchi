@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.core.view.isVisible
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -47,6 +48,10 @@ class TeamFragment : Fragment() {
         setupShimmerRecyclerView()
 
         binding.swipeRefreshLayout.setOnRefreshListener { viewModel.retry() }
+
+        binding.teamSearchInput.doAfterTextChanged { text ->
+            viewModel.setSearchQuery(text?.toString().orEmpty())
+        }
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.uiState.collect { state ->
@@ -138,7 +143,9 @@ class TeamFragment : Fragment() {
             }
             state.items.isEmpty() -> {
                 binding.teamRecyclerView.isVisible = false
-                binding.stateView.showEmpty(messageRes = R.string.state_empty_players)
+                val msg = if (state.isFiltered) R.string.state_empty_squad_filtered
+                else R.string.state_empty_players
+                binding.stateView.showEmpty(messageRes = msg)
             }
             else -> {
                 binding.stateView.hide()

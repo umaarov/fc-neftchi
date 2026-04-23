@@ -227,4 +227,11 @@
     <string name="state_empty_match_events">Voqealar yo\'q</string>
     <string name="state_empty_match_lineups">Tarkiblar e\'lon qilinmagan</string>
     <string name="cd_state_icon">Holat ikonkasi</string>
+    <string name="state_empty_news_filtered">Tanlangan filtr bo\'yicha yangiliklar topilmadi</string>
+    <string name="state_empty_squad_filtered">Qidiruv bo\'yicha o\'yinchilar topilmadi</string>
+
+    <!-- Search & filter -->
+    <string name="search_news_hint">Yangiliklarni qidirish</string>
+    <string name="search_squad_hint">O\'yinchini qidirish</string>
+    <string name="filter_all">Barchasi</string>
 </resources>

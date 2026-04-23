@@ -225,4 +225,11 @@
     <string name="state_empty_match_events">No events to show</string>
     <string name="state_empty_match_lineups">Lineups not announced yet</string>
     <string name="cd_state_icon">State icon</string>
+    <string name="state_empty_news_filtered">No news matches your filter</string>
+    <string name="state_empty_squad_filtered">No players match your search</string>
+
+    <!-- Search & filter -->
+    <string name="search_news_hint">Search news</string>
+    <string name="search_squad_hint">Search player</string>
+    <string name="filter_all">All</string>
 </resources>
