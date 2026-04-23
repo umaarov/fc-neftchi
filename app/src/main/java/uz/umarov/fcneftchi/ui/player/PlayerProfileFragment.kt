@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -12,10 +13,17 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
+import com.github.mikephil.charting.components.XAxis
+import com.github.mikephil.charting.data.BarData
+import com.github.mikephil.charting.data.BarDataSet
+import com.github.mikephil.charting.data.BarEntry
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
+import com.github.mikephil.charting.formatter.ValueFormatter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import uz.umarov.fcneftchi.R
 import uz.umarov.fcneftchi.databinding.FragmentPlayerProfileBinding
+import uz.umarov.fcneftchi.data.model.PlayerCareerItem
 import uz.umarov.fcneftchi.ui.MainActivity
 import uz.umarov.fcneftchi.ui.player.adapter.PlayerCareerAdapter
 import uz.umarov.fcneftchi.util.applySystemBarPadding
@@ -155,6 +163,56 @@ class PlayerProfileFragment : Fragment() {
         stats.statRed.statValue.text = profile.stats.redCards.toString()
 
         careerAdapter.submitList(profile.career)
+        bindCareerChart(profile.career)
+    }
+
+    private fun bindCareerChart(career: List<PlayerCareerItem>) {
+        val hasData = career.any { it.goals > 0 }
+        if (!hasData) {
+            binding.careerChartTitle.isVisible = false
+            binding.careerChart.isVisible = false
+            return
+        }
+        binding.careerChartTitle.isVisible = true
+        binding.careerChart.isVisible = true
+
+        val sorted = career.sortedBy { it.year }
+        val entries = sorted.mapIndexed { index, item ->
+            BarEntry(index.toFloat(), item.goals.toFloat())
+        }
+        val labels = sorted.map { it.year.toString() }
+        val dataSet = BarDataSet(entries, getString(R.string.player_chart_goals_by_season)).apply {
+            color = ContextCompat.getColor(requireContext(), R.color.neftchi_green)
+            valueTextColor = ContextCompat.getColor(requireContext(), R.color.text_primary)
+            valueTextSize = 10f
+            valueFormatter = object : ValueFormatter() {
+                override fun getFormattedValue(value: Float): String =
+                    value.toInt().toString()
+            }
+        }
+        binding.careerChart.apply {
+            data = BarData(dataSet).apply { barWidth = 0.6f }
+            description.isEnabled = false
+            legend.isEnabled = false
+            setScaleEnabled(false)
+            setPinchZoom(false)
+            setDrawGridBackground(false)
+            axisLeft.setDrawGridLines(false)
+            axisLeft.axisMinimum = 0f
+            axisLeft.granularity = 1f
+            axisLeft.textColor = ContextCompat.getColor(requireContext(), R.color.text_secondary)
+            axisRight.isEnabled = false
+            xAxis.apply {
+                position = XAxis.XAxisPosition.BOTTOM
+                setDrawGridLines(false)
+                granularity = 1f
+                valueFormatter = IndexAxisValueFormatter(labels)
+                textColor = ContextCompat.getColor(requireContext(), R.color.text_secondary)
+            }
+            setFitBars(true)
+            animateY(400)
+            invalidate()
+        }
     }
 
     private fun setupToolbar() {

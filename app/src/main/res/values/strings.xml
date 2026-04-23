@@ -255,4 +255,7 @@
     <string name="cd_bookmark">Saqlash</string>
     <string name="bookmark_player_number_format" translatable="false">#%1$d</string>
     <string name="bookmark_player_meta_format" translatable="false">%1$s · %2$s</string>
+
+    <!-- Player stats chart -->
+    <string name="player_chart_goals_by_season">Mavsumlar bo\'yicha gollar</string>
 </resources>

@@ -251,4 +251,7 @@
     <string name="state_empty_bookmark_videos">Нет сохранённых видео</string>
     <string name="state_empty_bookmark_players">Нет сохранённых игроков</string>
     <string name="cd_bookmark">Закладка</string>
+
+    <!-- Player stats chart -->
+    <string name="player_chart_goals_by_season">Голы по сезонам</string>
 </resources>

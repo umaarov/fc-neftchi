@@ -154,6 +154,27 @@
                 android:id="@+id/player_stats_card"
                 layout="@layout/item_player_current_stats" />
 
+            <TextView
+                android:id="@+id/career_chart_title"
+                style="@style/TextAppearance.App.Table.Header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="24dp"
+                android:text="@string/player_chart_goals_by_season"
+                android:textAppearance="?attr/textAppearanceHeadline6"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
+            <com.github.mikephil.charting.charts.BarChart
+                android:id="@+id/career_chart"
+                android:layout_width="match_parent"
+                android:layout_height="220dp"
+                android:layout_marginHorizontal="12dp"
+                android:layout_marginTop="8dp"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
             <include layout="@layout/item_player_career_header" />
 
             <androidx.recyclerview.widget.RecyclerView

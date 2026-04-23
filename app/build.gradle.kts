@@ -146,6 +146,7 @@ dependencies {
     implementation(libs.androidx.security.crypto)
     implementation(libs.androidx.metrics.performance)
     implementation(libs.core)
+    implementation(libs.mpandroidchart)
 
     coreLibraryDesugaring(libs.desugar.jdk.libs)
 }

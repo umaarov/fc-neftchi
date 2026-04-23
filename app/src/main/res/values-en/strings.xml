@@ -251,4 +251,7 @@
     <string name="state_empty_bookmark_videos">No bookmarked videos</string>
     <string name="state_empty_bookmark_players">No bookmarked players</string>
     <string name="cd_bookmark">Bookmark</string>
+
+    <!-- Player stats chart -->
+    <string name="player_chart_goals_by_season">Goals by season</string>
 </resources>
