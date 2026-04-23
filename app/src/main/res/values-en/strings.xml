@@ -232,4 +232,19 @@
     <string name="search_news_hint">Search news</string>
     <string name="search_squad_hint">Search player</string>
     <string name="filter_all">All</string>
+
+    <!-- Bookmarks -->
+    <string name="title_bookmarks">Bookmarks</string>
+    <string name="more_bookmarks">Bookmarks</string>
+    <string name="bookmark_add">Bookmark</string>
+    <string name="bookmark_remove">Remove bookmark</string>
+    <string name="bookmark_added">Added to bookmarks</string>
+    <string name="bookmark_removed">Removed from bookmarks</string>
+    <string name="bookmarks_tab_articles">Articles</string>
+    <string name="bookmarks_tab_videos">Videos</string>
+    <string name="bookmarks_tab_players">Players</string>
+    <string name="state_empty_bookmark_articles">No bookmarked articles</string>
+    <string name="state_empty_bookmark_videos">No bookmarked videos</string>
+    <string name="state_empty_bookmark_players">No bookmarked players</string>
+    <string name="cd_bookmark">Bookmark</string>
 </resources>

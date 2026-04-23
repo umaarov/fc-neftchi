@@ -234,4 +234,19 @@
     <string name="search_news_hint">Yangiliklarni qidirish</string>
     <string name="search_squad_hint">O\'yinchini qidirish</string>
     <string name="filter_all">Barchasi</string>
+
+    <!-- Bookmarks -->
+    <string name="title_bookmarks">Saqlanganlar</string>
+    <string name="more_bookmarks">Saqlanganlar</string>
+    <string name="bookmark_add">Saqlash</string>
+    <string name="bookmark_remove">Saqlanganlardan olib tashlash</string>
+    <string name="bookmark_added">Saqlanganlarga qo\'shildi</string>
+    <string name="bookmark_removed">Saqlanganlardan olib tashlandi</string>
+    <string name="bookmarks_tab_articles">Maqolalar</string>
+    <string name="bookmarks_tab_videos">Videolar</string>
+    <string name="bookmarks_tab_players">O\'yinchilar</string>
+    <string name="state_empty_bookmark_articles">Saqlangan maqolalar yo\'q</string>
+    <string name="state_empty_bookmark_videos">Saqlangan videolar yo\'q</string>
+    <string name="state_empty_bookmark_players">Saqlangan o\'yinchilar yo\'q</string>
+    <string name="cd_bookmark">Saqlash</string>
 </resources>

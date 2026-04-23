@@ -12,6 +12,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.graphics.createBitmap
 import androidx.core.graphics.drawable.toDrawable
@@ -43,6 +44,7 @@ class NewsArticleFragment : Fragment() {
 
     private val viewModel: NewsArticleViewModel by viewModels()
     private var currentArticle: NewsArticle? = null
+    private var bookmarkMenuItem: MenuItem? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -57,9 +59,20 @@ class NewsArticleFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupToolbar()
-        lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launch {
             viewModel.uiState.collect { state ->
                 updateUi(state)
+            }
+        }
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.event.collect { event ->
+                if (event == null) return@collect
+                val messageRes = when (event) {
+                    NewsArticleEvent.BookmarkAdded -> R.string.bookmark_added
+                    NewsArticleEvent.BookmarkRemoved -> R.string.bookmark_removed
+                }
+                Toast.makeText(requireContext(), messageRes, Toast.LENGTH_SHORT).show()
+                viewModel.consumeEvent()
             }
         }
     }
@@ -99,6 +112,7 @@ class NewsArticleFragment : Fragment() {
                 binding.stateView.hide()
                 currentArticle = state.article
                 bindArticleData(state.article)
+                updateBookmarkIcon(state.isBookmarked)
 
                 binding.appBar.alpha = 0f
                 binding.contentScrollView.alpha = 0f
@@ -112,6 +126,16 @@ class NewsArticleFragment : Fragment() {
         }
     }
 
+    private fun updateBookmarkIcon(isBookmarked: Boolean) {
+        bookmarkMenuItem?.apply {
+            setIcon(
+                if (isBookmarked) R.drawable.ic_bookmark_filled
+                else R.drawable.ic_bookmark_border
+            )
+            setTitle(if (isBookmarked) R.string.bookmark_remove else R.string.bookmark_add)
+        }
+    }
+
     private fun setupToolbar() {
         (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
         (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -119,10 +143,17 @@ class NewsArticleFragment : Fragment() {
         requireActivity().addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                 menuInflater.inflate(R.menu.menu_article, menu)
+                bookmarkMenuItem = menu.findItem(R.id.action_bookmark)
+                updateBookmarkIcon(viewModel.uiState.value.isBookmarked)
             }
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 return when (menuItem.itemId) {
+                    R.id.action_bookmark -> {
+                        viewModel.toggleBookmark()
+                        true
+                    }
+
                     R.id.action_share -> {
 //                        shareArticle()
                         true
@@ -208,6 +239,7 @@ class NewsArticleFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        bookmarkMenuItem = null
         _binding = null
         WindowCompat.setDecorFitsSystemWindows(requireActivity().window, true)
     }

@@ -232,4 +232,19 @@
     <string name="search_news_hint">Поиск новостей</string>
     <string name="search_squad_hint">Поиск игрока</string>
     <string name="filter_all">Все</string>
+
+    <!-- Bookmarks -->
+    <string name="title_bookmarks">Закладки</string>
+    <string name="more_bookmarks">Закладки</string>
+    <string name="bookmark_add">В закладки</string>
+    <string name="bookmark_remove">Убрать из закладок</string>
+    <string name="bookmark_added">Добавлено в закладки</string>
+    <string name="bookmark_removed">Удалено из закладок</string>
+    <string name="bookmarks_tab_articles">Статьи</string>
+    <string name="bookmarks_tab_videos">Видео</string>
+    <string name="bookmarks_tab_players">Игроки</string>
+    <string name="state_empty_bookmark_articles">Нет сохранённых статей</string>
+    <string name="state_empty_bookmark_videos">Нет сохранённых видео</string>
+    <string name="state_empty_bookmark_players">Нет сохранённых игроков</string>
+    <string name="cd_bookmark">Закладка</string>
 </resources>
