@@ -46,6 +46,12 @@
             android:paddingHorizontal="24dp"
             android:text="@string/more_stadium_label" />
 
+        <TextView
+            android:id="@+id/bookmarks_button"
+            style="@style/Widget.App.MoreMenuItem"
+            android:paddingHorizontal="24dp"
+            android:text="@string/more_bookmarks" />
+
         <View
             android:layout_width="match_parent"
             android:layout_height="0dp"

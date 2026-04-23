@@ -92,6 +92,23 @@
         <action
             android:id="@+id/action_moreFragment_to_settingsFragment"
             app:destination="@id/settingsFragment" />
+
+        <action
+            android:id="@+id/action_moreFragment_to_bookmarksFragment"
+            app:destination="@id/bookmarksFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/bookmarksFragment"
+        android:name="uz.umarov.fcneftchi.ui.bookmarks.BookmarksFragment"
+        android:label="@string/title_bookmarks"
+        tools:layout="@layout/fragment_bookmarks">
+        <action
+            android:id="@+id/action_bookmarksFragment_to_newsArticleFragment"
+            app:destination="@id/newsArticleFragment" />
+        <action
+            android:id="@+id/action_bookmarksFragment_to_playerProfileFragment"
+            app:destination="@id/playerProfileFragment" />
     </fragment>
 
     <fragment

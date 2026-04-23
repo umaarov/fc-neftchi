@@ -44,6 +44,10 @@ class MoreFragment : Fragment() {
             findNavController().navigate(R.id.action_moreFragment_to_stadiumFragment)
         }
 
+        binding.bookmarksButton.setOnClickListener {
+            findNavController().navigate(R.id.action_moreFragment_to_bookmarksFragment)
+        }
+
         binding.settingsButton.setOnClickListener {
             findNavController().navigate(R.id.action_moreFragment_to_settingsFragment)
         }
