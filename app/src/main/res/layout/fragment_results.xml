@@ -1,47 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/swipe_refresh_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.matches.tabs.ResultsFragment">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/results_recycler_view"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="invisible"
-        tools:listitem="@layout/item_result"
-        tools:visibility="visible" />
+        android:layout_height="match_parent">
 
-    <com.facebook.shimmer.ShimmerFrameLayout
-        android:id="@+id/shimmer_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:shimmer_auto_start="true">
-
-        <LinearLayout
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/results_recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="match_parent"
+            android:visibility="invisible"
+            tools:listitem="@layout/item_result"
+            tools:visibility="visible" />
 
-            <include layout="@layout/item_month_header_placeholder" />
-            <include layout="@layout/item_result_placeholder" />
-            <include layout="@layout/item_result_placeholder" />
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/shimmer_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:shimmer_auto_start="true">
 
-            <include layout="@layout/item_month_header_placeholder" />
-            <include layout="@layout/item_result_placeholder" />
-            <include layout="@layout/item_result_placeholder" />
-            <include layout="@layout/item_result_placeholder" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-        </LinearLayout>
-    </com.facebook.shimmer.ShimmerFrameLayout>
+                <include layout="@layout/item_month_header_placeholder" />
+                <include layout="@layout/item_result_placeholder" />
+                <include layout="@layout/item_result_placeholder" />
 
-    <uz.umarov.fcneftchi.ui.widget.StateView
-        android:id="@+id/state_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone"
-        tools:visibility="gone" />
+                <include layout="@layout/item_month_header_placeholder" />
+                <include layout="@layout/item_result_placeholder" />
+                <include layout="@layout/item_result_placeholder" />
+                <include layout="@layout/item_result_placeholder" />
 
-</FrameLayout>
+            </LinearLayout>
+        </com.facebook.shimmer.ShimmerFrameLayout>
+
+        <uz.umarov.fcneftchi.ui.widget.StateView
+            android:id="@+id/state_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            tools:visibility="gone" />
+
+    </FrameLayout>
+
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

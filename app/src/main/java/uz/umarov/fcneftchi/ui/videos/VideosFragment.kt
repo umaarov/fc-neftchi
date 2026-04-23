@@ -38,6 +38,8 @@ class VideosFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setupRecyclerView()
 
+        binding.swipeRefreshLayout.setOnRefreshListener { viewModel.retry() }
+
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.uiState.collect { state ->
                 updateUi(state)
@@ -56,11 +58,19 @@ class VideosFragment : Fragment() {
     }
 
     private fun updateUi(state: VideosUiState) {
+        if (!state.isLoading) {
+            binding.swipeRefreshLayout.isRefreshing = false
+        }
+
+        val hasContent = videoAdapter.currentList.isNotEmpty()
+
         if (state.isLoading) {
-            binding.shimmerContainer.startShimmer()
-            binding.shimmerContainer.isVisible = true
-            binding.videosRecyclerView.isVisible = false
-            binding.stateView.hide()
+            if (!hasContent) {
+                binding.shimmerContainer.startShimmer()
+                binding.shimmerContainer.isVisible = true
+                binding.videosRecyclerView.isVisible = false
+                binding.stateView.hide()
+            }
             return
         }
 
@@ -76,8 +86,10 @@ class VideosFragment : Fragment() {
 
         when {
             state.error != null -> {
-                binding.videosRecyclerView.isVisible = false
-                binding.stateView.showError(onRetry = viewModel::retry)
+                if (!hasContent) {
+                    binding.videosRecyclerView.isVisible = false
+                    binding.stateView.showError(onRetry = viewModel::retry)
+                }
             }
             state.videos.isEmpty() -> {
                 binding.videosRecyclerView.isVisible = false
@@ -85,15 +97,20 @@ class VideosFragment : Fragment() {
             }
             else -> {
                 binding.stateView.hide()
+                val wasEmpty = !binding.videosRecyclerView.isVisible
                 videoAdapter.submitList(state.videos)
                 binding.videosRecyclerView.apply {
-                    alpha = 0f
-                    isVisible = true
-                    animate()
-                        .alpha(1f)
-                        .setInterpolator(AccelerateDecelerateInterpolator())
-                        .setDuration(500)
-                        .start()
+                    if (wasEmpty) {
+                        alpha = 0f
+                        isVisible = true
+                        animate()
+                            .alpha(1f)
+                            .setInterpolator(AccelerateDecelerateInterpolator())
+                            .setDuration(500)
+                            .start()
+                    } else {
+                        isVisible = true
+                    }
                 }
             }
         }

@@ -38,6 +38,8 @@ class TopPlayersFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setupRecyclerView()
 
+        binding.swipeRefreshLayout.setOnRefreshListener { viewModel.retry() }
+
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.uiState.collect { state ->
                 updateUi(state)
@@ -54,11 +56,19 @@ class TopPlayersFragment : Fragment() {
     }
 
     private fun updateUi(state: TopPlayersUiState) {
+        if (!state.isLoading) {
+            binding.swipeRefreshLayout.isRefreshing = false
+        }
+
+        val hasContent = topPlayerAdapter.currentList.isNotEmpty()
+
         if (state.isLoading) {
-            binding.shimmerContainer.startShimmer()
-            binding.shimmerContainer.isVisible = true
-            binding.topPlayersRecyclerView.isVisible = false
-            binding.stateView.hide()
+            if (!hasContent) {
+                binding.shimmerContainer.startShimmer()
+                binding.shimmerContainer.isVisible = true
+                binding.topPlayersRecyclerView.isVisible = false
+                binding.stateView.hide()
+            }
             return
         }
 
@@ -74,8 +84,10 @@ class TopPlayersFragment : Fragment() {
 
         when {
             state.error != null -> {
-                binding.topPlayersRecyclerView.isVisible = false
-                binding.stateView.showError(onRetry = viewModel::retry)
+                if (!hasContent) {
+                    binding.topPlayersRecyclerView.isVisible = false
+                    binding.stateView.showError(onRetry = viewModel::retry)
+                }
             }
             state.items.isEmpty() -> {
                 binding.topPlayersRecyclerView.isVisible = false
@@ -83,15 +95,20 @@ class TopPlayersFragment : Fragment() {
             }
             else -> {
                 binding.stateView.hide()
+                val wasEmpty = !binding.topPlayersRecyclerView.isVisible
                 topPlayerAdapter.submitList(state.items)
                 binding.topPlayersRecyclerView.apply {
-                    alpha = 0f
-                    isVisible = true
-                    animate()
-                        .alpha(1f)
-                        .setInterpolator(AccelerateDecelerateInterpolator())
-                        .setDuration(500)
-                        .start()
+                    if (wasEmpty) {
+                        alpha = 0f
+                        isVisible = true
+                        animate()
+                            .alpha(1f)
+                            .setInterpolator(AccelerateDecelerateInterpolator())
+                            .setDuration(500)
+                            .start()
+                    } else {
+                        isVisible = true
+                    }
                 }
             }
         }

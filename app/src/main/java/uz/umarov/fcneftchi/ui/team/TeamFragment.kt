@@ -46,6 +46,8 @@ class TeamFragment : Fragment() {
         setupRecyclerView()
         setupShimmerRecyclerView()
 
+        binding.swipeRefreshLayout.setOnRefreshListener { viewModel.retry() }
+
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.uiState.collect { state ->
                 updateUi(state)
@@ -101,11 +103,19 @@ class TeamFragment : Fragment() {
     }
 
     private fun updateUi(state: TeamUiState) {
+        if (!state.isLoading) {
+            binding.swipeRefreshLayout.isRefreshing = false
+        }
+
+        val hasContent = playerAdapter.currentList.isNotEmpty()
+
         if (state.isLoading) {
-            binding.shimmerContainer.startShimmer()
-            binding.shimmerContainer.isVisible = true
-            binding.teamRecyclerView.isVisible = false
-            binding.stateView.hide()
+            if (!hasContent) {
+                binding.shimmerContainer.startShimmer()
+                binding.shimmerContainer.isVisible = true
+                binding.teamRecyclerView.isVisible = false
+                binding.stateView.hide()
+            }
             return
         }
 
@@ -121,8 +131,10 @@ class TeamFragment : Fragment() {
 
         when {
             state.error != null -> {
-                binding.teamRecyclerView.isVisible = false
-                binding.stateView.showError(onRetry = viewModel::retry)
+                if (!hasContent) {
+                    binding.teamRecyclerView.isVisible = false
+                    binding.stateView.showError(onRetry = viewModel::retry)
+                }
             }
             state.items.isEmpty() -> {
                 binding.teamRecyclerView.isVisible = false
@@ -130,15 +142,20 @@ class TeamFragment : Fragment() {
             }
             else -> {
                 binding.stateView.hide()
+                val wasEmpty = !binding.teamRecyclerView.isVisible
                 playerAdapter.submitList(state.items)
                 binding.teamRecyclerView.apply {
-                    alpha = 0f
-                    isVisible = true
-                    animate()
-                        .alpha(1f)
-                        .setInterpolator(AccelerateDecelerateInterpolator())
-                        .setDuration(500)
-                        .start()
+                    if (wasEmpty) {
+                        alpha = 0f
+                        isVisible = true
+                        animate()
+                            .alpha(1f)
+                            .setInterpolator(AccelerateDecelerateInterpolator())
+                            .setDuration(500)
+                            .start()
+                    } else {
+                        isVisible = true
+                    }
                 }
             }
         }

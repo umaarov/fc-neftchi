@@ -12,43 +12,50 @@
         android:id="@+id/toolbar_layout"
         layout="@layout/toolbar_secondary" />
 
-    <FrameLayout
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/team_recycler_view"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:clipToPadding="false"
-            android:padding="8dp"
-            android:visibility="invisible"
-            tools:listitem="@layout/item_player"
-            tools:visibility="visible" />
-
-        <com.facebook.shimmer.ShimmerFrameLayout
-            android:id="@+id/shimmer_container"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:shimmer_auto_start="true">
+            android:layout_height="match_parent">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/shimmer_recycler_view"
+                android:id="@+id/team_recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:clipToPadding="false"
                 android:padding="8dp"
-                tools:listitem="@layout/item_player_placeholder" />
+                android:visibility="invisible"
+                tools:listitem="@layout/item_player"
+                tools:visibility="visible" />
 
-        </com.facebook.shimmer.ShimmerFrameLayout>
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:id="@+id/shimmer_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:shimmer_auto_start="true">
 
-        <uz.umarov.fcneftchi.ui.widget.StateView
-            android:id="@+id/state_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="gone"
-            tools:visibility="visible" />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/shimmer_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:clipToPadding="false"
+                    android:padding="8dp"
+                    tools:listitem="@layout/item_player_placeholder" />
 
-    </FrameLayout>
+            </com.facebook.shimmer.ShimmerFrameLayout>
+
+            <uz.umarov.fcneftchi.ui.widget.StateView
+                android:id="@+id/state_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
+        </FrameLayout>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 </LinearLayout>

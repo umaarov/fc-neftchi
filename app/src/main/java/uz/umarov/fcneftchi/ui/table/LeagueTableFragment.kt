@@ -42,6 +42,8 @@ class LeagueTableFragment : Fragment() {
         setupRecyclerView()
         setupLeagueSelector()
 
+        binding.swipeRefreshLayout.setOnRefreshListener { viewModel.retry() }
+
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.uiState.collect { state ->
                 updateUi(state)
@@ -105,14 +107,22 @@ class LeagueTableFragment : Fragment() {
 
         binding.seasonSelectorInput.setText(state.selectedSeasonName, false)
 
+        if (!state.isLoading) {
+            binding.swipeRefreshLayout.isRefreshing = false
+        }
+
+        val hasContent = tableAdapter.currentList.isNotEmpty()
+
         if (state.isLoading) {
-            binding.shimmerContainer.apply {
-                alpha = 1f
-                isVisible = true
-                startShimmer()
+            if (!hasContent) {
+                binding.shimmerContainer.apply {
+                    alpha = 1f
+                    isVisible = true
+                    startShimmer()
+                }
+                binding.contentGroup.isVisible = false
+                binding.stateView.hide()
             }
-            binding.contentGroup.isVisible = false
-            binding.stateView.hide()
             return
         }
 
@@ -128,8 +138,10 @@ class LeagueTableFragment : Fragment() {
 
         when {
             state.error != null -> {
-                binding.contentGroup.isVisible = false
-                binding.stateView.showError(onRetry = viewModel::retry)
+                if (!hasContent) {
+                    binding.contentGroup.isVisible = false
+                    binding.stateView.showError(onRetry = viewModel::retry)
+                }
             }
             state.standings.isEmpty() -> {
                 binding.contentGroup.isVisible = false
@@ -137,16 +149,21 @@ class LeagueTableFragment : Fragment() {
             }
             else -> {
                 binding.stateView.hide()
+                val wasEmpty = !binding.contentGroup.isVisible
                 tableAdapter.submitList(state.standings)
 
                 binding.contentGroup.apply {
-                    alpha = 0f
-                    isVisible = true
-                    animate()
-                        .alpha(1f)
-                        .setInterpolator(AccelerateDecelerateInterpolator())
-                        .setDuration(500)
-                        .start()
+                    if (wasEmpty) {
+                        alpha = 0f
+                        isVisible = true
+                        animate()
+                            .alpha(1f)
+                            .setInterpolator(AccelerateDecelerateInterpolator())
+                            .setDuration(500)
+                            .start()
+                    } else {
+                        isVisible = true
+                    }
                 }
             }
         }

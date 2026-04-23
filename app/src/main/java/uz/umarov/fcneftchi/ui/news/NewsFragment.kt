@@ -39,6 +39,8 @@ class NewsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setupRecyclerView()
 
+        binding.swipeRefreshLayout.setOnRefreshListener { viewModel.retry() }
+
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.uiState.collect { state ->
                 updateUI(state)
@@ -60,6 +62,13 @@ class NewsFragment : Fragment() {
 
     private fun updateUI(state: NewsUiState) {
         if (!state.isLoading) {
+            binding.swipeRefreshLayout.isRefreshing = false
+        }
+
+        val hasContent = newsAdapter.currentList.isNotEmpty()
+        val showShimmerForInitialLoad = state.isLoading && !hasContent
+
+        if (!state.isLoading) {
             binding.shimmerContainer.animate()
                 .alpha(0f)
                 .setDuration(400)
@@ -72,16 +81,23 @@ class NewsFragment : Fragment() {
         }
 
         when {
-            state.isLoading -> {
+            showShimmerForInitialLoad -> {
                 binding.stateView.hide()
                 binding.newsRecyclerView.isVisible = false
                 binding.shimmerContainer.alpha = 1f
                 binding.shimmerContainer.isVisible = true
                 binding.shimmerContainer.startShimmer()
             }
+            state.isLoading -> {
+                // Pull-to-refresh in progress; keep current content visible.
+            }
             state.error != null -> {
-                binding.newsRecyclerView.isVisible = false
-                binding.stateView.showError(onRetry = viewModel::retry)
+                if (hasContent) {
+                    binding.stateView.hide()
+                } else {
+                    binding.newsRecyclerView.isVisible = false
+                    binding.stateView.showError(onRetry = viewModel::retry)
+                }
             }
             state.articles.isEmpty() -> {
                 binding.newsRecyclerView.isVisible = false
@@ -89,17 +105,22 @@ class NewsFragment : Fragment() {
             }
             else -> {
                 binding.stateView.hide()
-                binding.newsRecyclerView.isVisible = true
+                val wasEmpty = !binding.newsRecyclerView.isVisible
                 newsAdapter.submitList(state.articles)
                 binding.newsRecyclerView.apply {
-                    alpha = 0f
-                    translationY = 40f
-                    animate()
-                        .alpha(1f)
-                        .translationY(0f)
-                        .setInterpolator(AccelerateDecelerateInterpolator())
-                        .setDuration(500)
-                        .start()
+                    if (wasEmpty) {
+                        alpha = 0f
+                        translationY = 40f
+                        isVisible = true
+                        animate()
+                            .alpha(1f)
+                            .translationY(0f)
+                            .setInterpolator(AccelerateDecelerateInterpolator())
+                            .setDuration(500)
+                            .start()
+                    } else {
+                        isVisible = true
+                    }
                 }
             }
         }

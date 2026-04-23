@@ -38,6 +38,8 @@ class FixturesFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setupRecyclerView()
 
+        binding.swipeRefreshLayout.setOnRefreshListener { viewModel.retry() }
+
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.uiState.collect { state ->
                 updateUi(state)
@@ -57,11 +59,19 @@ class FixturesFragment : Fragment() {
     }
 
     private fun updateUi(state: FixturesUiState) {
+        if (!state.isLoading) {
+            binding.swipeRefreshLayout.isRefreshing = false
+        }
+
+        val hasContent = matchAdapter.currentList.isNotEmpty()
+
         if (state.isLoading) {
-            binding.shimmerContainer.startShimmer()
-            binding.shimmerContainer.isVisible = true
-            binding.fixturesRecyclerView.isVisible = false
-            binding.stateView.hide()
+            if (!hasContent) {
+                binding.shimmerContainer.startShimmer()
+                binding.shimmerContainer.isVisible = true
+                binding.fixturesRecyclerView.isVisible = false
+                binding.stateView.hide()
+            }
             return
         }
 
@@ -77,8 +87,10 @@ class FixturesFragment : Fragment() {
 
         when {
             state.error != null -> {
-                binding.fixturesRecyclerView.isVisible = false
-                binding.stateView.showError(onRetry = viewModel::retry)
+                if (!hasContent) {
+                    binding.fixturesRecyclerView.isVisible = false
+                    binding.stateView.showError(onRetry = viewModel::retry)
+                }
             }
             state.items.isEmpty() -> {
                 binding.fixturesRecyclerView.isVisible = false
@@ -86,15 +98,20 @@ class FixturesFragment : Fragment() {
             }
             else -> {
                 binding.stateView.hide()
+                val wasEmpty = !binding.fixturesRecyclerView.isVisible
                 matchAdapter.submitList(state.items)
                 binding.fixturesRecyclerView.apply {
-                    alpha = 0f
-                    isVisible = true
-                    animate()
-                        .alpha(1f)
-                        .setInterpolator(AccelerateDecelerateInterpolator())
-                        .setDuration(500)
-                        .start()
+                    if (wasEmpty) {
+                        alpha = 0f
+                        isVisible = true
+                        animate()
+                            .alpha(1f)
+                            .setInterpolator(AccelerateDecelerateInterpolator())
+                            .setDuration(500)
+                            .start()
+                    } else {
+                        isVisible = true
+                    }
                 }
             }
         }
