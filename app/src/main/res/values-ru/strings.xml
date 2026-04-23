@@ -255,6 +255,10 @@
     <!-- Player stats chart -->
     <string name="player_chart_goals_by_season">Голы по сезонам</string>
 
+    <string name="label_league">Лига</string>
+    <string name="label_season">Сезон</string>
+    <string name="cd_stadium_image">Стадион «Истиклол»</string>
+
     <!-- App shortcuts -->
     <string name="shortcut_matches_short">Матчи</string>
     <string name="shortcut_matches_long">Следующий матч</string>

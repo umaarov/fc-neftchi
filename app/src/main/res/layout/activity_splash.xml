@@ -9,6 +9,7 @@
         android:id="@+id/splash_icon"
         android:layout_width="128dp"
         android:layout_height="128dp"
+        android:importantForAccessibility="no"
         android:src="@drawable/main_logo"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

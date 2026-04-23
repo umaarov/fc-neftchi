@@ -16,6 +16,7 @@
             android:id="@+id/news_image"
             android:layout_width="match_parent"
             android:layout_height="150dp"
+            android:importantForAccessibility="no"
             android:scaleType="centerCrop"
             tools:src="@tools:sample/backgrounds/scenic"/>
 

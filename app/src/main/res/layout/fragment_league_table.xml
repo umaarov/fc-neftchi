@@ -41,6 +41,7 @@
                 android:paddingVertical="8dp"
                 android:cursorVisible="false"
                 android:focusable="true"
+                android:hint="@string/label_league"
                 android:inputType="none"
                 tools:text="Superliga" />
 
@@ -74,6 +75,7 @@
                 android:paddingVertical="8dp"
                 android:cursorVisible="false"
                 android:focusable="true"
+                android:hint="@string/label_season"
                 android:inputType="none"
                 tools:text="2025/26" />
 

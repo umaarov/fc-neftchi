@@ -255,6 +255,10 @@
     <!-- Player stats chart -->
     <string name="player_chart_goals_by_season">Goals by season</string>
 
+    <string name="label_league">League</string>
+    <string name="label_season">Season</string>
+    <string name="cd_stadium_image">Istiqlol Stadium</string>
+
     <!-- App shortcuts -->
     <string name="shortcut_matches_short">Matches</string>
     <string name="shortcut_matches_long">Next match</string>

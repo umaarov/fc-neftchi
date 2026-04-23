@@ -85,21 +85,25 @@
             <ImageView
                 android:id="@+id/telegram_button"
                 style="@style/Widget.App.SocialIcon"
+                android:contentDescription="@string/social_telegram"
                 android:src="@drawable/ic_telegram" />
 
             <ImageView
                 android:id="@+id/instagram_button"
                 style="@style/Widget.App.SocialIcon"
+                android:contentDescription="@string/social_instagram"
                 android:src="@drawable/ic_instagram" />
 
             <ImageView
                 android:id="@+id/youtube_button"
                 style="@style/Widget.App.SocialIcon"
+                android:contentDescription="@string/social_youtube"
                 android:src="@drawable/ic_youtube" />
 
             <ImageView
                 android:id="@+id/facebook_button"
                 style="@style/Widget.App.SocialIcon"
+                android:contentDescription="@string/social_facebook"
                 android:src="@drawable/ic_facebook" />
         </LinearLayout>
     </LinearLayout>

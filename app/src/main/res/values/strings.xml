@@ -238,6 +238,9 @@
     <string name="search_news_hint">Yangiliklarni qidirish</string>
     <string name="search_squad_hint">O\'yinchini qidirish</string>
     <string name="filter_all">Barchasi</string>
+    <string name="label_league">Liga</string>
+    <string name="label_season">Mavsum</string>
+    <string name="cd_stadium_image">Istiqlol stadioni</string>
 
     <!-- Bookmarks -->
     <string name="title_bookmarks">Saqlanganlar</string>
