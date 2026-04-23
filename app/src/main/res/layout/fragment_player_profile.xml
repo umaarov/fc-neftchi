@@ -78,6 +78,18 @@
                         app:layout_constraintTop_toTopOf="@id/player_image"
                         tools:text="#21" />
 
+                    <ImageButton
+                        android:id="@+id/bookmark_button"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:contentDescription="@string/cd_bookmark"
+                        android:padding="8dp"
+                        android:src="@drawable/ic_bookmark_border"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:tint="?attr/colorPrimary" />
+
                     <TextView
                         android:id="@+id/player_name"
                         android:layout_width="0dp"

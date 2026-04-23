@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -45,10 +46,22 @@ class PlayerProfileFragment : Fragment() {
         binding.toolbarLayout.root.applySystemBarPadding(top = true)
         setupToolbar()
         setupRecyclerView()
+        binding.bookmarkButton.setOnClickListener { viewModel.toggleBookmark() }
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.uiState.collect { state ->
                 updateUi(state)
+            }
+        }
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.event.collect { event ->
+                if (event == null) return@collect
+                val messageRes = when (event) {
+                    PlayerProfileEvent.BookmarkAdded -> R.string.bookmark_added
+                    PlayerProfileEvent.BookmarkRemoved -> R.string.bookmark_removed
+                }
+                Toast.makeText(requireContext(), messageRes, Toast.LENGTH_SHORT).show()
+                viewModel.consumeEvent()
             }
         }
     }
@@ -84,6 +97,7 @@ class PlayerProfileFragment : Fragment() {
             else -> {
                 binding.stateView.hide()
                 bindProfileData(state.profile)
+                updateBookmarkIcon(state.isBookmarked)
 
                 binding.contentScrollView.alpha = 0f
                 binding.contentScrollView.isVisible = true
@@ -93,6 +107,16 @@ class PlayerProfileFragment : Fragment() {
                     .start()
             }
         }
+    }
+
+    private fun updateBookmarkIcon(isBookmarked: Boolean) {
+        binding.bookmarkButton.setImageResource(
+            if (isBookmarked) R.drawable.ic_bookmark_filled
+            else R.drawable.ic_bookmark_border
+        )
+        binding.bookmarkButton.contentDescription = getString(
+            if (isBookmarked) R.string.bookmark_remove else R.string.bookmark_add
+        )
     }
 
     private fun bindProfileData(profile: uz.umarov.fcneftchi.data.model.PlayerProfile) {
