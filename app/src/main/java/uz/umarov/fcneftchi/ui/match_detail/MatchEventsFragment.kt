@@ -4,14 +4,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import uz.umarov.fcneftchi.R
 import uz.umarov.fcneftchi.databinding.FragmentMatchEventsBinding
-import uz.umarov.fcneftchi.ui.MainActivity
 import uz.umarov.fcneftchi.ui.match_detail.adapter.MatchEventsAdapter
 
 @AndroidEntryPoint
@@ -37,10 +38,19 @@ class MatchEventsFragment : Fragment() {
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.uiState.collect { state ->
-                state.gameDetail?.let { game ->
-                    val playersMap = game.players.associate { it.player.id to "${it.player.firstName ?: ""} ${it.player.lastName}".trim() }
+                val game = state.gameDetail ?: return@collect
+                val sortedEvents = game.events.sortedBy { it.time }
+                if (sortedEvents.isEmpty()) {
+                    binding.eventsRecyclerView.isVisible = false
+                    binding.stateView.showEmpty(messageRes = R.string.state_empty_match_events)
+                } else {
+                    binding.stateView.hide()
+                    binding.eventsRecyclerView.isVisible = true
+                    val playersMap = game.players.associate {
+                        it.player.id to "${it.player.firstName ?: ""} ${it.player.lastName}".trim()
+                    }
                     eventsAdapter.updateData(game.homeTeam.club.id, playersMap)
-                    eventsAdapter.submitList(game.events.sortedBy { it.time })
+                    eventsAdapter.submitList(sortedEvents)
                 }
             }
         }

@@ -70,19 +70,35 @@ class NewsArticleFragment : Fragment() {
             binding.shimmerContainer.isVisible = true
             binding.appBar.isVisible = false
             binding.contentScrollView.isVisible = false
-        } else {
-            binding.shimmerContainer.animate()
-                .alpha(0f)
-                .setDuration(400)
-                .withEndAction {
-                    binding.shimmerContainer.stopShimmer()
-                    binding.shimmerContainer.isVisible = false
-                }
-                .start()
+            binding.stateView.hide()
+            return
+        }
 
-            state.article?.let {
-                currentArticle = it
-                bindArticleData(it)
+        binding.shimmerContainer.animate()
+            .alpha(0f)
+            .setDuration(400)
+            .withEndAction {
+                if (_binding == null) return@withEndAction
+                binding.shimmerContainer.stopShimmer()
+                binding.shimmerContainer.isVisible = false
+            }
+            .start()
+
+        when {
+            state.error != null -> {
+                binding.appBar.isVisible = false
+                binding.contentScrollView.isVisible = false
+                binding.stateView.showError(onRetry = viewModel::retry)
+            }
+            state.article == null -> {
+                binding.appBar.isVisible = false
+                binding.contentScrollView.isVisible = false
+                binding.stateView.showEmpty(messageRes = R.string.news_article_empty)
+            }
+            else -> {
+                binding.stateView.hide()
+                currentArticle = state.article
+                bindArticleData(state.article)
 
                 binding.appBar.alpha = 0f
                 binding.contentScrollView.alpha = 0f

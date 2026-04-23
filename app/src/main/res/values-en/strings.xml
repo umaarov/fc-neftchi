@@ -206,4 +206,23 @@
     <string name="history_paragraph_classico">The traditional rivalry in Uzbek football is between Neftchi and Pakhtakor of the capital. By analogy with Spain\'s "El Clasico", this matchup is known as the "Uzbek Clasico".</string>
     <string name="history_subsection_valley_derby">Valley Derby</string>
     <string name="history_paragraph_valley_derby">Neftchi\'s most fierce local rival is Navbahor of Namangan. Matches against Andijan also carry the "Valley Derby" status and always draw great interest from fans.</string>
+
+    <!-- State view (loading / error / empty) -->
+    <string name="state_retry">Retry</string>
+    <string name="state_error_title">Something went wrong</string>
+    <string name="state_error_message">We couldn\'t load this content. Please try again later.</string>
+    <string name="state_error_network_title">No internet connection</string>
+    <string name="state_error_network_message">Check your connection and try again.</string>
+    <string name="state_empty_title">Nothing here yet</string>
+    <string name="state_empty_message">There\'s nothing to show right now.</string>
+    <string name="state_empty_news">No news found</string>
+    <string name="state_empty_fixtures">No upcoming matches</string>
+    <string name="state_empty_results">No results available</string>
+    <string name="state_empty_players">No players found</string>
+    <string name="state_empty_standings">League table is empty</string>
+    <string name="state_empty_stats">No statistics available</string>
+    <string name="state_empty_videos">No videos found</string>
+    <string name="state_empty_match_events">No events to show</string>
+    <string name="state_empty_match_lineups">Lineups not announced yet</string>
+    <string name="cd_state_icon">State icon</string>
 </resources>

@@ -112,27 +112,42 @@ class LeagueTableFragment : Fragment() {
                 startShimmer()
             }
             binding.contentGroup.isVisible = false
-        } else {
-            binding.shimmerContainer.animate()
-                .alpha(0f)
-                .setDuration(400)
-                .withEndAction {
-                    if (_binding == null) return@withEndAction
-                    binding.shimmerContainer.stopShimmer()
-                    binding.shimmerContainer.isVisible = false
+            binding.stateView.hide()
+            return
+        }
+
+        binding.shimmerContainer.animate()
+            .alpha(0f)
+            .setDuration(400)
+            .withEndAction {
+                if (_binding == null) return@withEndAction
+                binding.shimmerContainer.stopShimmer()
+                binding.shimmerContainer.isVisible = false
+            }
+            .start()
+
+        when {
+            state.error != null -> {
+                binding.contentGroup.isVisible = false
+                binding.stateView.showError(onRetry = viewModel::retry)
+            }
+            state.standings.isEmpty() -> {
+                binding.contentGroup.isVisible = false
+                binding.stateView.showEmpty(messageRes = R.string.state_empty_standings)
+            }
+            else -> {
+                binding.stateView.hide()
+                tableAdapter.submitList(state.standings)
+
+                binding.contentGroup.apply {
+                    alpha = 0f
+                    isVisible = true
+                    animate()
+                        .alpha(1f)
+                        .setInterpolator(AccelerateDecelerateInterpolator())
+                        .setDuration(500)
+                        .start()
                 }
-                .start()
-
-            tableAdapter.submitList(state.standings)
-
-            binding.contentGroup.apply {
-                alpha = 0f
-                isVisible = true
-                animate()
-                    .alpha(1f)
-                    .setInterpolator(AccelerateDecelerateInterpolator())
-                    .setDuration(500)
-                    .start()
             }
         }
     }

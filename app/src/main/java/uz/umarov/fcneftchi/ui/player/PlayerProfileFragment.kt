@@ -58,18 +58,32 @@ class PlayerProfileFragment : Fragment() {
             binding.shimmerContainer.startShimmer()
             binding.shimmerContainer.isVisible = true
             binding.contentScrollView.isVisible = false
-        } else {
-            binding.shimmerContainer.animate()
-                .alpha(0f)
-                .setDuration(400)
-                .withEndAction {
-                    binding.shimmerContainer.stopShimmer()
-                    binding.shimmerContainer.isVisible = false
-                }
-                .start()
+            binding.stateView.hide()
+            return
+        }
 
-            state.profile?.let { profile ->
-                bindProfileData(profile)
+        binding.shimmerContainer.animate()
+            .alpha(0f)
+            .setDuration(400)
+            .withEndAction {
+                if (_binding == null) return@withEndAction
+                binding.shimmerContainer.stopShimmer()
+                binding.shimmerContainer.isVisible = false
+            }
+            .start()
+
+        when {
+            state.error != null -> {
+                binding.contentScrollView.isVisible = false
+                binding.stateView.showError(onRetry = viewModel::retry)
+            }
+            state.profile == null -> {
+                binding.contentScrollView.isVisible = false
+                binding.stateView.showEmpty()
+            }
+            else -> {
+                binding.stateView.hide()
+                bindProfileData(state.profile)
 
                 binding.contentScrollView.alpha = 0f
                 binding.contentScrollView.isVisible = true

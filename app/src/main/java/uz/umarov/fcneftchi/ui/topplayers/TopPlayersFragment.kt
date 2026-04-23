@@ -12,6 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import uz.umarov.fcneftchi.R
 import uz.umarov.fcneftchi.databinding.FragmentTopPlayersBinding
 import uz.umarov.fcneftchi.ui.topplayers.adapter.TopPlayerAdapter
 
@@ -57,26 +58,41 @@ class TopPlayersFragment : Fragment() {
             binding.shimmerContainer.startShimmer()
             binding.shimmerContainer.isVisible = true
             binding.topPlayersRecyclerView.isVisible = false
-        } else {
-            binding.shimmerContainer.animate()
-                .alpha(0f)
-                .setDuration(400)
-                .withEndAction {
-                    if (_binding == null) return@withEndAction
-                    binding.shimmerContainer.stopShimmer()
-                    binding.shimmerContainer.isVisible = false
-                }
-                .start()
+            binding.stateView.hide()
+            return
+        }
 
-            topPlayerAdapter.submitList(state.items)
-            binding.topPlayersRecyclerView.apply {
-                alpha = 0f
-                isVisible = true
-                animate()
-                    .alpha(1f)
-                    .setInterpolator(AccelerateDecelerateInterpolator())
-                    .setDuration(500)
-                    .start()
+        binding.shimmerContainer.animate()
+            .alpha(0f)
+            .setDuration(400)
+            .withEndAction {
+                if (_binding == null) return@withEndAction
+                binding.shimmerContainer.stopShimmer()
+                binding.shimmerContainer.isVisible = false
+            }
+            .start()
+
+        when {
+            state.error != null -> {
+                binding.topPlayersRecyclerView.isVisible = false
+                binding.stateView.showError(onRetry = viewModel::retry)
+            }
+            state.items.isEmpty() -> {
+                binding.topPlayersRecyclerView.isVisible = false
+                binding.stateView.showEmpty(messageRes = R.string.state_empty_players)
+            }
+            else -> {
+                binding.stateView.hide()
+                topPlayerAdapter.submitList(state.items)
+                binding.topPlayersRecyclerView.apply {
+                    alpha = 0f
+                    isVisible = true
+                    animate()
+                        .alpha(1f)
+                        .setInterpolator(AccelerateDecelerateInterpolator())
+                        .setDuration(500)
+                        .start()
+                }
             }
         }
     }

@@ -13,6 +13,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import uz.umarov.fcneftchi.R
 import uz.umarov.fcneftchi.databinding.FragmentNewsBinding
 import uz.umarov.fcneftchi.ui.MainActivity
 import uz.umarov.fcneftchi.ui.news.adapter.NewsAdapter
@@ -72,19 +73,22 @@ class NewsFragment : Fragment() {
 
         when {
             state.isLoading -> {
-                binding.errorContainer.isVisible = false
+                binding.stateView.hide()
                 binding.newsRecyclerView.isVisible = false
                 binding.shimmerContainer.alpha = 1f
                 binding.shimmerContainer.isVisible = true
                 binding.shimmerContainer.startShimmer()
             }
             state.error != null -> {
-                binding.errorContainer.isVisible = true
+                binding.newsRecyclerView.isVisible = false
+                binding.stateView.showError(onRetry = viewModel::retry)
             }
             state.articles.isEmpty() -> {
-                binding.emptyContainer.isVisible = true
+                binding.newsRecyclerView.isVisible = false
+                binding.stateView.showEmpty(messageRes = R.string.state_empty_news)
             }
             else -> {
+                binding.stateView.hide()
                 binding.newsRecyclerView.isVisible = true
                 newsAdapter.submitList(state.articles)
                 binding.newsRecyclerView.apply {

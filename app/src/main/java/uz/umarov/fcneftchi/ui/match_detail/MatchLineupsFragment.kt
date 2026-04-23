@@ -4,14 +4,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import uz.umarov.fcneftchi.R
 import uz.umarov.fcneftchi.databinding.FragmentMatchLineupsBinding
-import uz.umarov.fcneftchi.ui.MainActivity
 import uz.umarov.fcneftchi.ui.match_detail.adapter.LineupAdapter
 
 @AndroidEntryPoint
@@ -30,7 +31,7 @@ class MatchLineupsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val homeLineupAdapter = LineupAdapter()
-        val awayLineupAdapter = LineupAdapter() 
+        val awayLineupAdapter = LineupAdapter()
 
         binding.homeLineupRecyclerView.apply {
             adapter = homeLineupAdapter
@@ -43,9 +44,17 @@ class MatchLineupsFragment : Fragment() {
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.uiState.collect { state ->
-                state.gameDetail?.let { game ->
-                    homeLineupAdapter.submitList(game.players.filter { it.clubId == game.homeTeam.club.id })
-                    awayLineupAdapter.submitList(game.players.filter { it.clubId == game.awayTeam.club.id })
+                val game = state.gameDetail ?: return@collect
+                val homeLineup = game.players.filter { it.clubId == game.homeTeam.club.id }
+                val awayLineup = game.players.filter { it.clubId == game.awayTeam.club.id }
+                if (homeLineup.isEmpty() && awayLineup.isEmpty()) {
+                    binding.lineupsContent.isVisible = false
+                    binding.stateView.showEmpty(messageRes = R.string.state_empty_match_lineups)
+                } else {
+                    binding.stateView.hide()
+                    binding.lineupsContent.isVisible = true
+                    homeLineupAdapter.submitList(homeLineup)
+                    awayLineupAdapter.submitList(awayLineup)
                 }
             }
         }

@@ -206,4 +206,23 @@
     <string name="history_paragraph_classico">Традиционное соперничество в узбекском футболе складывается между «Нефтчи» и столичным «Пахтакором». По аналогии с испанским «Эль Класико» это противостояние называют «Узбекским Класико».</string>
     <string name="history_subsection_valley_derby">Дерби долины</string>
     <string name="history_paragraph_valley_derby">Один из самых принципиальных местных соперников «Нефтчи» — «Навбахор» из Намангана. Матчи с «Андижаном» также имеют статус «Дерби долины» и неизменно вызывают большой интерес у болельщиков.</string>
+
+    <!-- State view (loading / error / empty) -->
+    <string name="state_retry">Повторить</string>
+    <string name="state_error_title">Что-то пошло не так</string>
+    <string name="state_error_message">Не удалось загрузить данные. Пожалуйста, попробуйте позже.</string>
+    <string name="state_error_network_title">Нет соединения с интернетом</string>
+    <string name="state_error_network_message">Проверьте подключение и попробуйте снова.</string>
+    <string name="state_empty_title">Здесь пока пусто</string>
+    <string name="state_empty_message">Сейчас здесь нечего показать.</string>
+    <string name="state_empty_news">Новости не найдены</string>
+    <string name="state_empty_fixtures">Предстоящих матчей нет</string>
+    <string name="state_empty_results">Результаты отсутствуют</string>
+    <string name="state_empty_players">Игроки не найдены</string>
+    <string name="state_empty_standings">Турнирная таблица пуста</string>
+    <string name="state_empty_stats">Статистика недоступна</string>
+    <string name="state_empty_videos">Видео не найдены</string>
+    <string name="state_empty_match_events">Событий нет</string>
+    <string name="state_empty_match_lineups">Составы ещё не объявлены</string>
+    <string name="cd_state_icon">Иконка состояния</string>
 </resources>

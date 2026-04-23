@@ -12,6 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import uz.umarov.fcneftchi.R
 import uz.umarov.fcneftchi.databinding.FragmentVideosBinding
 import uz.umarov.fcneftchi.ui.MainActivity
 import uz.umarov.fcneftchi.ui.videos.adapter.VideoAdapter
@@ -59,26 +60,41 @@ class VideosFragment : Fragment() {
             binding.shimmerContainer.startShimmer()
             binding.shimmerContainer.isVisible = true
             binding.videosRecyclerView.isVisible = false
-        } else {
-            binding.shimmerContainer.animate()
-                .alpha(0f)
-                .setDuration(400)
-                .withEndAction {
-                    if (_binding == null) return@withEndAction
-                    binding.shimmerContainer.stopShimmer()
-                    binding.shimmerContainer.isVisible = false
-                }
-                .start()
+            binding.stateView.hide()
+            return
+        }
 
-            videoAdapter.submitList(state.videos)
-            binding.videosRecyclerView.apply {
-                alpha = 0f
-                isVisible = true
-                animate()
-                    .alpha(1f)
-                    .setInterpolator(AccelerateDecelerateInterpolator())
-                    .setDuration(500)
-                    .start()
+        binding.shimmerContainer.animate()
+            .alpha(0f)
+            .setDuration(400)
+            .withEndAction {
+                if (_binding == null) return@withEndAction
+                binding.shimmerContainer.stopShimmer()
+                binding.shimmerContainer.isVisible = false
+            }
+            .start()
+
+        when {
+            state.error != null -> {
+                binding.videosRecyclerView.isVisible = false
+                binding.stateView.showError(onRetry = viewModel::retry)
+            }
+            state.videos.isEmpty() -> {
+                binding.videosRecyclerView.isVisible = false
+                binding.stateView.showEmpty(messageRes = R.string.state_empty_videos)
+            }
+            else -> {
+                binding.stateView.hide()
+                videoAdapter.submitList(state.videos)
+                binding.videosRecyclerView.apply {
+                    alpha = 0f
+                    isVisible = true
+                    animate()
+                        .alpha(1f)
+                        .setInterpolator(AccelerateDecelerateInterpolator())
+                        .setDuration(500)
+                        .start()
+                }
             }
         }
     }

@@ -208,4 +208,23 @@
     <string name="history_paragraph_classico">O\'zbek futbolida an\'anaviy raqobat "Neftchi" va poytaxtning "Paxtakor" klubi o\'rtasida kechadi. Bu qarama-qarshilik Ispaniyadagi "El Klasiko"ga qiyosan "O\'zbek Klassikosi" nomini olgan.</string>
     <string name="history_subsection_valley_derby">Vodiy derbisi</string>
     <string name="history_paragraph_valley_derby">"Neftchi"ning mahalliy va eng ashaddiy raqiblaridan biri Namanganning "Navbahor" klubidir. Shuningdek, "Andijon" klubi bilan o\'yinlar ham "Vodiy derbisi" maqomiga ega bo\'lib, muxlislar uchun doimo katta qiziqish uyg\'otadi.</string>
+
+    <!-- State view (loading / error / empty) -->
+    <string name="state_retry">Qayta urinish</string>
+    <string name="state_error_title">Nimadir noto\'g\'ri ketdi</string>
+    <string name="state_error_message">Ma\'lumotlarni yuklab bo\'lmadi. Iltimos, keyinroq qayta urinib ko\'ring.</string>
+    <string name="state_error_network_title">Internet aloqasi yo\'q</string>
+    <string name="state_error_network_message">Internet aloqasini tekshiring va qayta urinib ko\'ring.</string>
+    <string name="state_empty_title">Ma\'lumot mavjud emas</string>
+    <string name="state_empty_message">Hozircha bu yerda ko\'rsatish uchun hech narsa yo\'q.</string>
+    <string name="state_empty_news">Yangiliklar topilmadi</string>
+    <string name="state_empty_fixtures">Rejalashtirilgan o\'yinlar yo\'q</string>
+    <string name="state_empty_results">Natijalar mavjud emas</string>
+    <string name="state_empty_players">O\'yinchilar topilmadi</string>
+    <string name="state_empty_standings">Turnir jadvali bo\'sh</string>
+    <string name="state_empty_stats">Statistika mavjud emas</string>
+    <string name="state_empty_videos">Videolar topilmadi</string>
+    <string name="state_empty_match_events">Voqealar yo\'q</string>
+    <string name="state_empty_match_lineups">Tarkiblar e\'lon qilinmagan</string>
+    <string name="cd_state_icon">Holat ikonkasi</string>
 </resources>

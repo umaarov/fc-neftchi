@@ -38,23 +38,11 @@
 
     </com.facebook.shimmer.ShimmerFrameLayout>
 
-
-    <LinearLayout
-        android:id="@+id/error_container"
+    <uz.umarov.fcneftchi.ui.widget.StateView
+        android:id="@+id/state_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:padding="32dp"
-        android:visibility="gone"></LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/empty_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:padding="32dp"
-        android:visibility="gone"></LinearLayout>
+        android:visibility="gone"
+        tools:visibility="visible" />
 
 </FrameLayout>

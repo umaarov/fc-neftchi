@@ -54,17 +54,32 @@ class StatisticsFragment : Fragment() {
             binding.shimmerContainer.startShimmer()
             binding.shimmerContainer.isVisible = true
             binding.contentScrollView.isVisible = false
-        } else {
-            binding.shimmerContainer.animate()
-                .alpha(0f)
-                .setDuration(400)
-                .withEndAction {
-                    binding.shimmerContainer.stopShimmer()
-                    binding.shimmerContainer.isVisible = false
-                }
-                .start()
+            binding.stateView.hide()
+            return
+        }
 
-            state.statsData?.let { data ->
+        binding.shimmerContainer.animate()
+            .alpha(0f)
+            .setDuration(400)
+            .withEndAction {
+                if (_binding == null) return@withEndAction
+                binding.shimmerContainer.stopShimmer()
+                binding.shimmerContainer.isVisible = false
+            }
+            .start()
+
+        when {
+            state.error != null -> {
+                binding.contentScrollView.isVisible = false
+                binding.stateView.showError(onRetry = viewModel::retry)
+            }
+            state.statsData == null -> {
+                binding.contentScrollView.isVisible = false
+                binding.stateView.showEmpty(messageRes = uz.umarov.fcneftchi.R.string.state_empty_stats)
+            }
+            else -> {
+                binding.stateView.hide()
+                val data = state.statsData
                 binding.clubStatsCard.statMatches.text = data.clubStats.totalMatches.toString()
                 binding.clubStatsCard.statWins.text = data.clubStats.totalWins.toString()
                 binding.clubStatsCard.statDraws.text = data.clubStats.totalDraws.toString()
@@ -75,15 +90,15 @@ class StatisticsFragment : Fragment() {
                     data.clubStats.goalsConceded.toString()
 
                 playerStatsAdapter.submitList(data.playerStats)
-            }
 
-            binding.contentScrollView.alpha = 0f
-            binding.contentScrollView.isVisible = true
-            binding.contentScrollView.animate()
-                .alpha(1f)
-                .setInterpolator(AccelerateDecelerateInterpolator())
-                .setDuration(500)
-                .start()
+                binding.contentScrollView.alpha = 0f
+                binding.contentScrollView.isVisible = true
+                binding.contentScrollView.animate()
+                    .alpha(1f)
+                    .setInterpolator(AccelerateDecelerateInterpolator())
+                    .setDuration(500)
+                    .start()
+            }
         }
     }
 

@@ -62,28 +62,41 @@ class MatchDetailFragment : Fragment() {
             binding.shimmerContainer.startShimmer()
             binding.shimmerContainer.isVisible = true
             binding.contentGroup.isVisible = false
-        } else {
-            binding.shimmerContainer.animate()
-                .alpha(0f)
-                .setDuration(400)
-                .withEndAction {
-                    if (_binding == null) return@withEndAction
-                    binding.shimmerContainer.stopShimmer()
-                    binding.shimmerContainer.isVisible = false
-                }
-                .start()
+            binding.stateView.hide()
+            return
+        }
 
-            state.gameDetail?.let { game ->
-                bindHeaderData(game)
-                setupViewPager()
+        binding.shimmerContainer.animate()
+            .alpha(0f)
+            .setDuration(400)
+            .withEndAction {
+                if (_binding == null) return@withEndAction
+                binding.shimmerContainer.stopShimmer()
+                binding.shimmerContainer.isVisible = false
             }
-            binding.contentGroup.alpha = 0f
-            binding.contentGroup.isVisible = true
-            binding.contentGroup.animate()
-                .alpha(1f)
-                .setInterpolator(AccelerateDecelerateInterpolator())
-                .setDuration(500)
-                .start()
+            .start()
+
+        when {
+            state.error != null -> {
+                binding.contentGroup.isVisible = false
+                binding.stateView.showError(onRetry = viewModel::retry)
+            }
+            state.gameDetail == null -> {
+                binding.contentGroup.isVisible = false
+                binding.stateView.showEmpty()
+            }
+            else -> {
+                binding.stateView.hide()
+                bindHeaderData(state.gameDetail)
+                setupViewPager()
+                binding.contentGroup.alpha = 0f
+                binding.contentGroup.isVisible = true
+                binding.contentGroup.animate()
+                    .alpha(1f)
+                    .setInterpolator(AccelerateDecelerateInterpolator())
+                    .setDuration(500)
+                    .start()
+            }
         }
     }
 

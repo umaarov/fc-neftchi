@@ -3,9 +3,14 @@ package uz.umarov.fcneftchi.ui.team
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import uz.umarov.fcneftchi.data.model.Player
 import uz.umarov.fcneftchi.data.model.PlayerPosition
@@ -14,17 +19,30 @@ import javax.inject.Inject
 
 data class TeamUiState(
     val items: List<TeamListItem> = emptyList(),
-    val isLoading: Boolean = true
+    val isLoading: Boolean = true,
+    val error: String? = null,
 )
 
+@OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
 class TeamViewModel @Inject constructor(
-    getSquad: GetSquadUseCase
+    private val getSquad: GetSquadUseCase
 ) : ViewModel() {
 
-    val uiState: StateFlow<TeamUiState> = getSquad()
-        .map { players -> TeamUiState(items = groupByPosition(players), isLoading = false) }
+    private val retryTrigger = MutableStateFlow(0)
+
+    val uiState: StateFlow<TeamUiState> = retryTrigger
+        .flatMapLatest {
+            getSquad()
+                .map { players -> TeamUiState(items = groupByPosition(players), isLoading = false) }
+                .onStart { emit(TeamUiState(isLoading = true)) }
+                .catch { e -> emit(TeamUiState(isLoading = false, error = e.message)) }
+        }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), TeamUiState())
+
+    fun retry() {
+        retryTrigger.value += 1
+    }
 
     private fun groupByPosition(players: List<Player>): List<TeamListItem> {
         val positionOrder = listOf(

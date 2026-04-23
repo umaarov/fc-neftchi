@@ -13,6 +13,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import uz.umarov.fcneftchi.R
 import uz.umarov.fcneftchi.databinding.FragmentFixturesBinding
 import uz.umarov.fcneftchi.ui.matches.MatchesFragmentDirections
 import uz.umarov.fcneftchi.ui.matches.adapter.MatchAdapter
@@ -60,26 +61,41 @@ class FixturesFragment : Fragment() {
             binding.shimmerContainer.startShimmer()
             binding.shimmerContainer.isVisible = true
             binding.fixturesRecyclerView.isVisible = false
-        } else {
-            binding.shimmerContainer.animate()
-                .alpha(0f)
-                .setDuration(400)
-                .withEndAction {
-                    if (_binding == null) return@withEndAction
-                    binding.shimmerContainer.stopShimmer()
-                    binding.shimmerContainer.isVisible = false
-                }
-                .start()
+            binding.stateView.hide()
+            return
+        }
 
-            matchAdapter.submitList(state.items)
-            binding.fixturesRecyclerView.apply {
-                alpha = 0f
-                isVisible = true
-                animate()
-                    .alpha(1f)
-                    .setInterpolator(AccelerateDecelerateInterpolator())
-                    .setDuration(500)
-                    .start()
+        binding.shimmerContainer.animate()
+            .alpha(0f)
+            .setDuration(400)
+            .withEndAction {
+                if (_binding == null) return@withEndAction
+                binding.shimmerContainer.stopShimmer()
+                binding.shimmerContainer.isVisible = false
+            }
+            .start()
+
+        when {
+            state.error != null -> {
+                binding.fixturesRecyclerView.isVisible = false
+                binding.stateView.showError(onRetry = viewModel::retry)
+            }
+            state.items.isEmpty() -> {
+                binding.fixturesRecyclerView.isVisible = false
+                binding.stateView.showEmpty(messageRes = R.string.state_empty_fixtures)
+            }
+            else -> {
+                binding.stateView.hide()
+                matchAdapter.submitList(state.items)
+                binding.fixturesRecyclerView.apply {
+                    alpha = 0f
+                    isVisible = true
+                    animate()
+                        .alpha(1f)
+                        .setInterpolator(AccelerateDecelerateInterpolator())
+                        .setDuration(500)
+                        .start()
+                }
             }
         }
     }
