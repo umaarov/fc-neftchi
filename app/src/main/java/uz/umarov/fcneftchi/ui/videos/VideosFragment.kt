@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -45,10 +46,24 @@ class VideosFragment : Fragment() {
                 updateUi(state)
             }
         }
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.event.collect { event ->
+                if (event == null) return@collect
+                val messageRes = when (event) {
+                    VideosEvent.BookmarkAdded -> R.string.bookmark_added
+                    VideosEvent.BookmarkRemoved -> R.string.bookmark_removed
+                }
+                Toast.makeText(requireContext(), messageRes, Toast.LENGTH_SHORT).show()
+                viewModel.consumeEvent()
+            }
+        }
     }
 
     private fun setupRecyclerView() {
-        videoAdapter = VideoAdapter(viewLifecycleOwner.lifecycle)
+        videoAdapter = VideoAdapter(
+            lifecycle = viewLifecycleOwner.lifecycle,
+            onBookmarkClick = viewModel::toggleBookmark,
+        )
 
         binding.videosRecyclerView.apply {
             adapter = videoAdapter
@@ -98,7 +113,9 @@ class VideosFragment : Fragment() {
             else -> {
                 binding.stateView.hide()
                 val wasEmpty = !binding.videosRecyclerView.isVisible
-                videoAdapter.submitList(state.videos)
+                videoAdapter.submitList(state.videos) {
+                    videoAdapter.submitBookmarkedIds(state.bookmarkedIds)
+                }
                 binding.videosRecyclerView.apply {
                     if (wasEmpty) {
                         alpha = 0f

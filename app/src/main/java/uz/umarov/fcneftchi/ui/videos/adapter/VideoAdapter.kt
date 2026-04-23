@@ -15,27 +15,52 @@ import uz.umarov.fcneftchi.data.model.Video
 import uz.umarov.fcneftchi.databinding.ItemVideoBinding
 import uz.umarov.fcneftchi.util.YouTubeUrlParser
 
-class VideoAdapter(private val lifecycle: Lifecycle) :
-    ListAdapter<Video, VideoAdapter.VideoViewHolder>(VideoDiffCallback) {
+class VideoAdapter(
+    private val lifecycle: Lifecycle,
+    private val onBookmarkClick: (Video) -> Unit = {},
+) : ListAdapter<Video, VideoAdapter.VideoViewHolder>(VideoDiffCallback) {
+
+    private var bookmarkedIds: Set<String> = emptySet()
+
+    fun submitBookmarkedIds(ids: Set<String>) {
+        if (ids == bookmarkedIds) return
+        bookmarkedIds = ids
+        notifyItemRangeChanged(0, itemCount, PAYLOAD_BOOKMARK)
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VideoViewHolder {
         val binding = ItemVideoBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         lifecycle.addObserver(binding.youtubePlayerView)
-        return VideoViewHolder(binding)
+        return VideoViewHolder(binding, onBookmarkClick)
     }
 
     override fun onBindViewHolder(holder: VideoViewHolder, position: Int) {
         val video = getItem(position)
-        holder.bind(video)
+        holder.bind(video, video.id in bookmarkedIds)
     }
 
-    class VideoViewHolder(private val binding: ItemVideoBinding) :
-        RecyclerView.ViewHolder(binding.root) {
+    override fun onBindViewHolder(
+        holder: VideoViewHolder,
+        position: Int,
+        payloads: MutableList<Any>
+    ) {
+        if (payloads.contains(PAYLOAD_BOOKMARK)) {
+            val video = getItem(position)
+            holder.bindBookmark(video, video.id in bookmarkedIds)
+        } else {
+            super.onBindViewHolder(holder, position, payloads)
+        }
+    }
+
+    class VideoViewHolder(
+        private val binding: ItemVideoBinding,
+        private val onBookmarkClick: (Video) -> Unit,
+    ) : RecyclerView.ViewHolder(binding.root) {
 
         private var youTubePlayer: YouTubePlayer? = null
         private var currentVideoId: String? = null
 
-        fun bind(video: Video) {
+        fun bind(video: Video, isBookmarked: Boolean) {
             resetToThumbnail()
 
             val context = binding.root.context
@@ -65,6 +90,19 @@ class VideoAdapter(private val lifecycle: Lifecycle) :
                     }
                 }
             }
+
+            bindBookmark(video, isBookmarked)
+        }
+
+        fun bindBookmark(video: Video, isBookmarked: Boolean) {
+            binding.bookmarkButton.setImageResource(
+                if (isBookmarked) R.drawable.ic_bookmark_filled
+                else R.drawable.ic_bookmark_border
+            )
+            binding.bookmarkButton.contentDescription = binding.root.context.getString(
+                if (isBookmarked) R.string.bookmark_remove else R.string.bookmark_add
+            )
+            binding.bookmarkButton.setOnClickListener { onBookmarkClick(video) }
         }
 
         private fun initializePlayer() {
@@ -89,5 +127,9 @@ class VideoAdapter(private val lifecycle: Lifecycle) :
 
         override fun areContentsTheSame(oldItem: Video, newItem: Video): Boolean =
             oldItem == newItem
+    }
+
+    private companion object {
+        const val PAYLOAD_BOOKMARK = "payload_bookmark"
     }
 }
