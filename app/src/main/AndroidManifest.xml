@@ -23,22 +23,15 @@
         tools:replace="android:allowBackup"
         tools:targetApi="31">
         <activity
-            android:name=".ui.SplashActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-            <meta-data
-                android:name="android.app.shortcuts"
-                android:resource="@xml/shortcuts" />
-        </activity>
-        <activity
             android:name=".ui.MainActivity"
             android:exported="true"
-            android:theme="@style/Theme.FCNeftchi">
+            android:theme="@style/Theme.App.Starting">
             <nav-graph android:value="@navigation/nav_graph" />
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
 
             <intent-filter android:autoVerify="false">
                 <action android:name="android.intent.action.VIEW" />
@@ -54,6 +47,10 @@
                 <data android:scheme="https" />
                 <data android:host="fcneftchi.uz" />
             </intent-filter>
+
+            <meta-data
+                android:name="android.app.shortcuts"
+                android:resource="@xml/shortcuts" />
         </activity>
 
         <service

@@ -15,7 +15,7 @@ import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import uz.umarov.fcneftchi.R
 import uz.umarov.fcneftchi.data.model.Match
-import uz.umarov.fcneftchi.ui.SplashActivity
+import uz.umarov.fcneftchi.ui.MainActivity
 import java.util.concurrent.TimeUnit
 
 class NextMatchWidgetProvider : AppWidgetProvider() {
@@ -123,7 +123,7 @@ class NextMatchWidgetProvider : AppWidgetProvider() {
         }
 
         private fun launchAppIntent(context: Context): PendingIntent {
-            val intent = Intent(context, SplashActivity::class.java).apply {
+            val intent = Intent(context, MainActivity::class.java).apply {
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
             }
             return PendingIntent.getActivity(

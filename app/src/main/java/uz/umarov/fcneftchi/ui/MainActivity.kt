@@ -1,14 +1,19 @@
 package uz.umarov.fcneftchi.ui
 
 import android.Manifest
+import android.animation.ObjectAnimator
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.view.View
+import android.view.animation.AnticipateInterpolator
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.animation.doOnEnd
 import androidx.core.content.ContextCompat
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.metrics.performance.JankStats
@@ -43,13 +48,24 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-//        val splashScreen = installSplashScreen()
+        val splashScreen = installSplashScreen()
 
         super.onCreate(savedInstanceState)
 
-//        splashScreen.setKeepOnScreenCondition {
-//            !viewModel.isReady.value
-//        }
+        splashScreen.setKeepOnScreenCondition { !viewModel.isReady.value }
+        splashScreen.setOnExitAnimationListener { provider ->
+            val fade = ObjectAnimator.ofFloat(provider.view, View.ALPHA, 1f, 0f)
+            val shrink = ObjectAnimator.ofFloat(provider.iconView, View.SCALE_X, 1f, 0.6f)
+            val shrinkY = ObjectAnimator.ofFloat(provider.iconView, View.SCALE_Y, 1f, 0.6f)
+            fade.interpolator = AnticipateInterpolator()
+            fade.duration = 350L
+            shrink.duration = 350L
+            shrinkY.duration = 350L
+            fade.doOnEnd { provider.remove() }
+            shrink.start()
+            shrinkY.start()
+            fade.start()
+        }
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
