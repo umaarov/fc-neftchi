@@ -9,8 +9,6 @@ import javax.inject.Singleton
 class SharedPrefsHelper @Inject constructor(private val prefs: SharedPreferences) {
 
     companion object {
-        const val PREF_NOTIF_MATCH_REMINDER = "pref_notif_match_reminder"
-        const val PREF_NOTIF_NEWS_ALERTS = "pref_notif_news_alerts"
         const val PREF_THEME = "pref_theme"
         const val PREF_LANGUAGE = "pref_language"
     }
