@@ -36,6 +36,8 @@
         <argument
             android:name="gameId"
             app:argType="integer" />
+        <deepLink app:uri="fcneftchi://match/{gameId}" />
+        <deepLink app:uri="https://fcneftchi.uz/match/{gameId}" />
     </fragment>
     <fragment
         android:id="@+id/newsFragment"
@@ -55,6 +57,8 @@
         <argument
             android:name="articleUrl"
             app:argType="string" />
+        <deepLink app:uri="fcneftchi://article?articleUrl={articleUrl}" />
+        <deepLink app:uri="https://fcneftchi.uz/news/{articleUrl}" />
     </fragment>
 
     <fragment
@@ -133,7 +137,10 @@
         android:id="@+id/stadiumFragment"
         android:name="uz.umarov.fcneftchi.ui.stadium.StadiumFragment"
         android:label="@string/title_stadium"
-        tools:layout="@layout/fragment_stadium" />
+        tools:layout="@layout/fragment_stadium">
+        <deepLink app:uri="fcneftchi://stadium" />
+        <deepLink app:uri="https://fcneftchi.uz/stadium" />
+    </fragment>
 
     <fragment
         android:id="@+id/leagueTableFragment"
@@ -161,5 +168,7 @@
         <argument
             android:name="playerId"
             app:argType="integer" />
+        <deepLink app:uri="fcneftchi://player/{playerId}" />
+        <deepLink app:uri="https://fcneftchi.uz/player/{playerId}" />
     </fragment>
 </navigation>
