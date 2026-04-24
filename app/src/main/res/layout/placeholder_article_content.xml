@@ -10,50 +10,50 @@
         android:layout_width="120dp"
         android:layout_height="16dp"
         android:layout_marginBottom="24dp"
-        android:background="@color/placeholder_bg" />
+        android:background="@drawable/skeleton_block" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="16dp"
         android:layout_marginBottom="8dp"
-        android:background="@color/placeholder_bg" />
+        android:background="@drawable/skeleton_block" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="16dp"
         android:layout_marginBottom="8dp"
-        android:background="@color/placeholder_bg" />
+        android:background="@drawable/skeleton_block" />
 
     <View
         android:layout_width="250dp"
         android:layout_height="16dp"
         android:layout_marginBottom="24dp"
-        android:background="@color/placeholder_bg"
+        android:background="@drawable/skeleton_block"
         app:layout_constraintWidth_percent="0.8" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="16dp"
         android:layout_marginBottom="8dp"
-        android:background="@color/placeholder_bg" />
+        android:background="@drawable/skeleton_block" />
 
     <View
         android:layout_width="200dp"
         android:layout_height="16dp"
         android:layout_marginBottom="8dp"
-        android:background="@color/placeholder_bg"
+        android:background="@drawable/skeleton_block"
         app:layout_constraintWidth_percent="0.9" />
 
     <View
         android:layout_width="160dp"
         android:layout_height="16dp"
         android:layout_marginBottom="24dp"
-        android:background="@color/placeholder_bg"
+        android:background="@drawable/skeleton_block"
         app:layout_constraintWidth_percent="0.5" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="16dp"
-        android:background="@color/placeholder_bg" />
+        android:background="@drawable/skeleton_block" />
 
 </LinearLayout>

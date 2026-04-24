@@ -15,7 +15,7 @@
         <View
             android:layout_width="100dp"
             android:layout_height="120dp"
-            android:background="@color/placeholder_bg" />
+            android:background="@drawable/skeleton_block" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -27,19 +27,19 @@
             <View
                 android:layout_width="60dp"
                 android:layout_height="20dp"
-                android:background="@color/placeholder_bg" />
+                android:background="@drawable/skeleton_block" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="28dp"
                 android:layout_marginTop="8dp"
-                android:background="@color/placeholder_bg" />
+                android:background="@drawable/skeleton_block" />
 
             <View
                 android:layout_width="200dp"
                 android:layout_height="28dp"
                 android:layout_marginTop="4dp"
-                android:background="@color/placeholder_bg" />
+                android:background="@drawable/skeleton_block" />
         </LinearLayout>
     </LinearLayout>
 
@@ -53,20 +53,20 @@
             android:layout_width="0dp"
             android:layout_height="60dp"
             android:layout_weight="1"
-            android:background="@color/placeholder_bg" />
+            android:background="@drawable/skeleton_block" />
 
         <View
             android:layout_width="0dp"
             android:layout_height="60dp"
             android:layout_marginHorizontal="8dp"
             android:layout_weight="1"
-            android:background="@color/placeholder_bg" />
+            android:background="@drawable/skeleton_block" />
 
         <View
             android:layout_width="0dp"
             android:layout_height="60dp"
             android:layout_weight="1"
-            android:background="@color/placeholder_bg" />
+            android:background="@drawable/skeleton_block" />
     </LinearLayout>
 
     <View
@@ -74,36 +74,36 @@
         android:layout_height="24dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
-        android:background="@color/placeholder_bg" />
+        android:background="@drawable/skeleton_block" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="8dp"
-        android:background="@color/placeholder_bg" />
+        android:background="@drawable/skeleton_block" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_marginTop="16dp"
-        android:background="@color/placeholder_bg" />
+        android:background="@drawable/skeleton_block" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="@color/placeholder_bg" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginTop="1dp"
-        android:background="@color/placeholder_bg" />
+        android:background="@drawable/skeleton_block" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginTop="1dp"
-        android:background="@color/placeholder_bg" />
+        android:background="@drawable/skeleton_block" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="1dp"
+        android:background="@drawable/skeleton_block" />
 
 </LinearLayout>

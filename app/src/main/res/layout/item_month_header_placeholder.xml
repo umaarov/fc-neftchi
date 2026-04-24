@@ -10,6 +10,6 @@
     <View
         android:layout_width="140dp"
         android:layout_height="20dp"
-        android:background="@color/placeholder_bg" />
+        android:background="@drawable/skeleton_block" />
 
 </LinearLayout>

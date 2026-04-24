@@ -133,7 +133,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="320dp"
-                android:background="@color/placeholder_bg" />
+                android:background="@drawable/skeleton_block" />
 
             <include layout="@layout/placeholder_article_content" />
 
