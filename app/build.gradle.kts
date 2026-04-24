@@ -104,6 +104,7 @@ android {
             )
         }
     }
+
 }
 
 dependencies {
@@ -119,6 +120,10 @@ dependencies {
     implementation(libs.firebase.analytics)
     implementation(libs.kotlinx.coroutines.play.services)
     testImplementation(libs.junit)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.mockk)
+    testImplementation(libs.turbine)
+    testImplementation(libs.truth)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     implementation(libs.androidx.swiperefreshlayout)
@@ -162,3 +167,4 @@ configurations.all {
         force("org.jetbrains.kotlin:kotlin-reflect:2.0.21")
     }
 }
+
